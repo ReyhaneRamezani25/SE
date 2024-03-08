@@ -2,12 +2,22 @@
     display: flex;
     flex-direction: column;
     margin: auto;
-    margin-top: 200px;
+    margin-top: 250px;
     width: 600px;
-    background: #fff;
+    background:#fafafa;
     padding-bottom: 30px;
-    
+    border-radius: 30px;
 
+}
+.container p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .header{
     display: flex;
@@ -43,7 +53,7 @@
     margin-bottom: 20px;
     width: 480px;
     height: 80px;
-    background: #eaeaea;
+    background: #c5e0f5;
     border-radius: 6px;
 }
 .input img{
@@ -91,5 +101,6 @@
     align-items: center;
     justify-content: center;
     color: red;
+    font-size: 19px;
 }
 
