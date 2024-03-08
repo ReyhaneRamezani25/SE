@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './LoginSignUp.css';
-
+import { useNavigate } from 'react-router-dom';
 const LoginSignUp = () => {
   const [action, setAction] = useState('Login');
   const [email, setEmail] = useState('');
@@ -42,7 +42,6 @@ const LoginSignUp = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     handleValidation();
-    // Additional logic for form submission can be added here
   };
 
   return (
@@ -87,7 +86,8 @@ const LoginSignUp = () => {
             <p>{message}</p>
           )}
         </div>
-
+          <p> Are you an Hotel admin?</p>
+          <a href="http://localhost:3000/login-hotel">click here</a>
         <div className='submit-container'>
           <button
             type='submit'
