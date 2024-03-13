@@ -21,7 +21,7 @@ function SearchBar({ onSearch }) {
         onChange={handleChange}
         placeholder="Search..."
       />
-      <button type="submit">Search</button>
+      <button type="submit">جستجو</button>
     </form>
   );
 }

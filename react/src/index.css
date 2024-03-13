@@ -7,11 +7,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
   background-image: url("./bish.jpg");
-  background-repeat:no-repeat;
+  background-repeat: no-repeat;
   background-size: cover;
   background-color: black;
+  background-attachment: fixed; /* Keep background fixed */
 }
-
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

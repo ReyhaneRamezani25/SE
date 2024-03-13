@@ -1,9 +1,9 @@
 import React from 'react';
-import './Home.css'
+import './Profile.css'
 
 function Profile() {
   return (
-    <div className='home-container'>
+    <div className='profile-container'>
         <div className='header'>
             <h1>Profile</h1>
         </div>

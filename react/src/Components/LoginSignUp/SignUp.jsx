@@ -55,7 +55,7 @@ const SignUp = () => {
   return (
     <div className="login-container">
       <div className="header">
-        <div className="text">Login - Sign Up</div>
+        <div className="text">Sign Up</div>
         <div className="underLine"></div>
       </div>
       <form>
