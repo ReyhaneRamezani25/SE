@@ -34,10 +34,10 @@
     font-weight: 700;
 }
 .underLine{
-    width: 61px;
-    height:6px;
+    width: 10px;
+    height:10px;
     background: #3c009d;
-    border-radius: 9px;
+    border-radius: 100px;
 }
 .inputs{
     margin-top: 15px;

@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import './LoginSignUp.css';
+
 const LoginSignUp = () => {
   const [action, setAction] = useState('Login');
   const [email, setEmail] = useState('');
@@ -20,7 +22,6 @@ const LoginSignUp = () => {
   };
 
   const handleValidation = () => {
-    const regExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (email === "") {
@@ -28,11 +29,11 @@ const LoginSignUp = () => {
     } else if (!emailRegex.test(email)) {
       setMessage("Email is not valid!");
     } else if(username===""){
-      setMessage("Enter an UserName!")
+      setMessage("Enter a UserName!")
     } else if (password === "") {
       setMessage("Enter a password!");
-    } else if (!regExp.test(password)) {
-      setMessage("Password is not valid!");
+    } else if (password.length<6) {
+      setMessage("Password should at least 6 character!");
     } else {
       setMessage("OK");
     }
@@ -56,7 +57,7 @@ const LoginSignUp = () => {
               <img src={require('./icon_email.png')} alt='' />
               <input
                 type='text'
-                placeholder='Email Id'
+                placeholder='Email address'
                 value={email}
                 onChange={handleChange}
               />
@@ -66,7 +67,7 @@ const LoginSignUp = () => {
             <img src={require('./icon_user.png')} alt='' />
             <input
               type='text'
-              placeholder='UserName'
+              placeholder='User name'
               value={username}
               onChange={handleUsernameChange}
             />
@@ -86,7 +87,7 @@ const LoginSignUp = () => {
           )}
         </div>
           <p> Are you an Hotel admin?</p>
-          <a href="http://localhost:3000/login-hotel">click here</a>
+          <Link to="/login-hotel">click here</Link>
         <div className='submit-container'>
           <button
             type='submit'

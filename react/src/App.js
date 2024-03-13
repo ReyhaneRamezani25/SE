@@ -1,5 +1,6 @@
 // App.js
 import React from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginSignUp from './Components/LoginSignUp/LoginSignUp.jsx';
 import HotelAdminLogin from './Components/LoginSignUp/HotelAdminLogin.jsx'
@@ -10,6 +11,8 @@ function App() {
   return (
     <Router>
       <div>
+        <header>
+        </header>
         <Routes>
           <Route path="/" element={<LoginSignUp />} />
           <Route path='/login-hotel' element={<HotelAdminLogin />}/>

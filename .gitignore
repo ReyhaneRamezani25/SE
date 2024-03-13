@@ -1,0 +1,41 @@
+# Dependency directories
+node_modules/
+
+# Generated files
+build/
+dist/
+*.log
+
+# Environment files
+.env*
+
+# IDE/Editor files
+.vscode/
+.idea/
+
+# macOS system files
+.DS_Store
+
+# npm package manager
+npm-debug.log*
+
+# Yarn package manager
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific files
+Thumbs.db
+.DS_Store
+
+# Windows thumbnail cache files
+ehthumbs.db
+
+# Compiled JavaScript files (usually found in /src)
+*.js
+
+# Compiled CSS files (usually found in /src)
+*.css
+
+# Temporary files
+*.swp
+
