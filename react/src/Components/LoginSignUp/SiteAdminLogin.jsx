@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './LoginSignUp.css';
+import { GoPerson } from "react-icons/go";
+import { CiLock } from "react-icons/ci";
+import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 
 const SiteAdminLogin = () => {
+  const [showPassword, setShowPassword] = useState(false); // State variable to toggle password visibility
+
+  // Function to toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className='login-container'>
       <div className='header'>
         <div className='text'>Master login</div>
         <div className='underLine'></div>
       </div>
-      <form >
+      <form>
         <div className='inputs'>
           <div className='input'>
-            <img src={require('./icon_user.png')} alt='' />
+            <GoPerson className="icon"/>
             <input
               type='text'
               placeholder='UserName'
@@ -19,18 +29,20 @@ const SiteAdminLogin = () => {
           </div>
 
           <div className='input'>
-            <img src={require('./icon_pass.png')} alt='' />
+            <CiLock className="icon"/>
             <input
-              type='password'
+              type={showPassword ? 'text' : 'password'} // Toggle between 'password' and 'text'
               placeholder='Password'
             />
+            {/* Toggle button to show/hide password */}
+            <div className='toggle-password' onClick={togglePasswordVisibility}>
+              {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+            </div>
           </div>
         </div>
 
         <div className='submit-container'>
-          <div
-            className='submit'
-          >
+          <div className='submit' onClick={() => console.log("Login clicked")}>
             Login
           </div>
         </div>
