@@ -1,12 +1,11 @@
-// import React, { useState } from 'react';
+import React from 'react';
 import './LoginSignUp.css';
 
-const HotelAdminLogin = () => {
- 
+const SiteAdminLogin = () => {
   return (
-    <div className='container'>
+    <div className='login-container'>
       <div className='header'>
-        <div className='text'>Login</div>
+        <div className='text'>Master login</div>
         <div className='underLine'></div>
       </div>
       <form >
@@ -40,4 +39,4 @@ const HotelAdminLogin = () => {
   );
 };
 
-export default HotelAdminLogin;
+export default SiteAdminLogin;
