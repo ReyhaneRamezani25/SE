@@ -8,7 +8,8 @@ const NavigationBar = () => {
     <div className="navigation-bar">
       <ul>
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/login-hotel">Login</Link></li>
+        <li><Link to="/login-user">Login</Link></li>
+        <li><Link to="/profile">Profile</Link></li>
       </ul>
     </div>
   );

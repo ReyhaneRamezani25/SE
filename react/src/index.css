@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
-  /* background-image: url("./bish.jpg"); */
+  background-image: url("./bish.jpg");
   background-repeat:no-repeat;
   background-size: cover;
   background-color: black;
