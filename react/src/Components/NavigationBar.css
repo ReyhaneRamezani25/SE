@@ -1,0 +1,49 @@
+.date-picker-container {
+  width: 200px; /* Set the width */
+  height: 1px; /* Set the height */
+}
+
+.navigation-bar {
+  background-color: #ffffff; 
+  position: fixed; 
+  top: 0; 
+  width: 100%; 
+}
+
+.navigation-bar ul {
+  list-style-type: none; 
+  margin: 0;
+  padding: 0;
+  display: flex; 
+}
+
+.navigation-bar ul li {
+  display: inline;
+}
+
+.navigation-bar ul li a {
+  display: block;
+  padding: 20px 20px;
+  color: black; 
+  text-decoration: none; 
+}
+
+.navigation-bar ul li a:hover {
+  background-color: #3c009d;
+}
+
+.input input {
+  color: rgb(25, 82, 198);
+}
+
+.navigation-bar ul li a.active {
+  background-color: #3c009d;
+  color: white; 
+}
+
+.start-date-picker-container {
+  margin-right: 20px; 
+  border-width: 0px;
+  background-color: #3c009d;
+  /* width: 10px; */
+}

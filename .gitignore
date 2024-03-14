@@ -31,10 +31,10 @@ Thumbs.db
 ehthumbs.db
 
 # Compiled JavaScript files (usually found in /src)
-*.js
+# *.js
 
 # Compiled CSS files (usually found in /src)
-*.css
+# *.css
 
 # Temporary files
 *.swp

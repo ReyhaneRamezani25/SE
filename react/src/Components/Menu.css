@@ -1,0 +1,21 @@
+.menu-container {
+    width: 100%;
+    margin-top: 100px;
+  }
+  
+  .menu-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px; /* Adjust spacing between items */
+  }
+  
+  .menu-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .menu-item img {
+    width: 100%;
+    height: auto;
+  }
