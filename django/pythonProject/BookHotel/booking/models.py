@@ -6,6 +6,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=150, unique=False)  # No uniqueness constraint on username
     # Add any additional fields you need
+    # just a test 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
 
