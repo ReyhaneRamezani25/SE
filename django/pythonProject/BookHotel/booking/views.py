@@ -5,6 +5,7 @@ from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomerSignUpForm, SiteAdminSignUpForm, HotelAdminSignUpForm
 
+import json
 
 @csrf_exempt
 def signup_customer(request):
@@ -48,13 +49,20 @@ def signup_hotel_admin(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not username and not password:
+            data = json.loads(request.body)
+            username = data.get('username')
+            password = data.get('password')
 
         user = authenticate(request, username=username, password=password)
+        print(username, password)
         if user:
             dj_login(request, user)
-            return HttpResponse('Login completed!')
+            return HttpResponse('Login Accepted!')
         return HttpResponse('Wrong password/username')
 
     return HttpResponse('Please login with post method')

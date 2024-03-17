@@ -1,3 +1,5 @@
+# Front-end part
+
 # Dependency directories
 node_modules/
 
@@ -39,3 +41,36 @@ ehthumbs.db
 # Temporary files
 *.swp
 
+
+# Backend part
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+local_settings.py
+
+
+media/
+
+
+staticfiles/
+
+
+db.sqlite3
+
+
+venv/
+.env
+
+
+.idea/
+.vscode/
+
+
+node_modules/
+bower_components/
+
+
+*.pyc
