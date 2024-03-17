@@ -40,8 +40,34 @@ const Login = () => {
     e.preventDefault();
     handleValidation();
 
-    // Add login logic here
     console.log('Login:', { email, password });
+
+    fetch('http://localhost:8000/site_admin/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: email, 
+        password: password,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.text(); 
+    })
+    
+    .then(data => {
+
+      console.log(data)
+    })
+    .catch(error => {
+      // Handle error
+      console.error('Fetch error:', error.message);
+
+    });
   };
 
   return (
