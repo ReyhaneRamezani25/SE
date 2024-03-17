@@ -1,11 +1,11 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Customer, SiteAdmin, HotelAdmin
+from .models import CustomUser,Customer, SiteAdmin, HotelAdmin
 
 
 class CustomerSignUpForm(UserCreationForm):
     class Meta:
-        model = Customer
+        model = CustomUser
         fields = ('username', 'password')
 
     def save(self, commit=True):
@@ -16,8 +16,8 @@ class CustomerSignUpForm(UserCreationForm):
 
 class SiteAdminSignUpForm(UserCreationForm):
     class Meta:
-        model = SiteAdmin
-        fields = ('username', 'password')
+        model = CustomUser
+        fields = ('username', 'password1', 'password2')
 
     def save(self, commit=True):
         user = super().save(commit=commit)
@@ -27,7 +27,7 @@ class SiteAdminSignUpForm(UserCreationForm):
 
 class HotelAdminSignUpForm(UserCreationForm):
     class Meta:
-        model = HotelAdmin
+        model = CustomUser
         fields = ('username', 'password')
 
     def save(self, commit=True):
