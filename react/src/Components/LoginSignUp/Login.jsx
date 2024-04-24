@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './LoginSignUp.css';
 import { GoPerson } from 'react-icons/go';
@@ -11,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [input_is_valid, set_input_is_valid] = useState(false);
 
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -22,7 +23,7 @@ const Login = () => {
 
   const handleValidation = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+    set_input_is_valid(false);
     if (email === '') {
       setMessage('Enter an email!');
     } else if (!emailRegex.test(email)) {
@@ -32,42 +33,43 @@ const Login = () => {
     } else if (password.length < 6) {
       setMessage('Password should be at least 6 characters!');
     } else {
-      setMessage('OK');
+      set_input_is_valid(true);
+      setMessage('');
     }
   };
 
   const handleLogin = (e) => {
     e.preventDefault();
     handleValidation();
-
-    console.log('Login:', { email, password });
-
-    fetch('http://localhost:8000/site_admin/login/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: email, 
-        password: password,
-      }),
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      return response.text(); 
-    })
-    
-    .then(data => {
-
-      console.log(data)
-    })
-    .catch(error => {
-      // Handle error
-      console.error('Fetch error:', error.message);
-
-    });
+    if (input_is_valid) {
+      console.log('Login:', { email, password });
+      fetch('http://localhost:8000/customer/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: email, 
+          password: password,
+        }),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return response.text(); 
+      })
+      
+      .then(data => {  
+        console.log(data)
+        setMessage(data)
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Fetch error:', error.message);
+        setMessage(error.message)
+      });
+    }    
   };
 
   return (

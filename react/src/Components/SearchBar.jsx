@@ -11,6 +11,33 @@ function SearchBar({ onSearch }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     onSearch(searchTerm);
+
+    fetch('http://localhost:8000/hotel/search/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        searchItem : searchTerm,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.text(); 
+    })
+    
+    .then(data => {  
+      console.log(data)
+      // setMessage(data)
+    })
+    .catch(error => {
+      // Handle error
+      console.error('Fetch error:', error.message);
+      // setMessage(error.message)
+    });
+
   };
 
   return (

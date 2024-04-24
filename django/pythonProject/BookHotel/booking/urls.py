@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import signup_customer, signup_site_admin, signup_hotel_admin, login
+from .views import signup_customer, signup_site_admin, signup_hotel_admin, login, hotel_search
 
 urlpatterns = [
     path('customer/signup/', signup_customer),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('hotel_admin/signup/', signup_hotel_admin),
     path('hotel_admin/login/', login),
 
+    path('hotel/search/', hotel_search),
 ]

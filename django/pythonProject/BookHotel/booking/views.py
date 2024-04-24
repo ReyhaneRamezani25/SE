@@ -9,6 +9,10 @@ import json
 
 @csrf_exempt
 def signup_customer(request):
+    print(request.POST)
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    print(username, password)
     if request.method == 'POST':
         form = CustomerSignUpForm(request.POST)
         if form.is_valid():
@@ -63,6 +67,17 @@ def login(request):
         if user:
             dj_login(request, user)
             return HttpResponse('Login Accepted!')
-        return HttpResponse('Wrong password/username')
+        return HttpResponse('Wrong password or username')
 
     return HttpResponse('Please login with post method')
+
+
+@csrf_exempt
+def hotel_search(request):
+    if request.method == 'POST':
+        print(request.POST)
+        # TODO: Return name, location, free rooms and main image of all hotels.
+        # Every hotel has a main image and some sub image.
+        return HttpResponse('mashkhar')
+
+    return HttpResponse('Only post method allowed!')

@@ -50,7 +50,35 @@ const SignUp = () => {
     if (message === 'OK') {
       console.log('Sign Up:', { email, username, password });
     }
+
+    fetch('http://localhost:8000/customer/signup/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: email,
+        password: password,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.text(); 
+    })
+    
+    .then(data => {
+
+      console.log(data)
+    })
+    .catch(error => {
+      // Handle error
+      console.error('Fetch error:', error.message);
+
+    });
   };
+
 
   return (
     <div className="login-container">

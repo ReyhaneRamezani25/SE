@@ -9,6 +9,7 @@ const HotelPage = ({ match }) => {
 
   return (
     <div>
+
        <h1>jjj</h1>
        <h1>jjj</h1>
        <h1>jjj</h1>
