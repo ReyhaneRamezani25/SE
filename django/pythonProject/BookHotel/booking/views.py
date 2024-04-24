@@ -77,7 +77,7 @@ def login(request):
 def hotel_search(request):
     if request.method == 'POST':
         print(request.POST)
-        # TODO: Return name, location, free rooms and main image of all hotels.
+        # TODO: Return name, location, free rooms and main image of all similar hotel names.
         # Every hotel has a main image and some sub image.
         return HttpResponse('mashkhar')
 
@@ -97,4 +97,17 @@ def hotel_data(request):
             return JsonResponse({'data': result})
 
     return HttpResponse('Only post method allowed!')
+
+
+@csrf_exempt
+def get_hotels(request):
+    if request.method == 'GET':
+        # TODO: Return name, location, free rooms and main image of all hotels.
+        image_links = [
+            f'https://via.placeholder.com/150?text=Image{i}' for i in range(100)
+        ]
+        print(image_links)
+        return JsonResponse({'image_links': image_links})
+    else:
+        return JsonResponse({'error': 'Only GET method allowed!'}, status=405)
 

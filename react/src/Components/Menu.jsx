@@ -1,11 +1,40 @@
 // export default Menu;
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './Menu.css';
 
 const Menu = () => {
+  const [args] = useState('');
+  const [placeholderLinks, set_placeholderLinks] = useState([]);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+        try {
+            // Construct URL with URLSearchParams
+            const queryParams = new URLSearchParams();
+            queryParams.append('args', 'args');
+
+            const url = `http://localhost:8000/get_hotels?${queryParams.toString()}`;
+            const response = await fetch(url);
+
+            if (response.ok) {
+                const data = await response.json();
+                set_placeholderLinks(data.image_links);
+                console.log(data.image_links);
+            } else {
+                console.error('Failed to fetch images:', response.status);
+            }
+        } catch (error) {
+            console.error('Error fetching images:', error);
+        }
+    };
+
+    fetchImages();
+  }, [args]); // Include index in the dependency array
+
   // Generate an array of 1000 placeholder image links
-  const placeholderLinks = Array.from({ length: 1000 }, (_, index) => `https://via.placeholder.com/150?text=Image${index}`);
+  // const placeholderLinks = Array.from({ length: 1000 }, (_, index) => `https://via.placeholder.com/150?text=Image${index}`);
 
   const handleClick = (index) => {
     // Navigate to Hotel component with index as parameter
