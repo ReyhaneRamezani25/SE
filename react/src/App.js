@@ -10,6 +10,8 @@ import HotelAdminLogin from './Components/LoginSignUp/HotelAdminLogin.jsx'
 import SiteAdminLogin from './Components/LoginSignUp/SiteAdminLogin.jsx'
 import Profile from './Components/Profile.jsx'
 
+import Hotel from './Components/HotelPage.jsx'; // Import the Hotel component
+
 import HomePage from './Components/Home.jsx'
 
 import './App.css';
@@ -27,6 +29,7 @@ function App() {
             <Route path='/login-hotel' element={<HotelAdminLogin />}/>
             <Route path='/admin' element={<SiteAdminLogin />}/>
             <Route path='/profile' element={<Profile />}/>
+            <Route path='/hotel/:index' element={<Hotel />} />
           </Routes>
         </div>
       </div>
