@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login as dj_login
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomerSignUpForm, SiteAdminSignUpForm, HotelAdminSignUpForm
+from django.http import JsonResponse
 
 import json
 
@@ -81,3 +82,19 @@ def hotel_search(request):
         return HttpResponse('mashkhar')
 
     return HttpResponse('Only post method allowed!')
+
+
+@csrf_exempt
+def hotel_data(request):
+    if request.method == 'GET':
+
+        # TODO: Return all details of specific hotel by its id.
+        index = request.GET.get('index')
+        result = {}
+        print(index)
+        if index is not None:
+            result = {'name': f'mashkhar Hotel {index}', 'stars': 5}
+            return JsonResponse({'data': result})
+
+    return HttpResponse('Only post method allowed!')
+
