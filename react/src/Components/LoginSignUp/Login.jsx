@@ -11,7 +11,6 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [input_is_valid, set_input_is_valid] = useState(false);
 
   const handleChange = (e) => {
     setEmail(e.target.value);
