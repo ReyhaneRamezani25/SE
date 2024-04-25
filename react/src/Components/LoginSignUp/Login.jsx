@@ -11,7 +11,6 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [input_is_valid, set_input_is_valid] = useState(false);
 
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -23,7 +22,6 @@ const Login = () => {
 
   const handleValidation = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    set_input_is_valid(false);
     if (email === '') {
       setMessage('Enter an email!');
     } else if (!emailRegex.test(email)) {
@@ -33,15 +31,6 @@ const Login = () => {
     } else if (password.length < 6) {
       setMessage('Password should be at least 6 characters!');
     } else {
-      set_input_is_valid(true);
-      setMessage('');
-    }
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    handleValidation();
-    if (input_is_valid) {
       console.log('Login:', { email, password });
       fetch('http://localhost:8000/customer/login/', {
         method: 'POST',
@@ -69,7 +58,12 @@ const Login = () => {
         console.error('Fetch error:', error.message);
         setMessage(error.message)
       });
-    }    
+    }
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    handleValidation();
   };
 
   return (
