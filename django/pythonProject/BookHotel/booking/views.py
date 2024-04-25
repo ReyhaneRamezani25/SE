@@ -10,16 +10,18 @@ import json
 
 @csrf_exempt
 def signup_customer(request):
-    print(request.POST)
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    print(username, password)
     if request.method == 'POST':
-        form = CustomerSignUpForm(request.POST)
+        data = json.loads(request.body.decode('utf-8'))
+        username = data.get('username')
+        password = data.get('password')
+        print(username, password)
+
+        form = CustomerSignUpForm(data)
         if form.is_valid():
             form.save()
             return HttpResponse('User created successfully!')
 
+        print(f'form error {form.errors}')
         return HttpResponse(f"{form.errors}")
 
     return HttpResponse('Only post method allowed!')
