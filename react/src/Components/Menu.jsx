@@ -31,10 +31,7 @@ const Menu = () => {
     };
 
     fetchImages();
-  }, [args]); // Include index in the dependency array
-
-  // Generate an array of 1000 placeholder image links
-  // const placeholderLinks = Array.from({ length: 1000 }, (_, index) => `https://via.placeholder.com/150?text=Image${index}`);
+  }, [args]);
 
   const handleClick = (index) => {
     // Navigate to Hotel component with index as parameter

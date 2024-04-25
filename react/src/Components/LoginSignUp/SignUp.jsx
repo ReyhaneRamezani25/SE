@@ -39,37 +39,6 @@ const SignUp = () => {
     } else if (password.length < 6) {
       setMessage('Password should be at least 6 characters!');
     } else {
-      // // setMessage('OK');
-      // console.log('Sign Up:', { email, username, password });
-      // fetch('http://localhost:8000/customer/signup/', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     username: email,
-      //     password: password,
-      //   }),
-      // })
-      // .then(response => {
-      //   if (!response.ok) {
-      //     throw new Error(response.statusText);
-      //   }
-      // })
-      // .then(data => {
-      //   console.log(data)
-      //   // setMessage(data)
-      //   setMessage('password and email address can not be empty')
-      // })
-      // // .then(() => {
-      // //   console.log('Signup successful');
-      // //   setMessage('Signup successful');
-      // // })
-      // .catch(error => {
-      //   console.error('Fetch error:', error.message);
-      //   setMessage('Error: ', error.message);
-      // });
-      
       fetch('http://localhost:8000/customer/signup/', {
         method: 'POST',
         headers: {
