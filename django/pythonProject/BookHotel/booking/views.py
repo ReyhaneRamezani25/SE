@@ -5,8 +5,10 @@ from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomerSignUpForm, SiteAdminSignUpForm, HotelAdminSignUpForm
 from django.http import JsonResponse
+from .models import *
 
 import json
+
 
 @csrf_exempt
 def signup_customer(request):
@@ -56,7 +58,7 @@ def signup_hotel_admin(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
-        
+
         username = request.POST.get('username')
         password = request.POST.get('password')
 
@@ -113,3 +115,17 @@ def get_hotels(request):
     else:
         return JsonResponse({'error': 'Only GET method allowed!'}, status=405)
 
+
+def search(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        search_phrase = data.get('search_phrase')
+        cities = City.objects.filter(name__contains=search_phrase).values_list("name", flat=True)
+        hotels = Hotel.objects.filter(name__contains=search_phrase).values_list("name", flat=True)
+
+        print(request.POST)
+        # TODO: Return name, location, free rooms and main image of all similar hotel names.
+        # Every hotel has a main image and some sub image.
+        return HttpResponse('mashkhar')
+
+    return HttpResponse('Only post method allowed!')
