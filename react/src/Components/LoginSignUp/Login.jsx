@@ -50,8 +50,9 @@ const Login = () => {
       })
       
       .then(data => {  
-        console.log(data)
-        setMessage(data)
+        console.log(data);
+        setMessage(data);
+        window.location.href = '/';
       })
       .catch(error => {
         // Handle error

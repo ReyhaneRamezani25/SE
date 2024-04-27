@@ -18,7 +18,7 @@ function SearchBar({ onSearch }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        searchItem : searchTerm,
+        search_phrase : searchTerm,
       }),
     })
     .then(response => {
