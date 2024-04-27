@@ -5,8 +5,10 @@ from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomerSignUpForm, SiteAdminSignUpForm, HotelAdminSignUpForm
 from django.http import JsonResponse
+from .models import *
 
 import json
+
 
 @csrf_exempt
 def signup_customer(request):
@@ -56,7 +58,7 @@ def signup_hotel_admin(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
-        
+
         username = request.POST.get('username')
         password = request.POST.get('password')
 
@@ -95,7 +97,6 @@ def hotel_data(request):
         # TODO: Return all details of specific hotel by its id.
         index = request.GET.get('index')
         result = {}
-        print(index)
         if index is not None:
             result = {'name': f'mashkhar Hotel {index}', 'stars': 5}
             return JsonResponse({'data': result})
@@ -103,15 +104,35 @@ def hotel_data(request):
     return HttpResponse('Only post method allowed!')
 
 
+import os
+
 @csrf_exempt
 def get_hotels(request):
-    if request.method == 'GET':
-        # TODO: Return name, location, free rooms and main image of all hotels.
-        # image_links = ['/home/soheil/Pictures/Moones.jpg']
-        image_links = [
-            f'https://via.placeholder.com/150?text=Image{i}' for i in range(10)
-        ]
-        print(image_links)
-        return JsonResponse({'image_links': image_links})
+    hotels = Hotel.objects.all()
+    return JsonResponse({'image_urls': [hotel.image.path for hotel in hotels]})
+
+
+@csrf_exempt
+def get_specific_image(request):
+    data = json.loads(request.body.decode('utf-8'))
+    image_path = data.get('url')
+    print(image_path)
+    if os.path.exists(image_path):
+        with open(image_path, 'rb') as f:
+            image_data = f.read()
+        return HttpResponse(image_data, content_type='image/jpeg')
     else:
-        return JsonResponse({'error': 'Only GET method allowed!'}, status=405)
+        return JsonResponse({'error': 'Image not found'}, status=404)
+
+
+@csrf_exempt
+def search(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        search_phrase = data['search_phrase']
+        cities = City.objects.filter(name__contains=search_phrase).values_list("name", flat=True)
+        hotels = Hotel.objects.filter(name__contains=search_phrase).values_list("name", flat=True)
+        print(hotels)
+        return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
+
+    return HttpResponse('Only post method allowed!')

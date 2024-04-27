@@ -29,7 +29,8 @@ function SearchBar({ onSearch }) {
     })
     
     .then(data => {  
-      console.log(data)
+      console.log(JSON.parse(data)['cities']);
+      console.log(JSON.parse(data)['hotels']);
       // setMessage(data)
     })
     .catch(error => {
