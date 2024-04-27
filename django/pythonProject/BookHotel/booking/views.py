@@ -116,16 +116,14 @@ def get_hotels(request):
         return JsonResponse({'error': 'Only GET method allowed!'}, status=405)
 
 
+@csrf_exempt
 def search(request):
     if request.method == 'POST':
-        data = json.loads(request.body.decode('utf-8'))
-        search_phrase = data.get('search_phrase')
+        # data = json.loads(request.body.decode('utf-8'))
+        search_phrase = request.POST.get('search_phrase')
         cities = City.objects.filter(name__contains=search_phrase).values_list("name", flat=True)
         hotels = Hotel.objects.filter(name__contains=search_phrase).values_list("name", flat=True)
-
-        print(request.POST)
-        # TODO: Return name, location, free rooms and main image of all similar hotel names.
-        # Every hotel has a main image and some sub image.
-        return HttpResponse('mashkhar')
+        print(hotels)
+        return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
 
     return HttpResponse('Only post method allowed!')
