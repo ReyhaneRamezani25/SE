@@ -12,7 +12,7 @@ function SearchBar({ onSearch }) {
     event.preventDefault();
     onSearch(searchTerm);
 
-    fetch('http://localhost:8000/hotel/search/', {
+    fetch('http://localhost:8000/home/search/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -92,14 +92,10 @@ def hotel_search(request):
 
 @csrf_exempt
 def hotel_data(request):
-    if request.method == 'GET':
-
-        # TODO: Return all details of specific hotel by its id.
-        index = request.GET.get('index')
-        result = {}
-        if index is not None:
-            result = {'name': f'mashkhar Hotel {index}', 'stars': 5}
-            return JsonResponse({'data': result})
+    if request.method == 'POST': # GET
+        hotel_id = request.POST.get('hotel_id')
+        hotel = Hotel.objects.filter(id=hotel_id).values()
+        return JsonResponse({'hotel': list(hotel)})
 
     return HttpResponse('Only post method allowed!')
 
@@ -126,13 +122,22 @@ def get_specific_image(request):
 
 
 @csrf_exempt
+def get_hotels_of_a_city(request):
+    # gets a city_id and return all hotels in that city
+    if request.method == 'POST':
+        city_id = request.POST.get('city_id')
+        hotels = Hotel.objects.filter(city__id=city_id).values()
+        return JsonResponse({'hotel': list(hotels)})
+
+    return HttpResponse('Only post method allowed!')
+
+
+@csrf_exempt
 def search(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         search_phrase = data['search_phrase']
-        cities = City.objects.filter(name__contains=search_phrase).values_list("name", flat=True)
-        hotels = Hotel.objects.filter(name__contains=search_phrase).values_list("name", flat=True)
-        print(hotels)
+        cities = City.objects.filter(name__contains=search_phrase).values_list('id', 'name')
+        hotels = Hotel.objects.filter(name__contains=search_phrase).values_list('id', 'name')
         return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
-
     return HttpResponse('Only post method allowed!')
