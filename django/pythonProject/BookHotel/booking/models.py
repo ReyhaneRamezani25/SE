@@ -31,6 +31,7 @@ class Hotel(models.Model):
     address = models.CharField(max_length=500)
     stars = models.IntegerField()
     rating = models.FloatField()
+    number_of_rates = models.IntegerField(default=0)
     number_of_rooms = models.IntegerField()
     facilities = models.CharField(max_length=500)
     brochure = models.FileField()
