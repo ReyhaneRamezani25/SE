@@ -9,7 +9,6 @@ class HotelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class HotelAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = HotelAdmin

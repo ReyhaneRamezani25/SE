@@ -1,11 +1,13 @@
 from django.shortcuts import render
-
+from rest_framework.response import Response
 from django.contrib.auth import authenticate, login as dj_login
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomerSignUpForm, SiteAdminSignUpForm, HotelAdminSignUpForm
+from rest_framework.views import APIView
 from django.http import JsonResponse
 from .models import *
+from .serializers import *
 
 import json
 
@@ -30,30 +32,49 @@ def signup_customer(request):
     return HttpResponse('Only post method allowed!')
 
 
-@csrf_exempt
-def signup_site_admin(request):
-    if request.method == 'POST':
-        form = SiteAdminSignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('User created successfully!')
+# @csrf_exempt
+# def signup_site_admin(request):
+#     if request.method == 'POST':
+#         form = SiteAdminSignUpForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponse('User created successfully!')
+#
+#         return HttpResponse(f"{form.errors}")
+#
+#     return HttpResponse('Only post method allowed!')
 
-        return HttpResponse(f"{form.errors}")
 
-    return HttpResponse('Only post method allowed!')
+# @csrf_exempt
+# def signup_hotel_admin(request):
+#     if request.method == 'POST':
+#         form = HotelAdminSignUpForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponse('User created successfully!')
+#
+#         return HttpResponse(f"{form.errors}")
+#
+#     return HttpResponse('Only post method allowed!')
+
+class HotelAPIView(APIView):
+    def post(self, request):
+        hotel_serializer = HotelSerializer(data=request.data)
+        if hotel_serializer.is_valid():
+            hotel_serializer.save()
+            return Response({'message': 'Hotel added successfully!'})
+
+        return Response({'message': hotel_serializer.errors})
 
 
-@csrf_exempt
-def signup_hotel_admin(request):
-    if request.method == 'POST':
-        form = HotelAdminSignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('User created successfully!')
+class HotelAdminAPIView(APIView):
+    def post(self, request):
+        hotel_admin_serializer = HotelAdminSerializer(data=request.data)
+        if hotel_admin_serializer.is_valid():
+            hotel_admin_serializer.save()
+            return Response({'message': 'Hotel added successfully!'})
 
-        return HttpResponse(f"{form.errors}")
-
-    return HttpResponse('Only post method allowed!')
+        return Response({'message': hotel_admin_serializer.errors})
 
 
 @csrf_exempt
