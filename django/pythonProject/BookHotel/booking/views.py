@@ -13,7 +13,8 @@ import json
 @csrf_exempt
 def signup_customer(request):
     if request.method == 'POST':
-        data = json.loads(request.body.decode('utf-8'))
+        # data = json.loads(request.body.decode('utf-8'))
+        data = request.POST
         username = data.get('username')
         password = data.get('password')
         print(username, password)
@@ -56,20 +57,47 @@ def signup_hotel_admin(request):
 
 
 @csrf_exempt
-def login(request):
+def login_customer(request):
     if request.method == 'POST':
-
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        if not username and not password:
-            data = json.loads(request.body)
-            username = data.get('username')
-            password = data.get('password')
+        # if not username and not password:
+        #     data = json.loads(request.body)
+        #     username = data.get('username')
+        #     password = data.get('password')
 
         user = authenticate(request, username=username, password=password)
         print(username, password)
-        if user:
+        if user and isinstance(user.user_type, Customer):
+            dj_login(request, user)
+            return HttpResponse('Login Accepted!')
+        return HttpResponse('Wrong password or username')
+
+    return HttpResponse('Please login with post method')
+
+
+def login_site_admin(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        print(username, password)
+        if user and isinstance(user.user_type, SiteAdmin):
+            dj_login(request, user)
+            return HttpResponse('Login Accepted!')
+        return HttpResponse('Wrong password or username')
+
+    return HttpResponse('Please login with post method')
+
+
+def login_hotel_admin(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        print(username, password)
+        if user and isinstance(user.user_type, HotelAdmin):
             dj_login(request, user)
             return HttpResponse('Login Accepted!')
         return HttpResponse('Wrong password or username')
@@ -92,7 +120,7 @@ def hotel_search(request):
 
 @csrf_exempt
 def hotel_data(request):
-    if request.method == 'POST': # GET
+    if request.method == 'POST':  # GET
         hotel_id = request.POST.get('hotel_id')
         hotel = Hotel.objects.filter(id=hotel_id).values()
         return JsonResponse({'hotel': list(hotel)})
@@ -101,6 +129,7 @@ def hotel_data(request):
 
 
 import os
+
 
 @csrf_exempt
 def get_hotels(request):
