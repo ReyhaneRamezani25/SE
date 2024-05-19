@@ -98,20 +98,23 @@ def login_customer(request):
     return HttpResponse('Please login with post method')
 
 
+@csrf_exempt
 def login_site_admin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+        user = SiteAdmin.objects.filter(user__username=username).get(user__password=password)
         print(username, password)
-        if user and isinstance(user.user_type, SiteAdmin):
-            dj_login(request, user)
+        print(user)
+        if user:
+            dj_login(request, user.user)
             return HttpResponse('Login Accepted!')
         return HttpResponse('Wrong password or username')
 
     return HttpResponse('Please login with post method')
 
 
+@csrf_exempt
 def login_hotel_admin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -191,3 +194,16 @@ def search(request):
         hotels = Hotel.objects.filter(name__contains=search_phrase).values_list('id', 'name')
         return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
     return HttpResponse('Only post method allowed!')
+"""
+{
+    "name" : "random hotel",
+    "location_x" : "1",
+    "location_y" : "1",
+    "address": "ad",
+    "stars" : "1",
+    "rating" : "1",
+    "number_of_rates" : "1",
+    "number_of_rooms" : "1",
+    "facilities" :"sample"
+}
+"""

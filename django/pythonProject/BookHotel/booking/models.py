@@ -12,7 +12,7 @@ class CustomUser(AbstractUser):
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,related_name='user_type')
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='user_type')
 
 
 class SiteAdmin(models.Model):
@@ -34,9 +34,9 @@ class Hotel(models.Model):
     number_of_rates = models.IntegerField(default=0)
     number_of_rooms = models.IntegerField()
     facilities = models.CharField(max_length=500)
-    brochure = models.FileField()
-    image = models.FileField()
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    brochure = models.FileField(null=True)
+    image = models.FileField(null=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, default=City.objects.get(id=1))
 
 
 class Room(models.Model):
