@@ -17,15 +17,15 @@ def signup_customer(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         username = data['username']
-        password = data['password']
 
         form = CustomerSignUpForm(data)
         if form.is_valid():
             form.save()
             return HttpResponse('User created successfully!')
 
-        print(f'form error {form.errors}')
-        return HttpResponse(f"{form.errors}")
+        if form.errors:
+            print(f'form error {form.errors}')
+            return HttpResponse(f"User with the username {username} already exist")
 
     return HttpResponse('Only post method allowed!')
 
