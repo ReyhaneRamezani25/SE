@@ -80,8 +80,9 @@ def login_customer(request):
 @csrf_exempt
 def login_site_admin(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        password = data['password']
 
         try:
             user = SiteAdmin.objects.filter(user__username=username).get(user__password=password)
