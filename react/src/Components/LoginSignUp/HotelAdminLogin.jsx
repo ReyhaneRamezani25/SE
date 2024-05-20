@@ -19,6 +19,39 @@ const HotelAdminLogin = () => {
     setPassword(e.target.value);
   };
 
+  const login = () => {
+    console.log('Login:', { email, password });
+    fetch('http://localhost:8000/hotel_admin/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: email, 
+        password: password,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.text(); 
+    })
+    
+    .then(data => {  
+      console.log(data);
+      setMessage(data);
+      if (data === 'Login Accepted!'){
+        window.location.href = '/';
+      }
+    })
+    .catch(error => {
+      // Handle error
+      console.error('Fetch error:', error.message);
+      setMessage(error.message)
+    });
+  }
+
   const handleValidation = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -28,10 +61,9 @@ const HotelAdminLogin = () => {
       setMessage('Email is not valid!');
     } else if (password === '') {
       setMessage('Enter a password!');
-    } else if (password.length < 6) {
-      setMessage('Password should be at least 6 characters!');
     } else {
-      setMessage('OK');
+      setMessage('');
+      login();
     }
   };
 
@@ -77,8 +109,8 @@ const HotelAdminLogin = () => {
           </div>
           <p>{message}</p>
         </div>
-        <p>Are you a Hotel admin?</p>
-        <Link to="/login-hotel">click here</Link>
+        <p>Are you a Customer admin?</p>
+        <Link to="/login">click here</Link>
         <div className="submit-container">
           <button
             type="submit"

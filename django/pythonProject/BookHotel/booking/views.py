@@ -15,11 +15,9 @@ import json
 @csrf_exempt
 def signup_customer(request):
     if request.method == 'POST':
-        # data = json.loads(request.body.decode('utf-8'))
-        data = request.POST
-        username = data.get('username')
-        password = data.get('password')
-        print(username, password)
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        password = data['password']
 
         form = CustomerSignUpForm(data)
         if form.is_valid():
@@ -30,20 +28,6 @@ def signup_customer(request):
         return HttpResponse(f"{form.errors}")
 
     return HttpResponse('Only post method allowed!')
-
-
-# @csrf_exempt
-# def signup_site_admin(request):
-#     if request.method == 'POST':
-#         form = SiteAdminSignUpForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponse('User created successfully!')
-#
-#         return HttpResponse(f"{form.errors}")
-#
-#     return HttpResponse('Only post method allowed!')
-
 
 # @csrf_exempt
 # def signup_hotel_admin(request):
@@ -80,16 +64,11 @@ class HotelAdminAPIView(APIView):
 @csrf_exempt
 def login_customer(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        # if not username and not password:
-        #     data = json.loads(request.body)
-        #     username = data.get('username')
-        #     password = data.get('password')
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        password = data['password']
 
         user = authenticate(request, username=username, password=password)
-        print(username, password)
         if user and isinstance(user.user_type, Customer):
             dj_login(request, user)
             return HttpResponse('Login Accepted!')
@@ -103,13 +82,14 @@ def login_site_admin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = SiteAdmin.objects.filter(user__username=username).get(user__password=password)
-        print(username, password)
-        print(user)
-        if user:
-            dj_login(request, user.user)
-            return HttpResponse('Login Accepted!')
-        return HttpResponse('Wrong password or username')
+
+        try:
+            user = SiteAdmin.objects.filter(user__username=username).get(user__password=password)
+            if user:
+                dj_login(request, user.user)
+                return HttpResponse('Login Accepted!')
+        except SiteAdmin.DoesNotExist:
+            return HttpResponse('Wrong password or username')
 
     return HttpResponse('Please login with post method')
 
@@ -117,14 +97,17 @@ def login_site_admin(request):
 @csrf_exempt
 def login_hotel_admin(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        print(username, password)
-        if user and isinstance(user.user_type, HotelAdmin):
-            dj_login(request, user)
-            return HttpResponse('Login Accepted!')
-        return HttpResponse('Wrong password or username')
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        password = data['password']
+
+        try:
+            user = HotelAdmin.objects.filter(user__username=username).get(user__password=password)
+            if user:
+                dj_login(request, user.user)
+                return HttpResponse('Login Accepted!')                
+        except HotelAdmin.DoesNotExist:
+            return HttpResponse('Wrong password or username')
 
     return HttpResponse('Please login with post method')
 
