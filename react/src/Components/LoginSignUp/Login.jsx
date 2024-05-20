@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './LoginSignUp.css';
-import { GoPerson } from 'react-icons/go';
 import { CiLock } from 'react-icons/ci';
 import { MdOutlineEmail } from 'react-icons/md';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";

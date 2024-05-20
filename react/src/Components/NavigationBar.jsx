@@ -71,14 +71,21 @@ const NavigationBar = () => {
           <>
             {user.userType === 'hotelAdmin' ? (
               <>
-                <li><NavLink to="/">خانه</NavLink></li>
-                <li><NavLink to="/">درود</NavLink></li>
+                <li><NavLink to="/">هتل</NavLink></li>
                 <li><NavLink to="/profile">پروفایل</NavLink></li>
+                <li><NavLink to="/">دیتا</NavLink></li>
+              </>
+            ) : user.userType === 'siteAdmin' ? (
+              <>
+                <li><NavLink to="/">هتل</NavLink></li>
+                <li><NavLink to="/profile">پروفایل</NavLink></li>
+                <li><NavLink to="/">تحلیل</NavLink></li>
+                <li><NavLink to="/">ادمین</NavLink></li>
               </>
             ) : (
               <>
-                <li><NavLink to="/">خانه</NavLink></li>
                 <li><NavLink to="/profile">پروفایل</NavLink></li>
+                <li><NavLink to="/">خانه</NavLink></li>
                 <li><NavLink to="/help">راهنما</NavLink></li>
                 <li><NavLink to="/profile">رزروها</NavLink></li>
               </>
@@ -90,8 +97,6 @@ const NavigationBar = () => {
             <li><NavLink to="/login">ورود</NavLink></li> 
           </>
         )}
-
-
       </ul>
     </div>
   );
