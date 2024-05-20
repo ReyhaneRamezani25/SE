@@ -1,16 +1,20 @@
-import React, { Suspense, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './LoginSignUp.css';
 import { GoPerson } from 'react-icons/go';
 import { CiLock } from 'react-icons/ci';
 import { MdOutlineEmail } from 'react-icons/md';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { UserContext } from '../../UserContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { loginUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -43,7 +47,8 @@ const Login = () => {
       console.log(data);
       setMessage(data);
       if (data === 'Login Accepted!'){
-        window.location.href = '/';
+        loginUser({ username: email, userType: 'customer' });
+        navigate('/');
       }
     })
     .catch(error => {

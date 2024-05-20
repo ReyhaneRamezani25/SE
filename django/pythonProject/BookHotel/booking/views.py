@@ -9,9 +9,11 @@ from django.http import JsonResponse
 from .models import *
 from .serializers import *
 
+from django.contrib.auth import update_session_auth_hash
 import json
 
 
+# -------------------------- Customer -------------------------- #
 @csrf_exempt
 def signup_customer(request):
     if request.method == 'POST':
@@ -28,6 +30,43 @@ def signup_customer(request):
             return HttpResponse(f"User with the username {username} already exist")
 
     return HttpResponse('Only post method allowed!')
+
+
+@csrf_exempt
+def change_password(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        current_password = data['current_password']
+        new_password = data['new_password']
+
+        user = authenticate(request, username=username, password=current_password)
+        if user:
+            user.set_password(new_password)
+            user.save()
+            # Update the session with the new password hash
+            update_session_auth_hash(request, user)
+            return HttpResponse('Password changed successfully!')
+        else:
+            return HttpResponse('Current password is incorrect')
+
+    return HttpResponse('Please change password with post method')
+
+
+@csrf_exempt
+def login_customer(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        password = data['password']
+
+        user = authenticate(request, username=username, password=password)
+        if user and isinstance(user.user_type, Customer):
+            dj_login(request, user)
+            return HttpResponse('Login Accepted!')
+        return HttpResponse('Wrong password or username')
+
+    return HttpResponse('Please login with post method')
 
 # @csrf_exempt
 # def signup_hotel_admin(request):
@@ -59,22 +98,6 @@ class HotelAdminAPIView(APIView):
             return Response({'message': 'Hotel added successfully!'})
 
         return Response({'message': hotel_admin_serializer.errors})
-
-
-@csrf_exempt
-def login_customer(request):
-    if request.method == 'POST':
-        data = json.loads(request.body.decode('utf-8'))
-        username = data['username']
-        password = data['password']
-
-        user = authenticate(request, username=username, password=password)
-        if user and isinstance(user.user_type, Customer):
-            dj_login(request, user)
-            return HttpResponse('Login Accepted!')
-        return HttpResponse('Wrong password or username')
-
-    return HttpResponse('Please login with post method')
 
 
 @csrf_exempt
