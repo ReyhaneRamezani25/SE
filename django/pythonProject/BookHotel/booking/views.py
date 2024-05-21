@@ -165,7 +165,15 @@ import os
 @csrf_exempt
 def get_hotels(request):
     hotels = Hotel.objects.all()
-    return JsonResponse({'image_urls': [hotel.image.path for hotel in hotels]})
+    print(hotels)
+    image_urls = []
+    for hotel in hotels:
+        try:
+            image_urls.append(hotel.image.path)
+        except Exception:
+            # Maybe, one Hotel has not any Image at all
+            continue
+    return JsonResponse({'image_urls': image_urls})
 
 
 @csrf_exempt

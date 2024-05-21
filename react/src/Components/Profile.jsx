@@ -158,7 +158,7 @@ const Profile = () => {
 
           </button>
 
-          <Link to="/sign-up">
+          <Link to="/login">
             {/* <button
               className="submit"
             > */}

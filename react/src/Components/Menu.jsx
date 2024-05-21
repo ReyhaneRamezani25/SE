@@ -21,7 +21,6 @@ const Menu = () => {
 
         const blob = new Blob([response.data], { type: 'image/jpeg' });
         const imageUrl = URL.createObjectURL(blob);
-        // setImageSrc(imageUrl);
         setImageSrcs(prevImageSrcs => [...prevImageSrcs, imageUrl]);
       } catch (error) {
         console.error('Error fetching image:', error);
@@ -50,6 +49,7 @@ const Menu = () => {
       // setImageSrcs(JSON.parse(data).image_urls)
       const imageUrls = JSON.parse(data).image_urls;
       if (imageSrcs.length === 0){
+        setImageSrcs([]);
         for (const url of imageUrls) {
           fetchImage(url)
         }
