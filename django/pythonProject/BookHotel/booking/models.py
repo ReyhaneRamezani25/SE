@@ -27,13 +27,13 @@ class City(models.Model):
 
 class Hotel(models.Model):
     name = models.CharField(max_length=150)
-    location_x = models.FloatField()
-    location_y = models.FloatField()
+    location_x = models.FloatField(default=0)
+    location_y = models.FloatField(default=0)
     address = models.CharField(max_length=500)
-    stars = models.IntegerField()
-    rating = models.FloatField()
+    stars = models.IntegerField(default=0)
+    rating = models.FloatField(default=0)
     number_of_rates = models.IntegerField(default=0)
-    number_of_rooms = models.IntegerField()
+    number_of_rooms = models.IntegerField(default=0)
     facilities = models.CharField(max_length=500)
     brochure = models.FileField(null=True)
     image = models.FileField(null=True)
