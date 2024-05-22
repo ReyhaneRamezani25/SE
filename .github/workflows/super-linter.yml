@@ -31,7 +31,7 @@ jobs:
         uses: super-linter/super-linter@v5 
         env: 
           DEFAULT_BRANCH: main 
-          VALIDATE_TYPESCRIPT_STANDARD: false 
+          # VALIDATE_TYPESCRIPT_STANDARD: false 
           VALIDATE_PYTHON_BLACK: true 
           VALIDATE_PYTHON_FLAKE8: true 
           VALIDATE_PYTHON_ISORT: true 
