@@ -77,10 +77,12 @@ const NavigationBar = () => {
               </>
             ) : user.userType === 'siteAdmin' ? (
               <>
-                <li><NavLink to="/">هتل</NavLink></li>
+                <li><NavLink to="/site_admin/hotel_create">هتل</NavLink></li>
                 <li><NavLink to="/profile">پروفایل</NavLink></li>
                 <li><NavLink to="/">تحلیل</NavLink></li>
-                <li><NavLink to="/">ادمین</NavLink></li>
+                <li><NavLink to="/site_admin/admin_assign">ادمین</NavLink></li>
+                <li><NavLink to='/site_admin/hotel_list' >لیست</NavLink></li>
+
               </>
             ) : (
               <>

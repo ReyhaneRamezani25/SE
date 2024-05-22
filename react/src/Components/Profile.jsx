@@ -17,6 +17,7 @@ const Profile = () => {
   const [showPrevPassword, setShowPrevPassword] = useState(false);
 
   const { logoutUser } = useContext(UserContext); // Use logoutUser function from UserContext
+  const { user, loginUser } = useContext(UserContext); // Use UserContext
 
   const handlePasswordChange1 = (e) => {
     setPassword1(e.target.value);
@@ -29,9 +30,17 @@ const Profile = () => {
   };
 
   const change_pass = () => {
-    const email = "ss@gmail.com"
-    console.log('Change Password:', { email, password1, password2 });
-    fetch('http://localhost:8000/customer/update/', {
+    console.log(user.username)
+    console.log('Change Password:', { password1, password2 });
+    let url = ''
+    if (user.userType === 'customer'){
+      url = 'http://localhost:8000/customer/update/'
+    } else if (user.userType === 'hotelAdmin') {
+      url = 'http://localhost:8000/hotel_admin/update/'
+    } else {
+      url = 'http://localhost:8000/hotel_admin/update/'
+    }
+    fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +48,7 @@ const Profile = () => {
       body: JSON.stringify({
         current_password: prevPassword,
         new_password: password1,
-        username: email
+        username: user.username
       }),
     })
     .then(response => {
@@ -49,7 +58,7 @@ const Profile = () => {
       return response.text(); 
     })
     
-    .then(data => {  
+    .then(data => {
       console.log(data);
       setMessage(data);
       if (data === 'Password changed successfully!'){

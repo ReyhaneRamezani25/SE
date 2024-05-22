@@ -14,6 +14,7 @@ import json
 
 
 # -------------------------- Customer -------------------------- #
+
 @csrf_exempt
 def signup_customer(request):
     if request.method == 'POST':
@@ -33,7 +34,7 @@ def signup_customer(request):
 
 
 @csrf_exempt
-def change_password(request):
+def change_password_customer(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         username = data['username']
@@ -68,25 +69,95 @@ def login_customer(request):
 
     return HttpResponse('Please login with post method')
 
-# @csrf_exempt
-# def signup_hotel_admin(request):
-#     if request.method == 'POST':
-#         form = HotelAdminSignUpForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponse('User created successfully!')
-#
-#         return HttpResponse(f"{form.errors}")
-#
-#     return HttpResponse('Only post method allowed!')
+
+# -------------------------- Hotel Admin -------------------------- #
+
+@csrf_exempt
+def signup_hotel_admin(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        password = data['password']
+        hotel_id = int(data['hotel_id'])
+        del data['hotel_id']
+
+        hotel = Hotel.objects.get(id=hotel_id)
+        form = CustomerSignUpForm(data)
+        if form.is_valid():
+            hotel_admin = form.save()
+            hotel_admin = HotelAdmin.objects.create(user=hotel_admin, hotel=hotel)
+            hotel_admin.save()
+            return HttpResponse('Admin Hotel created successfully!')
+
+        if form.errors:
+            print(f'form error {form.errors}')
+            return HttpResponse(f"User with the username {username} already exist")
+
+    return HttpResponse('Only post method allowed!')
+
+
+@csrf_exempt
+def change_password_hotel_admin(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        current_password = data['current_password']
+        new_password = data['new_password']
+
+        try:
+            tmp = HotelAdmin.objects.filter(user__username=username)
+            if not tmp:
+                return HttpResponse('Wrong password or username')
+
+            user = authenticate(request, username=username, password=current_password)
+            if user:
+                user.set_password(new_password)
+                user.save()
+                # Update the session with the new password hash
+                update_session_auth_hash(request, user)
+                return HttpResponse('Password changed successfully!')
+            else:
+                return HttpResponse('Current password is incorrect')
+        except:
+            return HttpResponse('Wrong password or username')
+    return HttpResponse('Please login with post method')
+
+
+from django.contrib.auth.hashers import make_password
+@csrf_exempt
+def login_hotel_admin(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        password = data['password']
+
+        try:
+            user = authenticate(request, username=username, password=password)
+            if not user:
+                return HttpResponse('Wrong password or username')
+            tmp = HotelAdmin.objects.filter(user__username=username)
+            if not tmp:
+                return HttpResponse('Wrong password or username')
+            dj_login(request, user)
+            return HttpResponse('Login Accepted!')                
+        except:
+            return HttpResponse('Wrong password or username')
+    return HttpResponse('Please login with post method')
+
+
+# -------------------------- OTHERS -------------------------- #
+
 
 class HotelAPIView(APIView):
     def post(self, request):
         hotel_serializer = HotelSerializer(data=request.data)
         if hotel_serializer.is_valid():
             hotel_serializer.save()
+            print('alll')
             return Response({'message': 'Hotel added successfully!'})
 
+        print('none')
+        print(hotel_serializer.errors)
         return Response({'message': hotel_serializer.errors})
 
 
@@ -98,6 +169,32 @@ class HotelAdminAPIView(APIView):
             return Response({'message': 'Hotel added successfully!'})
 
         return Response({'message': hotel_admin_serializer.errors})
+
+
+@csrf_exempt
+def hotel_list(request):
+    hotels = Hotel.objects.all()
+
+    hotels_data = []
+
+    for hotel in hotels:
+        name = 'null'
+        province = 'null'
+        if hotel.city:
+            name = hotel.city.name
+            province = hotel.city.province
+        hotels_data.append(
+            {
+                'شناسه': hotel.id,
+                'نام': hotel.name,
+                'آدرس': hotel.address,
+                'ستاره': hotel.rating,
+                'شهر': name,
+                'استان': province,
+            }
+        )
+
+    return JsonResponse(hotels_data, safe=False)
 
 
 @csrf_exempt
@@ -116,25 +213,6 @@ def login_site_admin(request):
             return HttpResponse('Wrong password or username')
 
     return HttpResponse('Please login with post method')
-
-
-@csrf_exempt
-def login_hotel_admin(request):
-    if request.method == 'POST':
-        data = json.loads(request.body.decode('utf-8'))
-        username = data['username']
-        password = data['password']
-
-        try:
-            user = HotelAdmin.objects.filter(user__username=username).get(user__password=password)
-            if user:
-                dj_login(request, user.user)
-                return HttpResponse('Login Accepted!')                
-        except HotelAdmin.DoesNotExist:
-            return HttpResponse('Wrong password or username')
-
-    return HttpResponse('Please login with post method')
-
 
 @csrf_exempt
 def hotel_search(request):
@@ -209,6 +287,7 @@ def search(request):
         hotels = Hotel.objects.filter(name__contains=search_phrase).values_list('id', 'name')
         return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
     return HttpResponse('Only post method allowed!')
+
 """
 {
     "name" : "random hotel",

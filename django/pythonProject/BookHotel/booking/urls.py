@@ -6,14 +6,16 @@ from django.conf.urls.static import static
 urlpatterns = [
                 path('customer/signup/', signup_customer),
                 path('customer/login/', login_customer),
-                path('customer/update/', change_password),
+                path('customer/update/', change_password_customer),
 
-                # path('site_admin/signup/', signup_site_admin),
+                path('site_admin/update/', login_site_admin),
                 path('site_admin/login/', login_site_admin),
                 path('site_admin/create_hotel/', HotelAPIView.as_view()),
                 path('site_admin/create_hotel_admin/', HotelAdminAPIView.as_view()),
+                path('site_admin/hotel_list/', hotel_list),
 
-                # path('hotel_admin/signup/', signup_hotel_admin),
+                path('hotel_admin/update/', change_password_hotel_admin),
+                path('hotel_admin/signup/', signup_hotel_admin),
                 path('hotel_admin/login/', login_hotel_admin),
 
                 path('get_hotels/', get_hotels),

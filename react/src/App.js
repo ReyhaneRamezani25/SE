@@ -12,8 +12,9 @@ import Profile from './Components/Profile.jsx'
 import Hotel from './Components/HotelPage.jsx'; // Import the Hotel component
 import HomePage from './Components/Home.jsx'
 import Help from './Components/Help.jsx';
-// import Exit from './Components/Exit.jsx';
-
+import NewHotelAdmin from './Components/AdminStrict/NewHotelAdmin.jsx';
+import NewHotel from './Components/AdminStrict/NewHotel.jsx';
+import HotelLists from './Components/AdminStrict/HotelLists.jsx';
 import './App.css';
 
 function App() {
@@ -32,7 +33,9 @@ function App() {
               <Route path='/profile' element={<Profile />}/>
               <Route path='/hotel/:index' element={<Hotel />} />
               <Route path='/help' element={<Help />} />
-              {/* <Route path='/exit' element={<Exit />} /> */}
+              <Route path='/site_admin/admin_assign' element={<NewHotelAdmin />} />
+              <Route path='/site_admin/hotel_create' element={<NewHotel />} />
+              <Route path='/site_admin/hotel_list' element={<HotelLists />} />
             </Routes>
           </div>
         </div>
