@@ -12,7 +12,7 @@ const NewHotelAdmin = () => {
   const navigate = useNavigate();
   const { user, loginUser } = useContext(UserContext);
 
-  if (user === null){
+  if (user === null || user.userType === 'customer' || user.userType === 'hotelAdmin'){
     console.log("exit");
     return (
         <div className="login-container">

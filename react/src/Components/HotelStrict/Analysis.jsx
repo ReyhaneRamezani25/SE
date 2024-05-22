@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import './HotelLists.css';
+import './Analysis.css';
 import { UserContext } from '../../UserContext';
 
-const HotelLists = () => {
+const Analysis = () => {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [selectedCellContent, setSelectedCellContent] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const { user, loginUser } = useContext(UserContext);
-  
+
   useEffect(() => {
-    console.log(user)
-    if (user !== null && user.userType === 'siteAdmin'){
+    if (user !== null && user.userType === 'hotelAdmin'){
       fetchData();
     }
   }, []);
 
-  if (user === null || user.userType === 'customer' || user.userType === 'hotelAdmin'){
+  if (user === null || user.userType === 'customer' || user.userType === 'siteAdmin'){
     console.log("exit");
     return (
         <div className="login-container">
@@ -30,9 +29,26 @@ const HotelLists = () => {
     );
   }
 
+//   const fetchData = async () => {
+//     try {
+//       const response = await axios.get('http://localhost:8000/hotel_admin/analysis/');
+//       setData(response.data);
+//       if (response.data.length > 0) {
+//         setColumns(Object.keys(response.data[0]));
+//       }
+//     } catch (error) {
+//       console.error('Error fetching data:', error);
+//     }
+//   };
+
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/site_admin/hotel_list/');
+      // Assuming you need to send some data in the request body
+      const requestData = {
+        username: user.username
+      };
+  
+      const response = await axios.post('http://localhost:8000/hotel_admin/analysis/', requestData);
       setData(response.data);
       if (response.data.length > 0) {
         setColumns(Object.keys(response.data[0]));
@@ -41,6 +57,7 @@ const HotelLists = () => {
       console.error('Error fetching data:', error);
     }
   };
+  
 
   const downloadCSV = () => {
     const csvContent =
@@ -117,4 +134,4 @@ const HotelLists = () => {
   );
 };
 
-export default HotelLists;
+export default Analysis;

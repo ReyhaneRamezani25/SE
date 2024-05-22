@@ -1,0 +1,149 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 100px;
+    width: 70%;
+    height: 100%;
+    background:#fafafa;
+    padding-bottom: 30px;
+    border-radius: 30px;
+  }
+  
+  .custom-image {
+    width: 80%; 
+    height: 80%;
+    height: auto;
+    margin-top: 2%;
+    margin-left: 10%;
+    border-radius: 10px;
+    }
+  
+  .stars-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .stars-container .fas {
+    color: gold;
+  }
+  
+  .right-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+  }
+  
+  .room-container {
+    width: 100%;
+    height: 100px;
+    background: #cecbcb;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 90%;
+    height: 100px;
+    background:#cecbcb;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    }
+
+  .margin-left-better {
+    margin-left: 1%;
+  }
+  .input-section input[type="text"] {
+    /* font-weight: bold; */
+    height: 35px;
+  }
+  .container {
+    display: flex;
+    /* height: 100vh; */
+  }
+  
+  .left-section {
+    flex: 500;
+  }
+  
+  .right-section {
+    flex: 900;
+  }
+
+.inputs2{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    grid:25px;
+  
+}
+.input2{
+    display: flex;
+    align-items:center;
+    margin: auto;
+    margin-top: 20px;
+    width: 250px;
+    height: 40px;
+    background: #363d43;
+    border-radius: 10px;
+}
+.input2 img{
+    margin: 0px 30px;
+    height: 40px;
+    width: 40px;
+
+}
+.input2 input{
+    height: 20px;
+    width: 250;
+    background:transparent;
+    border: none;
+    outline: none;
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+}
+.gray{
+    background: #f9f7f7;
+    color:676767;
+}
+.inputs2 p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+    font-size: 19px;
+}
+.icon {
+    font-size: 40px; 
+  }
+  
+.toggle-password{
+    font-size: 25px;
+}
+.input3{
+    display: flex;
+    align-items:right;
+    margin: auto;
+    margin-top: 2px;
+    margin-right: 10px;
+    width: 80px;
+    height: 20px;
+    background: #163046;
+    border-radius: 10px;
+}
+.input3 input{
+    height: 20px;
+    width: 100px;
+    background:transparent;
+    border: none;
+    outline: none;
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+}
+.inputs3 p{
+    display: flex;
+    align-items: right;
+    justify-content: right;
+    color: red;
+    font-size: 19px;
+}

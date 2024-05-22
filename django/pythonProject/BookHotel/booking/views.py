@@ -63,6 +63,11 @@ def login_customer(request):
 
         user = authenticate(request, username=username, password=password)
         if user and isinstance(user.user_type, Customer):
+
+            tmp = HotelAdmin.objects.filter(user__username=username)
+            if tmp:
+                return HttpResponse('Wrong password or username')
+
             dj_login(request, user)
             return HttpResponse('Login Accepted!')
         return HttpResponse('Wrong password or username')
@@ -151,9 +156,7 @@ def hotel_admin_analysis(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         username = data['username']
-        print(data)
         user = HotelAdmin.objects.filter(user__username=username)[0]
-        print('user is: ', user, flush=True)
         hotel = user.hotel
         city = 'null'
         province = 'null'
@@ -177,15 +180,12 @@ def hotel_admin_analysis(request):
                 # '': hotel.image,
                 'شهر': city
             }
-            return JsonResponse(result, safe=False)
+            return JsonResponse([result], safe=False)
         except Exception as e:
             print(e)
-            return JsonResponse({
-                "hello": "bahman",
-                "hello2": "bahman2",
-                "hello3": "bahman3",
-                
-            }, safe=False)
+            return JsonResponse([{
+                "": "",                
+            }], safe=False)
 
 
 # -------------------------- OTHERS -------------------------- #

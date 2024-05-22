@@ -47,7 +47,7 @@ const HotelAdminLogin = () => {
       setMessage(data);
       if (data === 'Login Accepted!'){
         loginUser({ username: email, userType: 'hotelAdmin' });
-        navigate('/');
+        navigate('/hotel_admin/analysis');
       }
     })
     .catch(error => {

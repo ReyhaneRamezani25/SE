@@ -52,7 +52,7 @@
     margin-bottom: 20px;
     width: 480px;
     height: 80px;
-    background: #c5e0f5;
+    background: #a8d5f8;
     border-radius: 6px;
 }
 .input img{
@@ -91,7 +91,7 @@
     cursor: pointer;
 }
 .gray{
-    background: #eaeaea;
+    background: #f9f7f7;
     color:676767;
 }
 .inputs p{

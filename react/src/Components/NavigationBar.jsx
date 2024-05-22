@@ -71,7 +71,7 @@ const NavigationBar = () => {
           <>
             {user.userType === 'hotelAdmin' ? (
               <>
-                <li><NavLink to="/">هتل</NavLink></li>
+                <li><NavLink to="/hotel_admin/change_hotel">هتل</NavLink></li>
                 <li><NavLink to="/profile">پروفایل</NavLink></li>
                 <li><NavLink to="/hotel_admin/analysis">تحلیل</NavLink></li>
               </>
