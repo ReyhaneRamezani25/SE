@@ -1,16 +1,19 @@
-import React, { Suspense, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './LoginSignUp.css';
-import { GoPerson } from 'react-icons/go';
 import { CiLock } from 'react-icons/ci';
 import { MdOutlineEmail } from 'react-icons/md';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { UserContext } from '../../UserContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { loginUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -20,6 +23,40 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
+  const login = () => {
+    console.log('Login:', { email, password });
+    fetch('http://localhost:8000/customer/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: email, 
+        password: password,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.text(); 
+    })
+    
+    .then(data => {  
+      console.log(data);
+      setMessage(data);
+      if (data === 'Login Accepted!'){
+        loginUser({ username: email, userType: 'customer' });
+        navigate('/');
+      }
+    })
+    .catch(error => {
+      // Handle error
+      console.error('Fetch error:', error.message);
+      setMessage(error.message)
+    });
+  }
+
   const handleValidation = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email === '') {
@@ -28,37 +65,9 @@ const Login = () => {
       setMessage('Email is not valid!');
     } else if (password === '') {
       setMessage('Enter a password!');
-    } else if (password.length < 6) {
-      setMessage('Password should be at least 6 characters!');
     } else {
-      console.log('Login:', { email, password });
-      fetch('http://localhost:8000/customer/login/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: email, 
-          password: password,
-        }),
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.text(); 
-      })
-      
-      .then(data => {  
-        console.log(data);
-        setMessage(data);
-        window.location.href = '/';
-      })
-      .catch(error => {
-        // Handle error
-        console.error('Fetch error:', error.message);
-        setMessage(error.message)
-      });
+      setMessage('');
+      login();
     }
   };
 

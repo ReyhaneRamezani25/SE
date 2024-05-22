@@ -25,6 +25,36 @@ const SignUp = () => {
     setPassword(e.target.value);
   };
 
+  const signUp = () => {
+    fetch('http://localhost:8000/customer/signup/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: email,
+        password: password,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.text(); 
+    })
+    
+    .then(data => {
+      console.log(data)
+      setMessage(data)
+    })
+    
+    .catch(error => {
+      // Handle error
+      console.error('Fetch error:', error.message);
+      setMessage(error.message)
+    });
+  }
+
   const handleValidation = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -39,34 +69,8 @@ const SignUp = () => {
     } else if (password.length < 6) {
       setMessage('Password should be at least 6 characters!');
     } else {
-      fetch('http://localhost:8000/customer/signup/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: email,
-          password: password,
-        }),
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.statusText);
-        }
-        return response.text(); 
-      })
-      
-      .then(data => {
-        console.log(data)
-        setMessage(data)
-      })
-      
-      .catch(error => {
-        // Handle error
-        console.error('Fetch error:', error.message);
-        setMessage(error.message)
-      });  
-
+      setMessage('');
+      signUp();
     }
   };
 

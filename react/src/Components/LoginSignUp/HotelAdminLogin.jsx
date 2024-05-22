@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './LoginSignUp.css';
 import { CiLock } from 'react-icons/ci';
 import { MdOutlineEmail } from 'react-icons/md';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { UserContext } from '../../UserContext';
 
 const HotelAdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { loginUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -18,6 +22,40 @@ const HotelAdminLogin = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
+
+  const login = () => {
+    console.log('Login:', { email, password });
+    fetch('http://localhost:8000/hotel_admin/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: email, 
+        password: password,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.text(); 
+    })
+    
+    .then(data => {  
+      console.log(data);
+      setMessage(data);
+      if (data === 'Login Accepted!'){
+        loginUser({ username: email, userType: 'hotelAdmin' });
+        navigate('/');
+      }
+    })
+    .catch(error => {
+      // Handle error
+      console.error('Fetch error:', error.message);
+      setMessage(error.message)
+    });
+  }
 
   const handleValidation = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,10 +66,9 @@ const HotelAdminLogin = () => {
       setMessage('Email is not valid!');
     } else if (password === '') {
       setMessage('Enter a password!');
-    } else if (password.length < 6) {
-      setMessage('Password should be at least 6 characters!');
     } else {
-      setMessage('OK');
+      setMessage('');
+      login();
     }
   };
 
@@ -77,8 +114,8 @@ const HotelAdminLogin = () => {
           </div>
           <p>{message}</p>
         </div>
-        <p>Are you a Hotel admin?</p>
-        <Link to="/login-hotel">click here</Link>
+        <p>Are you a Customer admin?</p>
+        <Link to="/login">click here</Link>
         <div className="submit-container">
           <button
             type="submit"
