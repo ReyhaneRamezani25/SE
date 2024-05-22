@@ -145,6 +145,49 @@ def login_hotel_admin(request):
     return HttpResponse('Please login with post method')
 
 
+
+@csrf_exempt
+def hotel_admin_analysis(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        print(data)
+        user = HotelAdmin.objects.filter(user__username=username)[0]
+        print('user is: ', user, flush=True)
+        hotel = user.hotel
+        city = 'null'
+        province = 'null'
+
+        try:
+            if hotel.city:
+                city = str(hotel.city.name)
+                province = city = str(hotel.city.province)
+            result = {
+                'نام': hotel.name,
+                'طول جغرافیایی': hotel.location_x,
+                'عرض جغرافیایی': hotel.location_y,
+                'آدرس': hotel.address,
+                'تعداد ستاره': hotel.stars,
+                # 'ریت': hotel.rating,
+                # '': hotel.number_of_rates,
+                'تعداد اتاق': hotel.number_of_rooms,
+                # '': hotel.facilities,
+                'استان': province,
+                # '': hotel.brochure,
+                # '': hotel.image,
+                'شهر': city
+            }
+            return JsonResponse(result, safe=False)
+        except Exception as e:
+            print(e)
+            return JsonResponse({
+                "hello": "bahman",
+                "hello2": "bahman2",
+                "hello3": "bahman3",
+                
+            }, safe=False)
+
+
 # -------------------------- OTHERS -------------------------- #
 
 
@@ -153,10 +196,8 @@ class HotelAPIView(APIView):
         hotel_serializer = HotelSerializer(data=request.data)
         if hotel_serializer.is_valid():
             hotel_serializer.save()
-            print('alll')
             return Response({'message': 'Hotel added successfully!'})
 
-        print('none')
         print(hotel_serializer.errors)
         return Response({'message': hotel_serializer.errors})
 

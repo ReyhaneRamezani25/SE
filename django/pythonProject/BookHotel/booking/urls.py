@@ -4,9 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-                path('customer/signup/', signup_customer),
-                path('customer/login/', login_customer),
-                path('customer/update/', change_password_customer),
+                path('customer/signup/', signup_customer, name='signup_customer'),
+                path('customer/login/', login_customer, name='login_customer'),
+                path('customer/update/', change_password_customer, name='update_customer'),
 
                 path('site_admin/update/', login_site_admin),
                 path('site_admin/login/', login_site_admin),
@@ -17,6 +17,8 @@ urlpatterns = [
                 path('hotel_admin/update/', change_password_hotel_admin),
                 path('hotel_admin/signup/', signup_hotel_admin),
                 path('hotel_admin/login/', login_hotel_admin),
+                path('hotel_admin/analysis/', hotel_admin_analysis),
+                
 
                 path('get_hotels/', get_hotels),
                 path('get_hotel_img/', get_specific_image),

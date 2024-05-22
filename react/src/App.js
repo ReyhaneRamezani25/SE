@@ -15,6 +15,8 @@ import Help from './Components/Help.jsx';
 import NewHotelAdmin from './Components/AdminStrict/NewHotelAdmin.jsx';
 import NewHotel from './Components/AdminStrict/NewHotel.jsx';
 import HotelLists from './Components/AdminStrict/HotelLists.jsx';
+import Analysis from './Components/HotelStrict/Analysis.jsx';
+
 import './App.css';
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
               <Route path='/site_admin/admin_assign' element={<NewHotelAdmin />} />
               <Route path='/site_admin/hotel_create' element={<NewHotel />} />
               <Route path='/site_admin/hotel_list' element={<HotelLists />} />
+
+              <Route path='/hotel_admin/analysis' element={<Analysis />} />
             </Routes>
           </div>
         </div>
