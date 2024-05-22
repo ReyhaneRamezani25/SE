@@ -1,11 +1,12 @@
 --- 
-name: super-linter 
+name: super linter 
  
-on: 
-  push: 
-    branches-ignore: [main] 
-  pull_request: 
-    branches: [main] 
+on: [push]
+# on: 
+#   push: 
+#     branches-ignore: [main] 
+#   pull_request: 
+#     branches: [main] 
  
  
 jobs: 
