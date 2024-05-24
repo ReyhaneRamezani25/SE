@@ -26,4 +26,5 @@ urlpatterns = [
                 path('home/search/', search),
                 path('home/get_hotel_data', hotel_data),
                 path('home/get_city_hotels', get_hotels_of_a_city),
+                path('get_hotel_rooms/', get_hotel_rooms),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
