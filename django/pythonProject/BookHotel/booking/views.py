@@ -238,6 +238,8 @@ def hotel_list(request):
     return JsonResponse(hotels_data, safe=False)
 
 
+# -------------------------- Site Admin -------------------------- #
+
 @csrf_exempt
 def login_site_admin(request):
     if request.method == 'POST':
@@ -254,6 +256,7 @@ def login_site_admin(request):
             return HttpResponse('Wrong password or username')
 
     return HttpResponse('Please login with post method')
+
 
 @csrf_exempt
 def hotel_search(request):
@@ -283,15 +286,27 @@ import os
 
 @csrf_exempt
 def get_hotels(request):
-    hotels = Hotel.objects.all()
+    data = json.loads(request.body.decode('utf-8'))
+    print(data)
+    hotels = Hotel.objects.all().order_by('id')
+    print(hotels)
+
+    if data['search_phrase']:
+        if data['search_phrase']['term']:
+            print(data['search_phrase']['term'])
+            hotels = Hotel.objects.filter(name__contains=data['search_phrase']['term']).order_by('id')
+            print(hotels)
+
     print(hotels)
     image_urls = []
     for hotel in hotels:
         try:
+            print(hotel.image)
             image_urls.append(hotel.image.path)
         except Exception:
             # Maybe, one Hotel has not any Image at all
             continue
+    print(image_urls)
     return JsonResponse({'image_urls': image_urls})
 
 
@@ -324,8 +339,19 @@ def search(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         search_phrase = data['search_phrase']
-        cities = City.objects.filter(name__contains=search_phrase).values_list('id', 'name')
+        # cities = City.objects.filter(name__contains=search_phrase).values_list('id', 'name')
         hotels = Hotel.objects.filter(name__contains=search_phrase).values_list('id', 'name')
+
+        image_urls = []
+        for hotel in hotels:
+            try:
+                image_urls.append(hotel.image.path)
+            except Exception:
+                # Maybe, one Hotel has not any Image at all
+                continue
+        return JsonResponse({'image_urls': image_urls})
+
+
         return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
     return HttpResponse('Only post method allowed!')
 

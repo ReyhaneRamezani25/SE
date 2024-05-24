@@ -6,4 +6,5 @@ admin.site.register(HotelAdmin)
 admin.site.register(SiteAdmin)
 admin.site.register(Hotel)
 admin.site.register(CustomUser)
+admin.site.register(Room)
 

@@ -1,16 +1,19 @@
 // export default Menu;
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './Menu.css';
 import axios from 'axios';
+import { UserContext } from '../UserContext';
 
 const Menu = () => {
   const [imageSrcs, setImageSrcs] = useState([]);
+  const {term, date, date_end} = useContext(UserContext);
+  console.log(term, date, date_end);
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   const fetchImage = async (url) => {
     try {
-        // Your data to be sent in the request body
         const requestData = {
             url: url,
         };
@@ -34,7 +37,9 @@ const Menu = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        search_phrase : '',
+        search_phrase : term,
+        start: date,
+        end: date_end,
       }),
     })
     .then(response => {
@@ -46,12 +51,11 @@ const Menu = () => {
     
     .then(data => {  
       console.log(JSON.parse(data).image_urls)
-      // setImageSrcs(JSON.parse(data).image_urls)
       const imageUrls = JSON.parse(data).image_urls;
       if (imageSrcs.length === 0){
-        setImageSrcs([]);
         for (const url of imageUrls) {
-          fetchImage(url)
+          fetchImage(url);
+          delay(500);
         }
       }
     })
@@ -62,8 +66,6 @@ const Menu = () => {
     });
 
   },[]);
-
-
 
   const handleClick = (index) => {
     // Navigate to Hotel component with index as parameter

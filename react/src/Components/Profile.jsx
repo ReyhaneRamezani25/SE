@@ -16,8 +16,9 @@ const Profile = () => {
   const [showPassword2, setShowPassword2] = useState(false);
   const [showPrevPassword, setShowPrevPassword] = useState(false);
 
-  const { logoutUser } = useContext(UserContext); // Use logoutUser function from UserContext
-  const { user, loginUser } = useContext(UserContext); // Use UserContext
+  const { logoutUser } = useContext(UserContext);
+  const { user, loginUser, unwanted_date_end, unwanted_date, unwanted_term } = useContext(UserContext);
+  
 
   const handlePasswordChange1 = (e) => {
     setPassword1(e.target.value);
@@ -62,6 +63,10 @@ const Profile = () => {
       console.log(data);
       setMessage(data);
       if (data === 'Password changed successfully!'){
+        logoutUser();
+        unwanted_date_end();
+        unwanted_date();
+        unwanted_term();
         window.location.href = '/login';
       }
     })
@@ -98,8 +103,6 @@ const Profile = () => {
         <div className="underLine"></div>
       </div>
       <form>
-
-        {/* The previouse password */}
 
         <div className="inputs">
           <div className="input">

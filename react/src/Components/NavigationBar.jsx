@@ -1,32 +1,76 @@
-import React, { useState, useContext} from 'react';
-import { NavLink } from 'react-router-dom';
+// export default NavigationBar;
+import React, { useState, useContext, version } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './NavigationBar.css';
-import SearchBar from './SearchBar';
 import DatePicker from "react-multi-date-picker";
-import  RangeDatePicker  from "react-multi-date-picker";
+import RangeDatePicker from "react-multi-date-picker";
 import { UserContext } from '../UserContext'; // Import UserContext
-
 import persian_fa from 'react-date-object/locales/persian_fa';
 import persian from 'react-date-object/calendars/persian';
+import DateObject from 'react-date-object';
+
+const SearchBar = ({ onSearch }) => {
+  const navigate = useNavigate();
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const {term, wanted_term} = useContext(UserContext);
+  const handleChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+
+    wanted_term({'term': searchTerm});
+    // console.log(term);
+
+    event.preventDefault();
+    onSearch(searchTerm);
+    window.location.href = '/';
+    // navigate('/');
+  };
+
+  return (
+    <form className='search-bar' onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={handleChange}
+        placeholder="Search..."
+      />
+      <button type="submit">جستجو</button>
+    </form>
+  );
+};
 
 const NavigationBar = () => {
-  const { user, logoutUser } = useContext(UserContext); // Use UserContext
+  const { user, logoutUser } = useContext(UserContext);
+  const { loginUser } = useContext(UserContext);
 
-  const [searchResults, setSearchResults] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
+  const [searchResults, setSearchResults] = useState([]);
+
+  const {date, wanted_date} = useContext(UserContext);
+  const {date_end, wanted_date_end} = useContext(UserContext);
+
   const handleSearch = (searchTerm) => {
-    // Perform search operation here and update searchResults state
-    // Example: setSearchResults([...filteredResults]);
+    console.log({ start: startDate, end: endDate })
+    loginUser({ start: startDate, end: endDate });
   };
 
-  const handleStartDateChange = (date) => {
-    setStartDate(date);
+  const handleStartDateChange = (start_date) => {
+    setStartDate(start_date);
+    const startDateString = start_date.format('YYYY/MM/DD');
+    wanted_date({"start": startDateString});
+    console.log(date);
   };
 
-  const handleEndDateChange = (date) => {
-    setEndDate(date);
+  const handleEndDateChange = (end_date) => {
+    setEndDate(end_date);
+    const endDateString = end_date.format('YYYY/MM/DD');
+    wanted_date_end({"end": endDateString});
+    console.log(date_end);
   };
 
   return (
@@ -34,39 +78,33 @@ const NavigationBar = () => {
       <ul>
         <div className="date-picker-container">
           شروع اقامت
-          <RangeDatePicker  
+          <RangeDatePicker
             calendar={persian}
             locale={persian_fa}
-            value={startDate} 
-            onChange={handleStartDateChange} 
+            value={startDate}
+            onChange={handleStartDateChange}
           />
         </div>
         <div className="date-picker-container">
-        پایان اقامت
-          <DatePicker 
+          پایان اقامت
+          <DatePicker
             calendar={persian}
             locale={persian_fa}
             value={endDate}
-            onChange={handleEndDateChange} 
+            onChange={handleEndDateChange}
           />
         </div>
 
         <div className='header'>
-          <SearchBar onSearch={handleSearch} /> 
+          <SearchBar onSearch={handleSearch} />
         </div>
 
-        {/* Display search results */}
         <ul>
           {searchResults.map((result, index) => (
             <li key={index}>{result}</li>
           ))}
         </ul>
 
-        {/* <li><NavLink to="/">خانه</NavLink></li>
-        <li><NavLink to="/profile">پروفایل</NavLink></li>
-        <li><NavLink to="/login">ورود</NavLink></li> */}
-
-{/* <li><NavLink to="/">خانه</NavLink></li> */}
         {user ? (
           <>
             {user.userType === 'hotelAdmin' ? (
@@ -82,7 +120,6 @@ const NavigationBar = () => {
                 <li><NavLink to="/">تحلیل</NavLink></li>
                 <li><NavLink to="/site_admin/admin_assign">ادمین</NavLink></li>
                 <li><NavLink to='/site_admin/hotel_list' >لیست</NavLink></li>
-
               </>
             ) : (
               <>
@@ -96,7 +133,7 @@ const NavigationBar = () => {
         ) : (
           <>
             <li><NavLink to="/">خانه</NavLink></li>
-            <li><NavLink to="/login">ورود</NavLink></li> 
+            <li><NavLink to="/login">ورود</NavLink></li>
           </>
         )}
       </ul>
