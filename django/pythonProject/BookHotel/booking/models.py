@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
+from phonenumber_field.phonenumber import PhoneNumber
 import uuid
 
 
@@ -37,7 +39,9 @@ class Hotel(models.Model):
     facilities = models.CharField(max_length=500)
     brochure = models.FileField(null=True)
     image = models.FileField(null=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE, default=City.objects.get(id=1))
+    city = models.ForeignKey(City, on_delete=models.CASCADE, default=City.objects.get(id=1).pk)
+    phone_number = models.CharField(default='0', max_length=11)
+    policies = models.CharField(max_length=500, default='Our Policies')
 
 
 class Room(models.Model):
@@ -48,6 +52,8 @@ class Room(models.Model):
     breakfast = models.BooleanField()
     extera_guest = models.BooleanField()
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
+    image = models.FileField(null=True)
+    price = models.IntegerField(default=0)
 
 
 class Guest(models.Model):

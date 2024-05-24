@@ -7,6 +7,14 @@ from django.conf import settings
 from django.db import migrations, models
 
 
+# def populate_hotel_attributes(apps, schema_editor):
+#     Hotel = apps.get_model('booking', 'Hotel')
+#     for obj in Hotel.objects.all():
+#         # Update attribute phone number for each hotel
+#         obj.phone_number = '+16000000000'
+#         obj.policies = 'Our Policies'
+#         obj.save()
+
 class Migration(migrations.Migration):
 
     initial = True
@@ -16,6 +24,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        # migrations.RunPython(populate_hotel_attributes),
         migrations.CreateModel(
             name='City',
             fields=[
