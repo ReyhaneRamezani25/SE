@@ -1,9 +1,8 @@
-from django.shortcuts import render
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login as dj_login
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .forms import CustomerSignUpForm, SiteAdminSignUpForm, HotelAdminSignUpForm
+from .forms import CustomerSignUpForm
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from .models import *
@@ -82,7 +81,6 @@ def signup_hotel_admin(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         username = data['username']
-        password = data['password']
         hotel_id = int(data['hotel_id'])
         del data['hotel_id']
 
@@ -129,7 +127,6 @@ def change_password_hotel_admin(request):
     return HttpResponse('Please login with post method')
 
 
-from django.contrib.auth.hashers import make_password
 
 
 @csrf_exempt
