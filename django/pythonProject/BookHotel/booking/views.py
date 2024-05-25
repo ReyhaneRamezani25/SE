@@ -7,12 +7,12 @@ from .forms import CustomerSignUpForm
 from django.core.exceptions import SuspiciousOperation
 from rest_framework.views import APIView
 from django.http import JsonResponse
-from .models import *
 from .serializers import *
 from drf_yasg.utils import swagger_auto_schema
 from django.contrib.auth import update_session_auth_hash
 import json
 import persian
+import os
 
 
 # ------------------------- error handlers ----------------------#
@@ -359,9 +359,6 @@ def hotel_data(request):
     return HttpResponse('Only post method allowed!', status=200)
 
 
-import os
-
-
 @csrf_exempt
 def get_hotels(request):
     data = json.loads(request.body.decode('utf-8'))
@@ -485,8 +482,7 @@ def search(request):
                 # Maybe, one Hotel has not any Image at all
                 continue
         return JsonResponse({'image_urls': image_urls})
-
-        return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
+        # return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
     return HttpResponse('Only post method allowed!', status=200)
 
 
