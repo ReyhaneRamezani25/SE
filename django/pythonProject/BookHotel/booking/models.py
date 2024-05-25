@@ -6,7 +6,6 @@ class CustomUser(AbstractUser):
     username = models.EmailField(unique=True)
     name = models.CharField(max_length=20, null=True)
     USERNAME_FIELD = 'username'
-
     REQUIRED_FIELDS = []
 
     def __str__(self):
@@ -39,7 +38,7 @@ class Hotel(models.Model):
     facilities = models.CharField(max_length=500)
     brochure = models.FileField(null=True)
     image = models.FileField(null=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, default=City.objects.get(id=1).pk)
     phone_number = models.CharField(default='0', max_length=11)
     policies = models.CharField(max_length=500, default='Our Policies')
     status = models.BooleanField(default=False)
@@ -73,5 +72,3 @@ class Reservation(models.Model):
 class HotelAdmin(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     hotel = models.OneToOneField(Hotel, on_delete=models.CASCADE)
-
-

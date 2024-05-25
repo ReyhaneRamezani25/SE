@@ -7,7 +7,8 @@ from .forms import CustomerSignUpForm
 from django.core.exceptions import SuspiciousOperation
 from rest_framework.views import APIView
 from django.http import JsonResponse
-from .serializers import *
+from .serializers import HotelSerializer, HotelAdminSerializer, CitySerializer, GuestSerializer, RoomSerializer, \
+    ReservationSerializer
 from drf_yasg.utils import swagger_auto_schema
 from django.contrib.auth import update_session_auth_hash
 import json
@@ -111,9 +112,8 @@ class Test(APIView):
     def post(self, request):
         return Response({'message': 'Hi'})
 
-    # -------------------------- Customer -------------------------- #
 
-
+# -------------------------- Customer -------------------------- #
 @csrf_exempt
 def signup_customer(request):
     if request.method == 'POST':
