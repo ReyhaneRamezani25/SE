@@ -1,7 +1,5 @@
 // export default Menu;
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import './Menu.css';
 import axios from 'axios';
 import { UserContext } from '../UserContext';
@@ -26,8 +24,7 @@ const Menu = () => {
         });
 
         const blob = new Blob([response.data], { type: 'image/jpeg' });
-        const imageUrl = URL.createObjectURL(blob);
-        setImageSrcs(prevImageSrcs => [...prevImageSrcs, imageUrl]);
+        return URL.createObjectURL(blob);
       } catch (error) {
         console.error('Error fetching image:', error);
     }
@@ -52,18 +49,15 @@ const Menu = () => {
       return response.text(); 
     })
     
-    .then(data => {  
-      console.log(JSON.parse(data))
+    .then(async data => {  
       const imageUrls = JSON.parse(data).image_urls;
       const hotel_names = JSON.parse(data).names;
       const hotel_ids = JSON.parse(data).id;
       setHotelIds(hotel_ids);
       setHotelNames(hotel_names);
       if (imageSrcs.length === 0){
-        for (const url of imageUrls) {
-          fetchImage(url);
-          delay(500);
-        }
+        const fetchedImages = await Promise.all(imageUrls.map(url => fetchImage(url)));
+        setImageSrcs(fetchedImages);
       }
     })
     .catch(error => {
