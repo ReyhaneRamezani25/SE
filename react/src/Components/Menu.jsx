@@ -50,7 +50,6 @@ const Menu = () => {
     })
     
     .then(async data => {  
-      console.log(JSON.parse(data))
       const imageUrls = JSON.parse(data).image_urls;
       const hotel_names = JSON.parse(data).names;
       const hotel_ids = JSON.parse(data).id;
