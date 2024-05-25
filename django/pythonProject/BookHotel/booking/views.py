@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login as dj_login
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .forms import CustomerSignUpForm, SiteAdminSignUpForm, HotelAdminSignUpForm
+from django.core.exceptions import SuspiciousOperation
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from .models import *
@@ -12,6 +13,27 @@ from .serializers import *
 from django.contrib.auth import update_session_auth_hash
 import json
 
+# ------------------------- error handlers ----------------------#
+def error_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
+
+def error_400_view(request, exception):
+    return render(request, '400.html', status=400)
+
+
+def error_500_view(request):
+    return render(request, '500.html', status=500)
+
+
+# -------------------------- Check Error Handlers ---------------#
+
+def trigger_400_error(request):
+    raise SuspiciousOperation("This is a test 400 error!")
+
+
+def trigger_500_error(request):
+    raise Exception("This is a test 500 error!")
 
 # -------------------------- Customer -------------------------- #
 
@@ -24,13 +46,13 @@ def signup_customer(request):
         form = CustomerSignUpForm(data)
         if form.is_valid():
             form.save()
-            return HttpResponse('User created successfully!')
+            return HttpResponse('User created successfully!', status=200)
 
         if form.errors:
             print(f'form error {form.errors}')
-            return HttpResponse(f"User with the username {username} already exist")
+            return HttpResponse(f"User with the username {username} already exist", status=200)
 
-    return HttpResponse('Only post method allowed!')
+    return HttpResponse('Only post method allowed!', status=200)
 
 
 @csrf_exempt
@@ -47,11 +69,11 @@ def change_password_customer(request):
             user.save()
             # Update the session with the new password hash
             update_session_auth_hash(request, user)
-            return HttpResponse('Password changed successfully!')
+            return HttpResponse('Password changed successfully!', status=200)
         else:
-            return HttpResponse('Current password is incorrect')
+            return HttpResponse('Current password is incorrect', status=200)
 
-    return HttpResponse('Please change password with post method')
+    return HttpResponse('Please change password with post method', status=200)
 
 
 @csrf_exempt
@@ -66,13 +88,13 @@ def login_customer(request):
 
             tmp = HotelAdmin.objects.filter(user__username=username)
             if tmp:
-                return HttpResponse('Wrong password or username')
+                return HttpResponse('Wrong password or username', status=200)
 
             dj_login(request, user)
-            return HttpResponse('Login Accepted!')
-        return HttpResponse('Wrong password or username')
+            return HttpResponse('Login Accepted!', status=200)
+        return HttpResponse('Wrong password or username', status=200)
 
-    return HttpResponse('Please login with post method')
+    return HttpResponse('Please login with post method', status=200)
 
 
 # -------------------------- Hotel Admin -------------------------- #
@@ -93,13 +115,13 @@ def signup_hotel_admin(request):
             hotel_admin = HotelAdmin.objects.create(user=hotel_admin, hotel=hotel)
             hotel_admin.save()
             hotel.status = True
-            return HttpResponse('Admin Hotel created successfully!')
+            return HttpResponse('Admin Hotel created successfully!', status=200)
 
         if form.errors:
             print(f'form error {form.errors}')
-            return HttpResponse(f"User with the username {username} already exist")
+            return HttpResponse(f"User with the username {username} already exist", status=200)
 
-    return HttpResponse('Only post method allowed!')
+    return HttpResponse('Only post method allowed!', status=200)
 
 
 @csrf_exempt
@@ -113,7 +135,7 @@ def change_password_hotel_admin(request):
         try:
             tmp = HotelAdmin.objects.filter(user__username=username)
             if not tmp:
-                return HttpResponse('Wrong password or username')
+                return HttpResponse('Wrong password or username', status=200)
 
             user = authenticate(request, username=username, password=current_password)
             if user:
@@ -121,12 +143,12 @@ def change_password_hotel_admin(request):
                 user.save()
                 # Update the session with the new password hash
                 update_session_auth_hash(request, user)
-                return HttpResponse('Password changed successfully!')
+                return HttpResponse('Password changed successfully!', status=200)
             else:
-                return HttpResponse('Current password is incorrect')
+                return HttpResponse('Current password is incorrect', status=200)
         except:
-            return HttpResponse('Wrong password or username')
-    return HttpResponse('Please login with post method')
+            return HttpResponse('Wrong password or username', status=200)
+    return HttpResponse('Please login with post method', status=200)
 
 
 from django.contrib.auth.hashers import make_password
@@ -142,15 +164,15 @@ def login_hotel_admin(request):
         try:
             user = authenticate(request, username=username, password=password)
             if not user:
-                return HttpResponse('Wrong password or username')
+                return HttpResponse('Wrong password or username', status=200)
             tmp = HotelAdmin.objects.filter(user__username=username)
             if not tmp:
-                return HttpResponse('Wrong password or username')
+                return HttpResponse('Wrong password or username', status=200)
             dj_login(request, user)
-            return HttpResponse('Login Accepted!')
+            return HttpResponse('Login Accepted!', status=200)
         except:
-            return HttpResponse('Wrong password or username')
-    return HttpResponse('Please login with post method')
+            return HttpResponse('Wrong password or username', status=200)
+    return HttpResponse('Please login with post method', status=200)
 
 
 @csrf_exempt
@@ -252,11 +274,11 @@ def login_site_admin(request):
             user = SiteAdmin.objects.filter(user__username=username).get(user__password=password)
             if user:
                 dj_login(request, user.user)
-                return HttpResponse('Login Accepted!')
+                return HttpResponse('Login Accepted!', status=200)
         except SiteAdmin.DoesNotExist:
-            return HttpResponse('Wrong password or username')
+            return HttpResponse('Wrong password or username', status=200)
 
-    return HttpResponse('Please login with post method')
+    return HttpResponse('Please login with post method', status=200)
 
 
 @csrf_exempt
@@ -267,9 +289,9 @@ def hotel_search(request):
         # print(request.POST)
         # TODO: Return name, location, free rooms and main image of all similar hotel names.
         # Every hotel has a main image and some sub image.
-        return HttpResponse('mashkhar')
+        return HttpResponse('mashkhar', status=200)
 
-    return HttpResponse('Only post method allowed!')
+    return HttpResponse('Only post method allowed!', status=200)
 
 
 @csrf_exempt
@@ -284,7 +306,7 @@ def hotel_data(request):
         hotel = Hotel.objects.filter(id=query_id).values()[0]
         hotel['image'] = Hotel.objects.filter(id=query_id)[0].image.path
         return JsonResponse(hotel)
-    return HttpResponse('Only post method allowed!')
+    return HttpResponse('Only post method allowed!', status=200)
 
 
 import os
@@ -342,7 +364,7 @@ def get_specific_image(request):
     if os.path.exists(image_path):
         with open(image_path, 'rb') as f:
             image_data = f.read()
-        return HttpResponse(image_data, content_type='image/jpeg')
+        return HttpResponse(image_data, content_type='image/jpeg', status=200)
     else:
         return JsonResponse({'error': 'Image not found'}, status=404)
 
@@ -355,7 +377,7 @@ def get_hotels_of_a_city(request):
         hotels = Hotel.objects.filter(city__id=city_id).values()
         return JsonResponse({'hotel': list(hotels)})
 
-    return HttpResponse('Only post method allowed!')
+    return HttpResponse('Only post method allowed!', status=200)
 
 
 @csrf_exempt
@@ -376,7 +398,7 @@ def search(request):
         return JsonResponse({'image_urls': image_urls})
 
         return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
-    return HttpResponse('Only post method allowed!')
+    return HttpResponse('Only post method allowed!', status=200)
 
 
 @csrf_exempt
@@ -392,7 +414,7 @@ def check_hotels(request):
         result = Hotel.objects.all().values()
         return JsonResponse({'result': list(result)})
 
-    return HttpResponse('Only get method allowed!')
+    return HttpResponse('Only get method allowed!', status=200)
 
 
 """

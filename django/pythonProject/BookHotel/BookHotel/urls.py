@@ -22,3 +22,6 @@ urlpatterns = [
     path('', include('booking.urls')),
 
 ]
+handler400 = 'booking.views.error_400_view'
+handler404 = 'booking.views.error_404_view'
+handler500 = 'booking.views.error_500_view'
