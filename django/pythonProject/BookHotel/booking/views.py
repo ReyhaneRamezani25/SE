@@ -324,12 +324,9 @@ def get_hotels(request):
     hotel_names = []
     for hotel in hotels:
         try:
-            print(hotel.image)
             hotel_img_urls.append(hotel.image.path)
             hotel_ids.append(hotel.id)
             hotel_names.append(hotel.name)
-            print(hotel_ids)
-            print(hotel_names)
         except Exception:
             # Maybe, one Hotel has not any Image at all
             continue
