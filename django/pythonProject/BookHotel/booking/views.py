@@ -352,6 +352,28 @@ def get_hotel_rooms(request):
 
 
 @csrf_exempt
+def get_reserved_rooms(request):
+    data = json.loads(request.body.decode('utf-8'))
+    print(data)
+    result = Reservation.objects.filter(registrar__username=data['username'])[0]
+    print(result)
+    hotel_rooms = result.rooms.all()
+    print(hotel_rooms)
+    hotel_room_names = [room.type for room in hotel_rooms]
+    print(hotel_room_names)
+    hotel_names = [room.hotel.name for room in hotel_rooms]
+    print(hotel_names)
+    image_urls = [room.room_image for room in hotel_rooms]
+    print(image_urls)
+    # print(image_urls)    
+    # hotel_names = ho
+    # rooms_list = [room_to_values(room) for room in rooms]
+    # response_data = {'rooms': rooms_list}
+    # print(response_data)
+    return JsonResponse('response_data')
+
+
+@csrf_exempt
 def get_specific_image(request):
     data = json.loads(request.body.decode('utf-8'))
     image_path = data.get('url')
