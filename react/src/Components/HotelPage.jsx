@@ -59,13 +59,15 @@ const Hotel = () => {
       }
       return response.json();
     })
-    .then(data => {
+    .then(async data => {
       setRoom(data.rooms);
       const imageUrls = data.images;
       console.log(imageUrls);
       if (roomImages.length === 0){
         for (const url of imageUrls) {
-          fetchImage(url, false);
+          const fetchedImages = await Promise.all(imageUrls.map(url => fetchImage(url, false)));
+          setRoomImages(fetchedImages);
+          // console.log(r)
         }
       }
     })
@@ -193,13 +195,13 @@ const Hotel = () => {
                   <div className="room-info">
                     <div className="room-index"></div>
                     <div className="star-rating">
-                      {[...Array(1)].map((_, index) => (
+                      {[...Array(5)].map((_, index) => (
                         <i key={index} className="fas fa-star"></i>
                       ))}
                     </div>
-                    {hotelImage && (
+                    {roomImages && (
                       <div className="custom-image-room">
-                        <img src={hotelImage} alt="Hotel" className="custom-image-room" />
+                        <img src={roomImages[index]} alt="Hotel" className="custom-image-room" />
                       </div>
                     )}
                     <div className="room-details">
