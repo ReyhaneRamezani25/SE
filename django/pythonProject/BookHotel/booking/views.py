@@ -334,20 +334,35 @@ def get_hotels(request):
     return JsonResponse({'image_urls': hotel_img_urls, 'id': hotel_ids, 'names': hotel_names})
 
 
+import persian
 def room_to_values(room):
     room_dict = room.__dict__.copy()
     del room_dict['_state']
-    return {'type': room_dict['type'], 'number': room_dict['number'], 'capacity': room_dict['capacity'],
-            'breakfast': room_dict['breakfast'], }
+    return {
+        'type': room_dict['type'],
+        # 'number': persian.enToPersianNumb(str(room_dict['number'])) + ' تعداد اتاق ',
+        'capacity': ' ظرفیت ' + persian.enToPersianNumb(str(room_dict['capacity'])) + ' نفره ',
+        'breakfast': 'همراه صبحانه' if room_dict['breakfast'] else 'فاقد صبحانه',
+        'price': ' قیمت ' + persian.enToPersianNumb(str(room_dict['price'])) + ' تومان ',
+    }
 
 
 @csrf_exempt
 def get_hotel_rooms(request):
     data = json.loads(request.body.decode('utf-8'))
     rooms = Room.objects.filter(hotel__id=data['id'])
+    rooms = rooms.filter(capacity__gt=0)
     rooms_list = [room_to_values(room) for room in rooms]
-    response_data = {'rooms': rooms_list}
-    print(response_data)
+
+    room_images = []
+    for room in rooms:
+        try:
+            room_images.append(room.room_image.path)
+        except Exception:
+            continue
+
+    response_data = {'rooms': rooms_list, 'images': room_images}
+    print(room_images)
     return JsonResponse(response_data)
 
 
