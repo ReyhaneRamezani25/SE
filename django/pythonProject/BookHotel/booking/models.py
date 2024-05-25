@@ -1,7 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
-from phonenumber_field.phonenumber import PhoneNumber
 import uuid
 
 
@@ -42,6 +40,7 @@ class Hotel(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE, default=City.objects.get(id=1).pk)
     phone_number = models.CharField(default='0', max_length=11)
     policies = models.CharField(max_length=500, default='Our Policies')
+    status = models.BooleanField(default=False)
 
 
 class Room(models.Model):

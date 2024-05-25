@@ -92,6 +92,7 @@ def signup_hotel_admin(request):
             hotel_admin = form.save()
             hotel_admin = HotelAdmin.objects.create(user=hotel_admin, hotel=hotel)
             hotel_admin.save()
+            hotel.status = True
             return HttpResponse('Admin Hotel created successfully!')
 
         if form.errors:
@@ -216,7 +217,6 @@ class HotelAdminAPIView(APIView):
 @csrf_exempt
 def hotel_list(request):
     hotels = Hotel.objects.all()
-
     hotels_data = []
 
     for hotel in hotels:
@@ -385,10 +385,12 @@ def check_hotels(request):
     if request.method == 'GET':
         all_admins = HotelAdmin.objects.all()
         has_admin = [admin.hotel for admin in all_admins]
-        do_not_have_admin = list(set(Hotel.objects.all()).difference(has_admin))
         print(has_admin)
-        print(do_not_have_admin)
-        return JsonResponse({'has_admin': has_admin, 'do_not_have_admin': do_not_have_admin})
+        for hotel in has_admin:
+            hotel.status = True
+            hotel.save()
+        result = Hotel.objects.all().values()
+        return JsonResponse({'result': list(result)})
 
     return HttpResponse('Only get method allowed!')
 
