@@ -14,10 +14,13 @@ const Hotel = () => {
   const [hotelPhoneNumber, setHotelPhoneNumber] = useState('تلفن');
   const [hotelRegulations, setHotelRegulations] = useState('مقررات');
   const [starCount, setStarCount] = useState('تعداد ستاره');
+  const [roomImages, setRoomImages] = useState([]);
 
   const [room, setRoom] = useState([]);
+  const handleButtonClick = async () => {
+  }
 
-  const fetchImage = async (url) => {
+  const fetchImage = async (url, hotel) => {
     try {
         const requestData = {
             url: url,
@@ -29,7 +32,12 @@ const Hotel = () => {
 
         const blob = new Blob([response.data], { type: 'image/jpeg' });
         const imageUrl = URL.createObjectURL(blob);
-        setHotelImage(imageUrl);
+        if (hotel === true){
+          setHotelImage(imageUrl);
+        }
+        else{
+          return imageUrl
+        }
       } catch (error) {
         console.error('Error fetching image:', error);
     }
@@ -53,7 +61,13 @@ const Hotel = () => {
     })
     .then(data => {
       setRoom(data.rooms);
-      console.log(data.rooms);
+      const imageUrls = data.images;
+      console.log(imageUrls);
+      if (roomImages.length === 0){
+        for (const url of imageUrls) {
+          fetchImage(url, false);
+        }
+      }
     })
     .catch(error => {
       console.error('Fetch error:', error.message);
@@ -76,8 +90,8 @@ const Hotel = () => {
                 setStarCount(data.stars + ' تعداد ستاره')
                 // setHotelName(data.facilities)
                 // setHotelName(data.city_id)
-                fetchImage(data.image);
-                setHotelPhoneNumber(data.rating + ' :تلفن')
+                fetchImage(data.image, true);
+                setHotelPhoneNumber(data.phone_number + ' :تلفن')
                 // setHotelName(location_x)
                 // setHotelName(location_y)
                 // setHotelName(rating)
@@ -85,6 +99,7 @@ const Hotel = () => {
                 // setHotelName(number_of_rooms)
                 // setHotelName(facilities)
                 // setHotelName(brochure)
+                setHotelRegulations('قوانین: ' + data.policies)
                 // set_hotel_name(data.data['name'])
                 fetchRooms();
             } else {
@@ -172,57 +187,39 @@ const Hotel = () => {
 
           <div className="right-section">
 
-    {Object.entries(room).map(([key, value]) => (
-      <div className="hotel_page_input3 room-container" key={key}>
-        {typeof value === 'object' ? (
-          <div>
-            {Object.entries(value).map(([subKey, subValue]) => (
-              <div className="right-aligned" key={subKey}>
-                {subValue.toString()}
+            {Object.entries(room).map(([key, value], index) => (
+              <div className="hotel_page_input3 room-container" key={key}>
+                {typeof value === 'object' ? (
+                  <div className="room-info">
+                    <div className="room-index"></div>
+                    <div className="star-rating">
+                      {[...Array(1)].map((_, index) => (
+                        <i key={index} className="fas fa-star"></i>
+                      ))}
+                    </div>
+                    {hotelImage && (
+                      <div className="custom-image-room">
+                        <img src={hotelImage} alt="Hotel" className="custom-image-room" />
+                      </div>
+                    )}
+                    <div className="room-details">
+                      {Object.entries(value).map(([subKey, subValue]) => (
+                        <div className="room-detail" key={subKey}>
+                          {subValue.toString()}
+                          <br /> {/* Add line break after each value */}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  value.toString()
+                )}
               </div>
             ))}
-          </div>
-        ) : (
-          value.toString()
-        )}
-      </div>
-    ))}
 
-    {/* {Object.entries(room).map(([key, value]) => (
-      <div className="hotel_page_input3 room-container" key={key}>
-        
-
-      </div>
-    ))} */}
-    {/* <div className="hotel_page_input3 room-container" key={index}>
-      {Object.entries(room).map(([key, value]) => (
-        <div className="right-aligned" key={key}>
-          {value.type}
-        </div>
-      ))}
-    </div> */}
-
-
-
-            {/* <div className="hotel_page_input3 room-container">
-              <div className="right-aligned">{hotelRegulations}</div>
-              <div className="right-aligned">{hotelRegulations}</div>
-              <div className="right-aligned">{hotelRegulations}</div>
-              <div className="right-aligned">{hotelRegulations}</div>
+            <div className='button-container'>
+            <button className="order-button" onClick={() => handleButtonClick()}>رزرو</button>
             </div>
-            <div className="hotel_page_input3 room-container">
-              <div className="right-aligned">{hotelRegulations}</div>
-              <div className="right-aligned">{hotelRegulations}</div>
-              <div className="right-aligned">{hotelRegulations}</div>
-              <div className="right-aligned">{hotelRegulations}</div>
-            </div>
-            <div className="hotel_page_input3 room-container">
-              <div className="right-aligned">{hotelRegulations}</div>
-              <div className="right-aligned">{hotelRegulations}</div>
-              <div className="right-aligned">{hotelRegulations}</div>
-              <div className="right-aligned">{hotelRegulations}</div>
-            </div> */}
-
           </div>
         </div>
     </div>
