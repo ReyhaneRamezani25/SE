@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -26,9 +25,38 @@ SECRET_KEY = 'django-insecure-leau^^aoyq)bhtt=h@#g!lclr^)ma&+adpsw!(i65l$_k7ux5n
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-
-
+# SWAGGER_SETTINGS = {
+#     'USE_SESSION_AUTH': False
+# }
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+    # 'LOGIN_URL': getattr(settings, 'LOGIN_URL', None),    # 'LOGOUT_URL': getattr(settings, 'LOGOUT_URL', None),
+    'DOC_EXPANSION': None,
+    'APIS_SORTER': None,
+    'OPERATIONS_SORTER': None,
+    'JSON_EDITOR': False,
+    'SHOW_REQUEST_HEADERS': False,
+    'SUPPORTED_SUBMIT_METHODS': [
+        'get', 'post',
+        'put', 'delete',
+        'patch'
+    ],
+    'VALIDATOR_URL': '', }
 # Application definition
+# settings.py
+# SPECTACULAR_SETTINGS = {
+#     'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+# }
+# settings.py
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # default    # Add other authentication backends if necessary
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,10 +68,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'booking',
     'corsheaders',
+    'rest_framework_swagger',
+    'drf_yasg',
 ]
 
 AUTH_USER_MODEL = 'booking.CustomUser'
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,7 +90,7 @@ ROOT_URLCONF = 'BookHotel.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/ 'BookHotel/templates',],
+        'DIRS': [BASE_DIR / 'BookHotel/templates', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,7 +105,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'BookHotel.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -86,7 +114,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -106,7 +133,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -118,7 +144,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -129,14 +154,23 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]
 
 MEDIA_URL = '/media/'
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.TokenAuthentication',
+#     ]
+# }
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
 }

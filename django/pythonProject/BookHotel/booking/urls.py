@@ -12,6 +12,8 @@ urlpatterns = [
                   path('site_admin/login/', login_site_admin),
                   path('site_admin/create_hotel/', HotelAPIView.as_view()),
                   path('site_admin/create_hotel_admin/', HotelAdminAPIView.as_view()),
+                  path('site_admin/create_city/', CityAPIView.as_view()),
+
                   path('site_admin/hotel_list/', hotel_list),
 
                   path('hotel_admin/update/', change_password_hotel_admin),
@@ -27,6 +29,7 @@ urlpatterns = [
                   path('home/get_city_hotels', get_hotels_of_a_city),
                   path('home/check_hotels/', check_hotels),
                   path('get_hotel_rooms/', get_hotel_rooms),
+                  path('test/', Test.as_view()),
                   # for testing error handlers
                   path('trigger-500/', trigger_500_error, name='trigger-500'),
                   path('trigger-400/', trigger_400_error, name='trigger-400'),

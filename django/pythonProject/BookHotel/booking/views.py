@@ -9,7 +9,8 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from .models import *
 from .serializers import *
-
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from django.contrib.auth import update_session_auth_hash
 import json
 
@@ -225,6 +226,7 @@ class HotelAPIView(APIView):
 
 
 class HotelAdminAPIView(APIView):
+    @swagger_auto_schema(request_body=HotelAdminSerializer)
     def post(self, request):
         hotel_admin_serializer = HotelAdminSerializer(data=request.data)
         if hotel_admin_serializer.is_valid():
@@ -232,6 +234,21 @@ class HotelAdminAPIView(APIView):
             return Response({'message': 'Hotel added successfully!'})
 
         return Response({'message': hotel_admin_serializer.errors})
+
+
+class CityAPIView(APIView):
+    def post(self, request):
+        city_serializer = CitySerializer(data=request.data)
+        if city_serializer.is_valid():
+            city_serializer.save()
+            return Response({'message': 'Hotel added successfully!'})
+
+        return Response({'message': city_serializer.errors})
+
+
+class Test(APIView):
+    def post(self, request):
+        return Response({'message': 'Hi'})
 
 
 @csrf_exempt
