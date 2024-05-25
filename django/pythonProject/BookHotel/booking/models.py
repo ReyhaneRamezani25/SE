@@ -44,7 +44,6 @@ class Hotel(models.Model):
     policies = models.CharField(max_length=500, default='Our Policies')
 
 
-
 class Room(models.Model):
     type = models.CharField(max_length=150)
     number = models.IntegerField()
