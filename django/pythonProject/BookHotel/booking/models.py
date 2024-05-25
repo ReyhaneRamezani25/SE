@@ -50,7 +50,7 @@ class Room(models.Model):
     breakfast = models.BooleanField()
     extera_guest = models.BooleanField()
     hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-    image = models.FileField(null=True)
+    room_image = models.FileField(null=True)
     price = models.IntegerField(default=0)
 
 
