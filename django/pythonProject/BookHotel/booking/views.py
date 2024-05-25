@@ -10,9 +10,9 @@ from django.http import JsonResponse
 from .models import *
 from .serializers import *
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 from django.contrib.auth import update_session_auth_hash
 import json
+import persian
 
 
 # ------------------------- error handlers ----------------------#
@@ -38,7 +38,81 @@ def trigger_500_error(request):
     raise Exception("This is a test 500 error!")
 
 
-# -------------------------- Customer -------------------------- #
+# -------------------------- REST -------------------------- #
+
+class HotelAPIView(APIView):
+    @swagger_auto_schema(request_body=HotelSerializer)
+    def post(self, request):
+        hotel_serializer = HotelSerializer(data=request.data)
+        if hotel_serializer.is_valid():
+            hotel_serializer.save()
+            return Response({'message': 'Hotel added successfully!'})
+
+        print(hotel_serializer.errors)
+        return Response({'message': hotel_serializer.errors})
+
+
+class HotelAdminAPIView(APIView):
+    @swagger_auto_schema(request_body=HotelAdminSerializer)
+    def post(self, request):
+        hotel_admin_serializer = HotelAdminSerializer(data=request.data)
+        if hotel_admin_serializer.is_valid():
+            hotel_admin_serializer.save()
+            return Response({'message': 'HotelAdmin added successfully!'})
+
+        return Response({'message': hotel_admin_serializer.errors})
+
+
+class CityAPIView(APIView):
+    @swagger_auto_schema(request_body=CitySerializer)
+    def post(self, request):
+        city_serializer = CitySerializer(data=request.data)
+        if city_serializer.is_valid():
+            city_serializer.save()
+            return Response({'message': 'City added successfully!'})
+
+        return Response({'message': city_serializer.errors})
+
+
+class GuestAPIView(APIView):
+    @swagger_auto_schema(request_body=GuestSerializer)
+    def post(self, request):
+        guest_serializer = GuestSerializer(data=request.data)
+        if guest_serializer.is_valid():
+            guest_serializer.save()
+            return Response({'message': 'Guest added successfully!'})
+
+        return Response({'message': guest_serializer.errors})
+
+
+class RoomAPIView(APIView):
+    @swagger_auto_schema(request_body=RoomSerializer)
+    def post(self, request):
+        room_serializer = RoomSerializer(data=request.data)
+        if room_serializer.is_valid():
+            room_serializer.save()
+            return Response({'message': 'Room added successfully!'})
+
+        return Response({'message': room_serializer.errors})
+
+
+class ReservationAPIView(APIView):
+    @swagger_auto_schema(request_body=ReservationSerializer)
+    def post(self, request):
+        reservation_serializer = ReservationSerializer(data=request.data)
+        if reservation_serializer.is_valid():
+            reservation_serializer.save()
+            return Response({'message': 'Reservation added successfully!'})
+
+        return Response({'message': reservation_serializer.errors})
+
+
+class Test(APIView):
+    def post(self, request):
+        return Response({'message': 'Hi'})
+
+    # -------------------------- Customer -------------------------- #
+
 
 @csrf_exempt
 def signup_customer(request):
@@ -212,45 +286,6 @@ def hotel_admin_analysis(request):
 
 
 # -------------------------- OTHERS -------------------------- #
-
-
-class HotelAPIView(APIView):
-    def post(self, request):
-        hotel_serializer = HotelSerializer(data=request.data)
-        if hotel_serializer.is_valid():
-            hotel_serializer.save()
-            return Response({'message': 'Hotel added successfully!'})
-
-        print(hotel_serializer.errors)
-        return Response({'message': hotel_serializer.errors})
-
-
-class HotelAdminAPIView(APIView):
-    @swagger_auto_schema(request_body=HotelAdminSerializer)
-    def post(self, request):
-        hotel_admin_serializer = HotelAdminSerializer(data=request.data)
-        if hotel_admin_serializer.is_valid():
-            hotel_admin_serializer.save()
-            return Response({'message': 'Hotel added successfully!'})
-
-        return Response({'message': hotel_admin_serializer.errors})
-
-
-class CityAPIView(APIView):
-    def post(self, request):
-        city_serializer = CitySerializer(data=request.data)
-        if city_serializer.is_valid():
-            city_serializer.save()
-            return Response({'message': 'Hotel added successfully!'})
-
-        return Response({'message': city_serializer.errors})
-
-
-class Test(APIView):
-    def post(self, request):
-        return Response({'message': 'Hi'})
-
-
 @csrf_exempt
 def hotel_list(request):
     hotels = Hotel.objects.all()
@@ -351,7 +386,6 @@ def get_hotels(request):
     return JsonResponse({'image_urls': hotel_img_urls, 'id': hotel_ids, 'names': hotel_names})
 
 
-import persian
 def room_to_values(room):
     room_dict = room.__dict__.copy()
     del room_dict['_state']
@@ -409,7 +443,6 @@ def get_reserved_rooms(request):
         })
 
     return JsonResponse(hotels_data, safe=False)
-
 
 
 @csrf_exempt

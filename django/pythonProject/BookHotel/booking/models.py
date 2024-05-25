@@ -73,3 +73,5 @@ class Reservation(models.Model):
 class HotelAdmin(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     hotel = models.OneToOneField(Hotel, on_delete=models.CASCADE)
+
+
