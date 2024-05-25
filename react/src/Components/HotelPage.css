@@ -8,33 +8,42 @@
     background:#fafafa;
     padding-bottom: 30px;
     border-radius: 30px;
-  }
+}
   
-  .custom-image {
+.custom-image {
     width: 40%; 
     height: 40%;
     height: auto;
     margin-top: 20px;
     margin-left: 1%;
-    }
-  
-  .stars-container {
+}
+
+.custom-image-room {
+      width: 35%; 
+      height: 35%;
+      height: auto;
+      margin-top: 2px;
+      margin-left: 2px;  
+      border-radius: 100px;
+}
+
+.stars-container {
     display: flex;
     align-items: center;
-  }
+}
   
-  .stars-container .fas {
+.stars-container .fas {
     color: gold;
-  }
+}
   
-  .right-section {
+.right-section {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     width: 100%;
-  }
+}
   
-  .room-container {
+.room-container {
     /* width: 100%;
     height: 100px;
     background: #cecbcb;
@@ -49,35 +58,37 @@
     margin-bottom: 1%;
     border-radius: 20px;
     margin-right:  5%;
-    }
-  
-  .margin-left-better {
+}
+
+.margin-left-better {
     margin-left: 1%;
-  }
-  .hotel_page_input2{
+}
+
+.hotel_page_input2{
     margin-top: 15px;
     display: flex;
     flex-direction: column;
     grid:25px;
   }
+
   .hotel_page_input2{
     display: flex;
     align-items:right;
     margin: auto;
     margin-top: 20px;
-    margin-right: 110px;
-    
+    margin-right: 110px;    
     width: 250px;
     height: 40px;
     background: #febbf7;
     border-radius: 10px;
 }
+
 .hotel_page_input2 img{
     margin: 0px 30px;
     height: 40px;
     width: 40px;
-
 }
+
 .hotel_page_input2 input{
     height: 20px;
     width: 250;
@@ -87,9 +98,54 @@
     color: rgb(255, 255, 255);
     font-size: 15px;
 }
+
 .right-aligned {
   text-align: right;
   margin-right: 15px;
   margin-top: 5px;
   font-size: medium;
+}
+
+.hotel_page_input3 {
+  display: flex;
+  flex-direction: column;
+}
+
+.room-info {
+  display: flex;
+  align-items: center;
+}
+
+.star-rating {
+  margin-right: 10px;
+}
+
+.room-details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.room-detail {
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+.order-button {
+  background-color: #3c009d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.order-button:hover {
+  background-color: #2a0074;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%; /* Ensure the container takes full width */
+  margin-top: 10px; /* Add some spacing above the button */
 }
