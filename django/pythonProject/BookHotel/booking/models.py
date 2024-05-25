@@ -37,7 +37,7 @@ class Hotel(models.Model):
     facilities = models.CharField(max_length=500)
     brochure = models.FileField(null=True)
     image = models.FileField(null=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE, default=City.objects.get(id=1))
+    city = models.ForeignKey(City, on_delete=models.CASCADE, default=City.objects.get(id=1).pk)
 
 
 class Room(models.Model):

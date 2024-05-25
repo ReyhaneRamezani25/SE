@@ -129,6 +129,8 @@ def change_password_hotel_admin(request):
 
 
 from django.contrib.auth.hashers import make_password
+
+
 @csrf_exempt
 def login_hotel_admin(request):
     if request.method == 'POST':
@@ -144,11 +146,10 @@ def login_hotel_admin(request):
             if not tmp:
                 return HttpResponse('Wrong password or username')
             dj_login(request, user)
-            return HttpResponse('Login Accepted!')                
+            return HttpResponse('Login Accepted!')
         except:
             return HttpResponse('Wrong password or username')
     return HttpResponse('Please login with post method')
-
 
 
 @csrf_exempt
@@ -184,7 +185,7 @@ def hotel_admin_analysis(request):
         except Exception as e:
             print(e)
             return JsonResponse([{
-                "": "",                
+                "": "",
             }], safe=False)
 
 
@@ -351,9 +352,23 @@ def search(request):
                 continue
         return JsonResponse({'image_urls': image_urls})
 
-
         return JsonResponse({'cities': list(cities), 'hotels': list(hotels)})
     return HttpResponse('Only post method allowed!')
+
+
+@csrf_exempt
+def check_hotels(request):
+    # checks all hotels to see if an admin is assigned to them
+    if request.method == 'GET':
+        all_admins = HotelAdmin.objects.all()
+        has_admin = [admin.hotel for admin in all_admins]
+        do_not_have_admin = list(set(Hotel.objects.all()).difference(has_admin))
+        print(has_admin)
+        print(do_not_have_admin)
+        return JsonResponse({'has_admin': has_admin, 'do_not_have_admin': do_not_have_admin})
+
+    return HttpResponse('Only get method allowed!')
+
 
 """
 {
