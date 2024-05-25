@@ -54,3 +54,42 @@
   .margin-left-better {
     margin-left: 1%;
   }
+  .hotel_page_input2{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    grid:25px;
+  }
+  .hotel_page_input2{
+    display: flex;
+    align-items:right;
+    margin: auto;
+    margin-top: 20px;
+    margin-right: 110px;
+    
+    width: 250px;
+    height: 40px;
+    background: #febbf7;
+    border-radius: 10px;
+}
+.hotel_page_input2 img{
+    margin: 0px 30px;
+    height: 40px;
+    width: 40px;
+
+}
+.hotel_page_input2 input{
+    height: 20px;
+    width: 250;
+    background:transparent;
+    border: none;
+    outline: none;
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+}
+.right-aligned {
+  text-align: right;
+  margin-right: 15px;
+  margin-top: 5px;
+  font-size: medium;
+}

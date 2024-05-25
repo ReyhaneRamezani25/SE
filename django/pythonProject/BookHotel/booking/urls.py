@@ -22,8 +22,16 @@ urlpatterns = [
                   path('get_hotels/', get_hotels),
                   path('get_hotel_img/', get_specific_image),
 
+<<<<<<< HEAD
                   path('home/search/', search),
                   path('home/get_hotel_data', hotel_data),
                   path('home/get_city_hotels', get_hotels_of_a_city),
                   path('home/check_hotels/',check_hotels)
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+=======
+                path('home/search/', search),
+                path('home/get_hotel_data', hotel_data),
+                path('home/get_city_hotels', get_hotels_of_a_city),
+                path('get_hotel_rooms/', get_hotel_rooms),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+>>>>>>> 31ecd5b009e9f187d120e862eae05e3bf41f0b9b

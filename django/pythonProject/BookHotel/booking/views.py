@@ -274,11 +274,16 @@ def hotel_search(request):
 
 @csrf_exempt
 def hotel_data(request):
-    if request.method == 'POST':  # GET
+    if request.method == 'POST':
         hotel_id = request.POST.get('hotel_id')
         hotel = Hotel.objects.filter(id=hotel_id).values()
         return JsonResponse({'hotel': list(hotel)})
-
+    if request.method == 'GET':
+        query_params = request.GET
+        query_id = int(query_params.get('index'))
+        hotel = Hotel.objects.filter(id=query_id).values()[0]
+        hotel['image'] = Hotel.objects.filter(id=query_id)[0].image.path
+        return JsonResponse(hotel)
     return HttpResponse('Only post method allowed!')
 
 
@@ -288,27 +293,44 @@ import os
 @csrf_exempt
 def get_hotels(request):
     data = json.loads(request.body.decode('utf-8'))
-    print(data)
     hotels = Hotel.objects.all().order_by('id')
-    print(hotels)
 
     if data['search_phrase']:
         if data['search_phrase']['term']:
-            print(data['search_phrase']['term'])
             hotels = Hotel.objects.filter(name__contains=data['search_phrase']['term']).order_by('id')
-            print(hotels)
 
-    print(hotels)
-    image_urls = []
+    hotel_img_urls = []
+    hotel_ids = []
+    hotel_names = []
     for hotel in hotels:
         try:
             print(hotel.image)
-            image_urls.append(hotel.image.path)
+            hotel_img_urls.append(hotel.image.path)
+            hotel_ids.append(hotel.id)
+            hotel_names.append(hotel.name)
+            print(hotel_ids)
+            print(hotel_names)
         except Exception:
             # Maybe, one Hotel has not any Image at all
             continue
-    print(image_urls)
-    return JsonResponse({'image_urls': image_urls})
+    print(hotel_img_urls)
+    return JsonResponse({'image_urls': hotel_img_urls, 'id': hotel_ids, 'names': hotel_names})
+
+
+def room_to_values(room):
+    room_dict = room.__dict__.copy()
+    del room_dict['_state']
+    return {'type': room_dict['type'], 'number': room_dict['number'], 'capacity': room_dict['capacity'], 'breakfast': room_dict['breakfast'], }
+
+
+@csrf_exempt
+def get_hotel_rooms(request):
+    data = json.loads(request.body.decode('utf-8'))
+    rooms = Room.objects.filter(hotel__id=data['id'])
+    rooms_list = [room_to_values(room) for room in rooms]
+    response_data = {'rooms': rooms_list}
+    print(response_data)
+    return JsonResponse(response_data)
 
 
 @csrf_exempt
