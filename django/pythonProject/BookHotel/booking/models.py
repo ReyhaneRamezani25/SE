@@ -4,7 +4,9 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     username = models.EmailField(unique=True)
+    name = models.CharField(max_length=20, null=True)
     USERNAME_FIELD = 'username'
+
     REQUIRED_FIELDS = []
 
     def __str__(self):
@@ -13,6 +15,7 @@ class CustomUser(AbstractUser):
 
 class Customer(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='user_type')
+    name = models.CharField(max_length=150, default='ali alavi')
 
 
 class SiteAdmin(models.Model):
@@ -36,7 +39,7 @@ class Hotel(models.Model):
     facilities = models.CharField(max_length=500)
     brochure = models.FileField(null=True)
     image = models.FileField(null=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE, default=City.objects.get(id=1).pk)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     phone_number = models.CharField(default='0', max_length=11)
     policies = models.CharField(max_length=500, default='Our Policies')
     status = models.BooleanField(default=False)

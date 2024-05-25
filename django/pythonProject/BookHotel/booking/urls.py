@@ -7,13 +7,12 @@ urlpatterns = [
                 path('customer/signup/', signup_customer, name='signup_customer'),
                 path('customer/login/', login_customer, name='login_customer'),
                 path('customer/update/', change_password_customer, name='update_customer'),
-
                 path('site_admin/update/', login_site_admin),
                 path('site_admin/login/', login_site_admin),
                 path('site_admin/create_hotel/', HotelAPIView.as_view()),
                 path('site_admin/create_hotel_admin/', HotelAdminAPIView.as_view()),
                 path('site_admin/hotel_list/', hotel_list),
-
+                path('site_admin/create_city/', CityAPIView.as_view()),
                 path('hotel_admin/update/', change_password_hotel_admin),
                 path('hotel_admin/signup/', signup_hotel_admin),
                 path('hotel_admin/login/', login_hotel_admin),
@@ -28,9 +27,9 @@ urlpatterns = [
                 path('home/check_hotels/', check_hotels),
                 path('get_hotel_rooms/', get_hotel_rooms),
                 path('reserve/', get_reserved_rooms),
-
-                  # for testing error handlers
-                  path('trigger-500/', trigger_500_error, name='trigger-500'),
-                  path('trigger-400/', trigger_400_error, name='trigger-400'),
+                path('test/', Test.as_view()),
+                # for testing error handlers
+                path('trigger-500/', trigger_500_error, name='trigger-500'),
+                path('trigger-400/', trigger_400_error, name='trigger-400'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
