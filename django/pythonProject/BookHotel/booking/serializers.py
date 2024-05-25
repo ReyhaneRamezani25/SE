@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Hotel, HotelAdmin, City
+from .models import Hotel, HotelAdmin
 
 
 class HotelSerializer(serializers.ModelSerializer):
@@ -15,10 +15,4 @@ class HotelSerializer(serializers.ModelSerializer):
 class HotelAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = HotelAdmin
-        fields = '__all__'
-
-
-class CitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = City
         fields = '__all__'

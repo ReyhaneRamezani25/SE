@@ -320,7 +320,8 @@ def get_hotels(request):
 def room_to_values(room):
     room_dict = room.__dict__.copy()
     del room_dict['_state']
-    return {'type': room_dict['type'], 'number': room_dict['number'], 'capacity': room_dict['capacity'], 'breakfast': room_dict['breakfast'], }
+    return {'type': room_dict['type'], 'number': room_dict['number'], 'capacity': room_dict['capacity'],
+            'breakfast': room_dict['breakfast'], }
 
 
 @csrf_exempt
