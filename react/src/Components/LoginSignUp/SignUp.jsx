@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './LoginSignUp.css';
 import { GoPerson } from 'react-icons/go';
 import { CiLock } from 'react-icons/ci';
 import { MdOutlineEmail } from 'react-icons/md';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import { UserContext } from '../../UserContext';
+
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +14,9 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const { loginUser } = useContext(UserContext);
+  
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setEmail(e.target.value);
@@ -46,6 +51,10 @@ const SignUp = () => {
     .then(data => {
       console.log(data)
       setMessage(data)
+      if (data === 'User created successfully!'){
+        loginUser({ username: email, userType: 'customer' });
+        navigate('/');
+      }
     })
     
     .catch(error => {
@@ -66,8 +75,6 @@ const SignUp = () => {
       setMessage('Enter a UserName!');
     } else if (password === '') {
       setMessage('Enter a password!');
-    } else if (password.length < 6) {
-      setMessage('Password should be at least 6 characters!');
     } else {
       setMessage('');
       signUp();

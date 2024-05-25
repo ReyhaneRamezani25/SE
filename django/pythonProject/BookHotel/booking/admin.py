@@ -7,4 +7,5 @@ admin.site.register(SiteAdmin)
 admin.site.register(Hotel)
 admin.site.register(CustomUser)
 admin.site.register(Room)
-
+admin.site.register(Reservation)
+admin.site.register(Guest)

@@ -18,6 +18,7 @@ import HotelLists from './Components/AdminStrict/HotelLists.jsx';
 import Analysis from './Components/HotelStrict/Analysis.jsx';
 import HotelRefactor from './Components/HotelStrict/HotelRefactor.jsx';
 import SearchPage from './Components/SearchPage.jsx';
+import Reserve from './Components/Reservs.jsx';
 import './App.css';
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
               <Route path='/profile' element={<Profile />}/>
               <Route path='/hotel/:index' element={<Hotel />} />
               <Route path='/help' element={<Help />} />
+              <Route path='/reserve' element={<Reserve />} />
               <Route path='/site_admin/admin_assign' element={<NewHotelAdmin />} />
               <Route path='/site_admin/hotel_create' element={<NewHotel />} />
               <Route path='/site_admin/hotel_list' element={<HotelLists />} />

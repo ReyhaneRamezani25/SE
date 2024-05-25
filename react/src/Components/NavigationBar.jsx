@@ -126,7 +126,7 @@ const NavigationBar = () => {
                 <li><NavLink to="/profile">پروفایل</NavLink></li>
                 <li><NavLink to="/">خانه</NavLink></li>
                 <li><NavLink to="/help">راهنما</NavLink></li>
-                <li><NavLink to="/profile">رزروها</NavLink></li>
+                <li><NavLink to="/reserve">رزروها</NavLink></li>
               </>
             )}
           </>

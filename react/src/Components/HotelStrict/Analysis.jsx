@@ -29,18 +29,6 @@ const Analysis = () => {
     );
   }
 
-//   const fetchData = async () => {
-//     try {
-//       const response = await axios.get('http://localhost:8000/hotel_admin/analysis/');
-//       setData(response.data);
-//       if (response.data.length > 0) {
-//         setColumns(Object.keys(response.data[0]));
-//       }
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//     }
-//   };
-
   const fetchData = async () => {
     try {
       // Assuming you need to send some data in the request body
@@ -94,12 +82,6 @@ const Analysis = () => {
             <br></br>
             <button onClick={downloadCSV}>دانلود اکسل</button>
         </div>
-
-        {/* <div className="input-section">
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                
-            </div>
-        </div> */}
 
         <div className="table-container">
             <table className="data-table">
