@@ -7,6 +7,8 @@ from .forms import CustomerSignUpForm
 from django.core.exceptions import SuspiciousOperation
 from rest_framework.views import APIView
 from django.http import JsonResponse
+
+from .models import Hotel, HotelAdmin, Room, Reservation, SiteAdmin, Customer
 from .serializers import HotelSerializer, HotelAdminSerializer, CitySerializer, GuestSerializer, RoomSerializer, \
     ReservationSerializer
 from drf_yasg.utils import swagger_auto_schema
@@ -357,6 +359,20 @@ def hotel_data(request):
         hotel['image'] = Hotel.objects.filter(id=query_id)[0].image.path
         return JsonResponse(hotel)
     return HttpResponse('Only post method allowed!', status=200)
+
+
+class HotelDataView(APIView):
+    def post(self, request):
+        hotel_id = request.POST.get('hotel_id')
+        hotel = Hotel.objects.filter(id=hotel_id).values()
+        return JsonResponse({'hotel': list(hotel)})
+
+    def get(self, request):
+        query_params = request.GET
+        query_id = int(query_params.get('index'))
+        hotel = Hotel.objects.filter(id=query_id).values()[0]
+        hotel['image'] = Hotel.objects.filter(id=query_id)[0].image.path
+        return JsonResponse(hotel)
 
 
 @csrf_exempt
