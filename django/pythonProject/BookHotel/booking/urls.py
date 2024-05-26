@@ -9,7 +9,7 @@ urlpatterns = [
                 path('customer/update/', change_password_customer, name='update_customer'),
                 path('site_admin/update/', login_site_admin),
                 path('site_admin/login/', login_site_admin),
-                path('site_admin/create_hotel/', HotelAPIView.as_view()),
+                path('site_admin/create_hotel/', HotelAPIView.as_view(), name='site_admin_create_hotel'),
                 path('site_admin/create_hotel_admin/', HotelAdminAPIView.as_view()),
                 path('site_admin/hotel_list/', hotel_list),
                 path('site_admin/create_city/', CityAPIView.as_view()),
@@ -22,7 +22,7 @@ urlpatterns = [
                 path('get_hotel_img/', get_specific_image),
 
                 path('home/search/', search),
-                path('home/get_hotel_data', hotel_data),
+                path('home/get_hotel_data', hotel_data, name='get_hotel_data'),
                 path('home/get_city_hotels', get_hotels_of_a_city),
                 path('home/check_hotels/', check_hotels),
                 path('get_hotel_rooms/', get_hotel_rooms),

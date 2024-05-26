@@ -312,7 +312,8 @@ def hotel_search(request):
 @csrf_exempt
 def hotel_data(request):
     if request.method == 'POST':
-        hotel_id = request.POST.get('hotel_id')
+        data = json.loads(request.body.decode('utf-8'))
+        hotel_id = data.get('hotel_id')
         hotel = Hotel.objects.filter(id=hotel_id).values()
         return JsonResponse({'hotel': list(hotel)})
     if request.method == 'GET':

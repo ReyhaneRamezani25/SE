@@ -39,7 +39,7 @@ class Hotel(models.Model):
     facilities = models.CharField(max_length=500)
     brochure = models.FileField(null=True)
     image = models.FileField(null=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, default=City.objects.get(id=1).pk)
     phone_number = models.CharField(default='0', max_length=11)
     policies = models.CharField(max_length=500, default='Our Policies')
     status = models.BooleanField(default=False)
