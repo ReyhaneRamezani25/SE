@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from drf_yasg import openapi
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login as dj_login
 from django.http.response import HttpResponse
@@ -362,11 +363,28 @@ def hotel_data(request):
 
 
 class HotelDataView(APIView):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'hotel_id': openapi.Schema(
+                    type=openapi.TYPE_STRING),
+            }
+        )
+    )
     def post(self, request):
-        hotel_id = request.POST.get('hotel_id')
+        hotel_id = request.data.get('hotel_id')
+        print(hotel_id)
         hotel = Hotel.objects.filter(id=hotel_id).values()
+
+        print(hotel)
         return JsonResponse({'hotel': list(hotel)})
 
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter('index', openapi.IN_QUERY, type=openapi.TYPE_STRING),
+        ]
+    )
     def get(self, request):
         query_params = request.GET
         query_id = int(query_params.get('index'))
