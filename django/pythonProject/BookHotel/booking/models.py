@@ -6,7 +6,6 @@ class CustomUser(AbstractUser):
     username = models.EmailField(unique=True)
     name = models.CharField(max_length=20, null=True)
     USERNAME_FIELD = 'username'
-
     REQUIRED_FIELDS = []
 
     def __str__(self):
