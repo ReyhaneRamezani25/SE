@@ -9,8 +9,8 @@ import persian from 'react-date-object/calendars/persian';
 
 const SearchBar = ({ onSearch }) => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
   const { term, wanted_term } = useContext(UserContext);
+  const [searchTerm, setSearchTerm] = useState(term.term);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
