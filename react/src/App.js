@@ -19,6 +19,7 @@ import Analysis from './Components/HotelStrict/Analysis.jsx';
 import HotelRefactor from './Components/HotelStrict/HotelRefactor.jsx';
 import SearchPage from './Components/SearchPage.jsx';
 import Reserve from './Components/Reservs.jsx';
+import Pardakht from './Components/Pardakht.jsx';
 import './App.css';
 
 function App() {
@@ -45,6 +46,8 @@ function App() {
               <Route path='/hotel_admin/analysis' element={<Analysis />} />
               <Route path='/hotel_admin/change_hotel' element={<HotelRefactor />} />
               <Route path="/search" element={<SearchPage />} />
+
+              <Route path='/pardakht' element={<Pardakht />}/>
 
             </Routes>
           </div>
