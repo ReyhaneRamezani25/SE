@@ -49,7 +49,7 @@ const Menu = () => {
       return response.text(); 
     })
     
-    .then(async data => {  
+    .then(async data => {
       const imageUrls = JSON.parse(data).image_urls;
       const hotel_names = JSON.parse(data).names;
       const hotel_ids = JSON.parse(data).id;
