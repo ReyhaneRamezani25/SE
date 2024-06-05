@@ -46,11 +46,6 @@
 }
   
 .room-container {
-    /* width: 100%;
-    height: 100px;
-    background: #cecbcb;
-    margin-bottom: 10px;
-    border-radius: 20px; */
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -280,7 +275,23 @@
 }
 .button {
   display: block;
-margin: 90px auto 20px auto;  /* Added margin-bottom for spacing */
-padding: 10px 20px;
-font-size: 16px;
+  margin: 90px auto 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
 }
+
+
+@media (min-width: 420px) and (max-width: 719px) {
+  .room-container {
+    /* display: flex; */
+    /* flex-direction: column; */
+    margin: auto;
+    width: 70%;
+    height: 200px;
+    background:#cecbcb;
+    margin-bottom: 1%;
+    border-radius: 0px;
+    margin-right:  5%;
+  }
+}
+

@@ -1,83 +1,183 @@
 .date-picker-container {
-  width: 200px; /* Set the width */
-  height: 1px; /* Set the height */
+  width: 200px;
 }
 
 .navigation-bar {
-  background-color: #ffffff; 
-  position: fixed; 
-  top: 0; 
-  width: 100%; 
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
 }
 
 .navigation-bar ul {
-  list-style-type: none; 
+  list-style-type: none;
   margin: 0;
   padding: 0;
-  display: flex; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
 .navigation-bar ul li {
-  display: inline;
+  margin: 0 10px;
 }
 
 .navigation-bar ul li a {
-  display: block;
-  padding: 20px 20px;
-  color: black; 
-  text-decoration: none; 
+  padding: 10px 15px;
+  color: black;
+  text-decoration: none;
+  border-radius: 5px;
 }
 
-.navigation-bar ul li a:hover {
+.navigation-bar ul li a:hover,
+.navigation-bar ul li a.active {
   background-color: #3c009d;
+  color: white;
 }
 
 .input input {
   color: rgb(25, 82, 198);
 }
 
-.navigation-bar ul li a.active {
-  background-color: #3c009d;
-  color: white; 
-}
-
-.start-date-picker-container {
-  margin-right: 20px; 
-  border-width: 0px;
-  background-color: #3c009d;
-  /* width: 10px; */
-}
 .search-bar {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  margin-bottom: 0px;
-  margin-top: -20px; 
+  justify-content: center;
+  width: 100%;
 }
 
 .search-bar input {
-  width: 400px; 
-  height: 40px; 
+  width: 100%;
+  max-width: 400px;
   font-size: 18px;
-  padding: 0px; 
-  border-radius: 9px;
-  border: 1px solid #ccc;
+  border-radius: 5px;
   background-color: black;
-  color: rgb(255, 255, 255);
+  color: white;
+  margin-right: 10px;
 }
 
 .search-bar button {
-  height: 42px; 
-  font-size: 18px;
-  padding: 8px 8px;
+  /* height: 42px; */
+  /* font-size: 18px; */
+  /* padding: 0 15px; */
   border: none;
   background-color: #3c009d;
-  color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  color: white;
+  border-radius: 5px;
   cursor: pointer;
-  border: 1px solid #ccc;
 }
 
 .search-bar button:hover {
   background-color: #0056b3;
+}
+
+@media (min-width: 1024) {
+  .search-bar {
+    max-width: 500px;
+    max-height: 100px;
+    height: 100px;
+  }
+  .search-bar input {
+    max-width: 300px;
+    height: 100px;
+    font-size: 10px;
+  }
+
+  .search-bar button {
+    width: 70px;
+    height: 35px;
+    font-size: 50px;
+  }
+
+  .navigation-bar ul li a {
+    padding: 8px 0px;
+    font-size: 12px;
+  }
+
+  .date-picker-container {
+    padding: 8px 35px;
+    width: 70px;
+    font-size: 0px;
+  }
+  .date-picker-container input{
+    width: 70px;
+  }
+}
+
+
+@media ((min-width: 720px) and (max-width: 1023px)) {
+  .search-bar {
+    max-width: 500px;
+  }
+  .search-bar input {
+    max-width: 300px;
+    max-height: 30px;
+    font-size: 12px;
+  }
+
+  .search-bar button {
+    padding: 8px 1px;
+    width: 70px;
+    height: 35px;
+    font-size: 12px;
+  }
+
+  .navigation-bar ul li a {
+    padding: 8px 0px;
+    font-size: 12px;
+  }
+
+  .date-picker-container {
+    padding: 8px 0px;
+    width: 70px;
+    font-size: 0px;
+  }
+  .date-picker-container input{
+    width: 70px;
+    margin-right: 100px;
+  }
+}
+
+@media (min-width: 420px) and (max-width: 719px) {
+  .search-bar {
+    width: 150px;
+    height: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+  }
+
+  .search-bar input {
+    height: 15px;
+    width: 150px;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .search-bar button {
+    width: 155px;
+    height: 15px;
+    font-size: 12px;
+  }
+
+  .navigation-bar ul li a {
+    padding: 8px 1px;
+    font-size: 12px;
+  }
+
+  .date-picker-container {
+    width: auto;
+    margin-right: 10px;
+  }
+
+  .date-picker-container input {
+    width: 80px;
+    font-size: 12px;
+  }
 }

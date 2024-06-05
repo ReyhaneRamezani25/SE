@@ -1,32 +1,26 @@
-// export default NavigationBar;
-import React, { useState, useContext, version } from 'react';
+import React, { useState, useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './NavigationBar.css';
 import DatePicker from "react-multi-date-picker";
 import RangeDatePicker from "react-multi-date-picker";
-import { UserContext } from '../UserContext'; // Import UserContext
+import { UserContext } from '../UserContext';
 import persian_fa from 'react-date-object/locales/persian_fa';
 import persian from 'react-date-object/calendars/persian';
-import DateObject from 'react-date-object';
 
 const SearchBar = ({ onSearch }) => {
   const navigate = useNavigate();
-
   const [searchTerm, setSearchTerm] = useState('');
-  const {term, wanted_term} = useContext(UserContext);
+  const { term, wanted_term } = useContext(UserContext);
+
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
   const handleSubmit = (event) => {
-
-    wanted_term({'term': searchTerm});
-    // console.log(term);
-
+    wanted_term({ 'term': searchTerm });
     event.preventDefault();
     onSearch(searchTerm);
     window.location.href = '/';
-    // navigate('/');
   };
 
   return (
@@ -43,40 +37,31 @@ const SearchBar = ({ onSearch }) => {
 };
 
 const NavigationBar = () => {
-  const { user, logoutUser } = useContext(UserContext);
-  const { loginUser } = useContext(UserContext);
-
+  const { user, logoutUser, loginUser } = useContext(UserContext);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
-  const [searchResults, setSearchResults] = useState([]);
-
-  const {date, wanted_date} = useContext(UserContext);
-  const {date_end, wanted_date_end} = useContext(UserContext);
+  const { date, wanted_date, date_end, wanted_date_end } = useContext(UserContext);
 
   const handleSearch = (searchTerm) => {
-    console.log({ start: startDate, end: endDate })
     loginUser({ start: startDate, end: endDate });
   };
 
   const handleStartDateChange = (start_date) => {
     setStartDate(start_date);
     const startDateString = start_date.format('YYYY/MM/DD');
-    wanted_date({"start": startDateString});
-    console.log(date);
+    wanted_date({ "start": startDateString });
   };
 
   const handleEndDateChange = (end_date) => {
     setEndDate(end_date);
     const endDateString = end_date.format('YYYY/MM/DD');
-    wanted_date_end({"end": endDateString});
-    console.log(date_end);
+    wanted_date_end({ "end": endDateString });
   };
 
   return (
     <div className="navigation-bar">
       <ul>
-        <div className="date-picker-container">
+        <li className="date-picker-container">
           شروع اقامت
           <RangeDatePicker
             calendar={persian}
@@ -84,8 +69,8 @@ const NavigationBar = () => {
             value={startDate}
             onChange={handleStartDateChange}
           />
-        </div>
-        <div className="date-picker-container">
+        </li>
+        <li className="date-picker-container">
           پایان اقامت
           <DatePicker
             calendar={persian}
@@ -93,18 +78,10 @@ const NavigationBar = () => {
             value={endDate}
             onChange={handleEndDateChange}
           />
-        </div>
-
-        <div className='header'>
+        </li>
+        <li className='header'>
           <SearchBar onSearch={handleSearch} />
-        </div>
-
-        <ul>
-          {searchResults.map((result, index) => (
-            <li key={index}>{result}</li>
-          ))}
-        </ul>
-
+        </li>
         {user ? (
           <>
             {user.userType === 'hotelAdmin' ? (
@@ -119,7 +96,7 @@ const NavigationBar = () => {
                 <li><NavLink to="/profile">پروفایل</NavLink></li>
                 <li><NavLink to="/">تحلیل</NavLink></li>
                 <li><NavLink to="/site_admin/admin_assign">ادمین</NavLink></li>
-                <li><NavLink to='/site_admin/hotel_list' >لیست</NavLink></li>
+                <li><NavLink to='/site_admin/hotel_list'>لیست</NavLink></li>
               </>
             ) : (
               <>
@@ -139,6 +116,6 @@ const NavigationBar = () => {
       </ul>
     </div>
   );
-}
+};
 
 export default NavigationBar;
