@@ -1,30 +1,32 @@
 .main-container {
     display: flex;
     flex-direction: column;
-    margin: auto;
+    /* margin: auto; */
     margin-top: 100px;
-    width: 90%;
-    height: 100%;
+    width: auto;
+    height: auto;
     background:#fafafa;
     padding-bottom: 30px;
     border-radius: 30px;
 }
   
 .custom-image {
-    width: 40%; 
-    height: 40%;
+    width: 40px; 
+    height: 40px;
     height: auto;
-    margin-top: 20px;
-    margin-left: 1%;
+    width: auto;
+    margin-top: 10px;
+    margin-left: 1px;
 }
 
 .custom-image-room {
-      width: 35%; 
-      height: 35%;
-      height: auto;
-      margin-top: 2px;
-      margin-left: 2px;  
-      border-radius: 100px;
+  display: flex;
+  width: 90px;
+  height: 90px;
+  height: auto;
+  margin-top: 2px;
+  margin-left: 2px;  
+  border-radius: 100px;
 }
 
 .stars-container {
@@ -65,20 +67,22 @@
 }
 
 .hotel_page_input2{
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    grid:25px;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  display: flex;
+  /* grid:25px; */
   }
 
   .hotel_page_input2{
-    display: flex;
+    /* display: flex; */
     align-items:right;
-    margin: auto;
+    /* margin: right; */
     margin-top: 20px;
-    margin-right: 110px;    
-    width: 250px;
-    height: 40px;
+    /* margin-right: 110px; */
+    margin-left: 25%;
+    width: 55%;
+    height: auto;
     background: #febbf7;
     border-radius: 10px;
 }
@@ -121,14 +125,17 @@
 }
 
 .room-details {
-  display: flex;
-  flex-wrap: wrap;
+  /* display: flex; */
+  text-align: right;
+  /* flex-wrap: wrap; */
 }
 
 .room-detail {
-  margin-right: 10px;
   margin-bottom: 5px;
+  margin-top: 5px;
+  text-align: right;
 }
+
 .order-button {
   background-color: #3c009d;
   color: white;
@@ -148,4 +155,132 @@
   justify-content: center;
   width: 100%; /* Ensure the container takes full width */
   margin-top: 10px; /* Add some spacing above the button */
+}
+
+.reyhane{
+  width: 30px;
+  height: 30px;
+}
+
+.reserve-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reserve-popup-content {
+  background-color: #fefefe;
+  padding: 20px;
+  border-radius: 5px;
+  overflow: hidden; /* Hide any overflowing content */
+
+}
+
+.reserve-popup-content-scrollable {
+  max-height: calc(80vh - 100px); /* Adjust the height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-right: 10px; /* Add padding to avoid scrollbar overlap */
+}
+
+
+.close-button {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  align-items: center;
+  display: flex;
+}
+
+/* Reyhane */
+
+.reyhane-container{
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 40px; */
+  width: 100%;
+  height: 100%;
+  background:#8bece7;
+  /* padding-bottom: 1px; */
+  border-radius: 20px;
+  /* height: 850px; */
+}
+.reyhane-header{
+  text-align: center;
+  color: rgb(82, 23, 11);
+}
+.reyhane-room-container{
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  background:#8bece9;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  height: 120px;
+  /* margin-left: 50px; */
+  text-align: center;
+  font-size: 20px;
+}
+.reyhane-information-header{
+  text-align: center;
+  color: rgb(82, 23, 11);
+  font-size: 20px;
+}
+.reyhane-information-tail{
+  /* position: relative; */
+
+  margin-left: 50px;
+}
+.reyhane-information{
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  background:#febbf7;
+  padding-bottom: 30px;
+  border-radius: 30px;
+  height: 300px;
+  margin-left: 50px;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 20px;
+}
+.reyhane-guest-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  object-position: right;
+}
+
+.reyhane-guest-row label {
+  margin-right: 10px;
+      
+}
+
+.reyhane-guest-row input {
+  margin-right: 5px;
+  margin-left: 5px;
+  width: 100px;
+  text-align: right;
+  
+}
+
+.reyhane-error {
+  color: red;
+  font-size: 0.1em;
+}
+.button {
+  display: block;
+margin: 90px auto 20px auto;  /* Added margin-bottom for spacing */
+padding: 10px 20px;
+font-size: 16px;
 }
