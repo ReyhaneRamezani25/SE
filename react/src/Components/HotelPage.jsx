@@ -344,57 +344,56 @@ const Hotel = () => {
           </div>
         </div>
         {showPopup && (
-            <div className="reserve-popup">
+          <div className="reserve-popup">
             <div className="reserve-popup-content">
-                <form onSubmit={handleSubmit}>
-                  <div className='reserve-popup-content-scrollable'>
-      <div className='reyhane-container'>
-        <h1 className='reyhane-header'>رزرو آنلاین</h1>
-        <div className='reyhane-room-container'>اتاق های انتخابی</div>
-        <div className='reyhane-information-header'>لطفا مشخصات تمامی میهمانان را وارد کنید</div>
-        <div className='reyhane-information-tail'>
-        {guests.map((guest, index) => (
-          <div className='reyhane-guest-row' key={index}>
-            <label>
-              <input
-                type="text"
-                value={guest.id}
-                onChange={(e) => nationalIdCheck(index, 'id', e.target.value)}
-              />
-              کد ملی
-            </label>
-            <label>
-              <input
-                type="text"
-                value={guest.name}
-                onChange={(e) => nationalIdCheck(index, 'name', e.target.value)}
-              />
-              نام خانوادگی
-            </label>
-            <label>
-              <input
-                type="text"
-                value={guest.lastName}
-                onChange={(e) => nationalIdCheck(index, 'lastName', e.target.value)}
-              />
-              نام
-            </label>
-            <h3>مهمان {index + 1}</h3>
+              <form onSubmit={handleSubmit}>
+                <div className='reserve-popup-content-scrollable'>
+                  <div className='reyhane-container'>
+                    <h1 className='reyhane-header'>رزرو آنلاین</h1>
+                    <div className='reyhane-room-container'>اتاق های انتخابی</div>
+                    <div className='reyhane-information-header'>لطفا مشخصات تمامی میهمانان را وارد کنید</div>
+                    <div className='reyhane-information-tail'>
+                      {guests.map((guest, index) => (
+                        <div className='reyhane-guest-row' key={index}>
+                          <label>
+                            <input
+                              type="text"
+                              value={guest.id}
+                              onChange={(e) => nationalIdCheck(index, 'id', e.target.value)}
+                            />
+                            کد ملی
+                          </label>
+                          <label>
+                            <input
+                              type="text"
+                              value={guest.name}
+                              onChange={(e) => nationalIdCheck(index, 'name', e.target.value)}
+                            />
+                            نام خانوادگی
+                          </label>
+                          <label>
+                            <input
+                              type="text"
+                              value={guest.lastName}
+                              onChange={(e) => nationalIdCheck(index, 'lastName', e.target.value)}
+                            />
+                            نام
+                          </label>
+                          <h3>مهمان {index + 1}</h3>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className='button-container'>
+                    <button className="close-button">تایید</button>
+                  </div>
+                  <div className='button-container'>
+                    <button className="close-button" onClick={closePopup}>بازگشت</button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
-        ))}
-        </div>
-      </div>
-      <div className='button-container'>
-        <button className="close-button" >تایید</button>
-      </div>
-      <div className='button-container'>
-      <button className="close-button" onClick={closePopup}>بازگشت</button>
-      </div>
-      </div>
-    </form>
-
-            </div>
-            </div>
         )}
     </div>
   );
