@@ -1,0 +1,99 @@
+.pardakht-container{
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 100px;
+    width: 700px;
+    background:#ff00ea;
+    padding-bottom: 30px;
+    border-radius: 30px;
+}
+.pardakht-head1{
+    text-align: center;
+    color: aliceblue;
+}
+.pardakht-cost{
+    text-align: right;
+    color: aliceblue;
+    font-size: 27px;
+}
+.pardakht-cardnum{
+    margin-top: 20px;
+    text-align: center;
+    color: aliceblue;
+    font-size: 27px;
+}
+.pardakht-inputcard{
+    text-align: center;
+}
+.pardakht-inputcard   input {
+    margin-top: 30px;
+    margin-right: 20px;
+    padding: 10px;
+    font-size: 16px;
+    width: 70px;
+    text-align: center;
+  }
+.pardakht-expirenum{
+    text-align: center;
+  }
+.pardakht-expirenum input {
+    margin-top: 30px;
+    margin-right: 20px;
+    padding: 10px;
+    font-size: 16px;
+    width: 70px;
+    text-align: center;
+  }
+.pardakht-expirepart{
+    margin-top: 20px;
+    text-align: center;
+    color: aliceblue;
+    font-size: 27px;
+  }
+  .pardakht-ccvtext{
+    margin-top: 20px;
+    text-align: center;
+    color: aliceblue;
+    font-size: 27px;
+
+  }
+  .pardakht-ccvpart{
+    text-align: center;
+  }
+  .pardakht-ccvpart input{
+    margin: 5px;
+    padding: 10px;
+    font-size: 16px;
+    width: 70px;
+    text-align: center;
+  }
+  .pardakht-inputpass{
+    margin-top: 20px;
+    text-align: center;
+    color: aliceblue;
+    font-size: 27px;
+  }
+  .pardakht-pass{
+    text-align: center;
+  }
+  .pardakht-pass input{
+    margin: 5px;
+    padding: 10px;
+    font-size: 16px;
+    width: 70px;
+    text-align: center;
+  }
+  .pardakht-submitbutton{
+    text-align: center;
+  }
+  .button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    font-size: 16px;
+    width: 250px;
+    height: 70px;
+    background-color: rgb(110, 180, 110);
+    border-radius: 20px;
+    cursor: pointer;
+  }
