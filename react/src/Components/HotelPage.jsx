@@ -1,7 +1,8 @@
 import { useParams } from 'react-router-dom';
 import './HotelPage.css';
 import React, { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import axios, { all } from 'axios';
+import { useNavigate } from "react-router-dom";
 
 
 const Hotel = () => {
@@ -15,10 +16,120 @@ const Hotel = () => {
   const [hotelRegulations, setHotelRegulations] = useState('مقررات');
   const [starCount, setStarCount] = useState('تعداد ستاره');
   const [roomImages, setRoomImages] = useState([]);
+  const [roomCount, setRoomCount] = useState([]);
+  const [roomInputs, setRoomInputs] = useState({});
+  const [showPopup, setShowPopup] = useState(false);
+
+  let totalGuest = 0;
+  
+  const persianToEnglishDigitMap = {
+    '۰': '0',
+    '۱': '1',
+    '۲': '2',
+    '۳': '3',
+    '۴': '4',
+    '۵': '5',
+    '۶': '6',
+    '۷': '7',
+    '۸': '8',
+    '۹': '9'
+  };
+  
+  const convertPersianToEnglishNumbers = (input) => {
+    return input.replace(/[۰-۹]/g, (match) => persianToEnglishDigitMap[match]);
+  };  
 
   const [room, setRoom] = useState([]);
-  const handleButtonClick = async () => {
+
+  // Reyhane code
+
+  const [guests, setGuests] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
+
+  let navigate = useNavigate(); 
+
+  const nationalIdCheck = (index, field, value) => {
+    const newGuests = [...guests];
+    if (field === 'id') {
+      if (/^\d{0,10}$/.test(value)) {
+        newGuests[index][field] = value;
+      }
+    } else {
+      newGuests[index][field] = value;
+    }
+    setGuests(newGuests);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+
+    const isValid = guests.every(guest => 
+      guest.id.length === 10 &&
+      guest.name.trim() !== '' &&
+      guest.lastName.trim() !== ''
+    );
+
+    if (isValid) {
+      console.log('Guests:', guests);
+      // Submit the guests data to your backend or perform other actions
+      routeChange(); // Corrected the onClick event
+    } else {
+      alert('لطفا مشخصات تمامی میهمانان را وارد کنید');
+    }
+  };
+
+  const routeChange = () => { 
+    let path = '../pardakht'; 
+    navigate(path);
   }
+
+// Reyhane code
+  const handleInputChange = (e, roomIndex) => {
+    const value = e.target.value;
+    setRoomInputs(prevState => ({
+      ...prevState,
+      [roomIndex]: value,
+    }));  
+  };
+
+  const handleButtonClick = async () => {
+    let flag = false;
+    Object.keys(roomInputs).forEach((key, index) => {
+      const input = roomInputs[key];
+      if(input >= 1) {
+        flag = true;
+      }
+      let capacity = room[index]['capacity'];
+      capacity = convertPersianToEnglishNumbers(capacity);
+      capacity = parseInt(capacity.match(/\d+/)[0]);
+      totalGuest += input * capacity;
+    });
+
+    const newGuests = Array.from({ length: totalGuest }, () => ({
+      name: '',
+      lastName: '',
+      id: ''
+    }));
+    if (flag){
+      setGuests(newGuests);
+      console.log(totalGuest);
+      setShowPopup(true);  
+    }
+    else{
+      alert('باید حداقل یک اتاق را انتخاب کنید')
+    }
+  }
+
+  const handleCellClick = (content) => {
+    // setSelectedCellContent(content);
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
 
   const fetchImage = async (url, hotel) => {
     try {
@@ -158,7 +269,7 @@ const Hotel = () => {
 
               {hotelImage && (
                 <div className="custom-image">
-                  <img src={hotelImage} alt="Hotel" className="custom-image" />
+                  <img src={hotelImage} className="custom-image"/>
                 </div>
               )}
 
@@ -199,16 +310,24 @@ const Hotel = () => {
                         <i key={index} className="fas fa-star"></i>
                       ))}
                     </div>
+
+                    <input
+                      className='reyhane'
+                      type='number'
+                      value={roomInputs[index] || ''}
+                      onChange={(e) => handleInputChange(e, index)}
+                    />
+
                     {roomImages && (
                       <div className="custom-image-room">
                         <img src={roomImages[index]} alt="Hotel" className="custom-image-room" />
                       </div>
                     )}
                     <div className="room-details">
-                      {Object.entries(value).map(([subKey, subValue]) => (
+                      {Object.entries(value).map(([subKey, subValue], inner_index) => (
+                        
                         <div className="room-detail" key={subKey}>
                           {subValue.toString()}
-                          <br /> {/* Add line break after each value */}
                         </div>
                       ))}
                     </div>
@@ -224,6 +343,59 @@ const Hotel = () => {
             </div>
           </div>
         </div>
+        {showPopup && (
+            <div className="reserve-popup">
+            <div className="reserve-popup-content">
+                <form onSubmit={handleSubmit}>
+                  <div className='reserve-popup-content-scrollable'>
+      <div className='reyhane-container'>
+        <h1 className='reyhane-header'>رزرو آنلاین</h1>
+        <div className='reyhane-room-container'>اتاق های انتخابی</div>
+        <div className='reyhane-information-header'>لطفا مشخصات تمامی میهمانان را وارد کنید</div>
+        <div className='reyhane-information-tail'>
+        {guests.map((guest, index) => (
+          <div className='reyhane-guest-row' key={index}>
+            <label>
+              <input
+                type="text"
+                value={guest.id}
+                onChange={(e) => nationalIdCheck(index, 'id', e.target.value)}
+              />
+              کد ملی
+            </label>
+            <label>
+              <input
+                type="text"
+                value={guest.name}
+                onChange={(e) => nationalIdCheck(index, 'name', e.target.value)}
+              />
+              نام خانوادگی
+            </label>
+            <label>
+              <input
+                type="text"
+                value={guest.lastName}
+                onChange={(e) => nationalIdCheck(index, 'lastName', e.target.value)}
+              />
+              نام
+            </label>
+            <h3>مهمان {index + 1}</h3>
+          </div>
+        ))}
+        </div>
+      </div>
+      <div className='button-container'>
+        <button className="close-button" >تایید</button>
+      </div>
+      <div className='button-container'>
+      <button className="close-button" onClick={closePopup}>بازگشت</button>
+      </div>
+      </div>
+    </form>
+
+            </div>
+            </div>
+        )}
     </div>
   );
 };
