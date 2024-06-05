@@ -1,0 +1,129 @@
+.reserves-main-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 100px;
+    width: 90%;
+    max-width: 1200px;
+    background: #fafafa;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reserves-centered {
+    text-align: center;
+  }
+  
+  .reserves-table-container {
+    overflow-x: auto;
+  }
+  
+  .reserves-data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .reserves-data-table th, .data-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .reserves-data-table th {
+    background-color: #f2f2f2;
+    text-align: right;
+  }
+  
+  .reserves-room-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .reserves-right-aligned {
+    text-align: right;
+    margin-right: 15px;
+    margin-top: 5px;
+    font-size: medium;
+  }
+  
+  .reserves-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+  
+.reserves-popup-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+  
+.reserves-close-button {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+@media ((min-width: 720px) and (max-width: 1023px)) {
+    .reserves-main-container {
+      margin-top: 150px;
+      padding: 15px;
+      width: 80%;
+    }
+  
+    .reserves-data-table th, .data-table td {
+      padding: 6px;
+    }
+
+    .reserves-right-aligned {
+        font-size: small;
+    }
+    
+    .reserves-room-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 100%;
+    }
+  
+    .reserves-close-button {
+      padding: 8px;
+    }
+  }
+  
+  @media ((min-width: 10px) and (max-width: 719px)) {
+    .reserves-main-container {
+        margin-top: 150px;
+        width: 80%;
+      }
+    
+      .reserves-data-table th, .data-table td {
+        padding: 6px;
+      }
+  
+      .reserves-right-aligned {
+          font-size: 10px;
+      }
+      
+      .reserves-room-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+      }
+    
+      .reserves-close-button {
+        padding: 8px;
+      }
+    }
+  
