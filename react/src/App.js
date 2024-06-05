@@ -18,7 +18,7 @@ import HotelLists from './Components/AdminStrict/HotelLists.jsx';
 import Analysis from './Components/HotelStrict/Analysis.jsx';
 import HotelRefactor from './Components/HotelStrict/HotelRefactor.jsx';
 import SearchPage from './Components/SearchPage.jsx';
-import Reserve from './Components/Reservs.jsx';
+import Reserve from './Components/Reserves.jsx';
 import Pardakht from './Components/Pardakht.jsx';
 import './App.css';
 

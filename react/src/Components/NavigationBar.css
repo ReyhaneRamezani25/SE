@@ -60,12 +60,10 @@
   background-color: black;
   color: white;
   margin-right: 10px;
+  text-align: right;
 }
 
 .search-bar button {
-  /* height: 42px; */
-  /* font-size: 18px; */
-  /* padding: 0 15px; */
   border: none;
   background-color: #3c009d;
   color: white;

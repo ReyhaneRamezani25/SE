@@ -24,12 +24,12 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <form className='search-bar' onSubmit={handleSubmit}>
+    <form className="search-bar"   onSubmit={handleSubmit}>
       <input
         type="text"
         value={searchTerm}
         onChange={handleChange}
-        placeholder="Search..."
+        placeholder="جستوجو"
       />
       <button type="submit">جستجو</button>
     </form>
