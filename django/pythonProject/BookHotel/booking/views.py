@@ -339,9 +339,6 @@ def hotel_search(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         print(data['searchItem'])
-        # print(request.POST)
-        # TODO: Return name, location, free rooms and main image of all similar hotel names.
-        # Every hotel has a main image and some sub image.
         return HttpResponse('mashkhar', status=200)
 
     return HttpResponse('Only post method allowed!', status=200)
@@ -489,6 +486,27 @@ def get_specific_image(request):
         return JsonResponse({'error': 'Image not found'}, status=404)
 
 
+class SpecificImage(APIView):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'url': openapi.Schema(
+                    type=openapi.TYPE_STRING),
+            }
+        )
+    )
+    def post(self, request):
+        image_path = request.data.get('url')
+        print(image_path)
+        if os.path.exists(image_path):
+            with open(image_path, 'rb') as f:
+                image_data = f.read()
+            return HttpResponse(image_data, content_type='image/jpeg', status=200)
+        else:
+            return JsonResponse({'error': 'Image not found'}, status=404)
+
+
 @csrf_exempt
 def get_hotels_of_a_city(request):
     # gets a city_id and return all hotels in that city
@@ -498,6 +516,22 @@ def get_hotels_of_a_city(request):
         return JsonResponse({'hotel': list(hotels)})
 
     return HttpResponse('Only post method allowed!', status=200)
+
+
+class CityHotelsView(APIView):
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                'city_id': openapi.Schema(
+                    type=openapi.TYPE_STRING),
+            }
+        )
+    )
+    def post(self, request):
+        city_id = request.data.get('city_id')
+        hotels = Hotel.objects.filter(city__id=city_id).values()
+        return JsonResponse({'hotel': list(hotels)})
 
 
 @csrf_exempt
@@ -536,16 +570,13 @@ def check_hotels(request):
     return HttpResponse('Only get method allowed!', status=200)
 
 
-"""
-{
-    "name" : "random hotel",
-    "location_x" : "1",
-    "location_y" : "1",
-    "address": "ad",
-    "stars" : "1",
-    "rating" : "1",
-    "number_of_rates" : "1",
-    "number_of_rooms" : "1",
-    "facilities" :"sample"
-}
-"""
+class CheckHotelsView(APIView):
+    def get(self, request):
+        all_admins = HotelAdmin.objects.all()
+        has_admin = [admin.hotel for admin in all_admins]
+        print(has_admin)
+        for hotel in has_admin:
+            hotel.status = True
+            hotel.save()
+        result = Hotel.objects.all().values()
+        return JsonResponse({'result': list(result)})
