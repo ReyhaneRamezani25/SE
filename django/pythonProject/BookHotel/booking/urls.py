@@ -7,7 +7,7 @@ urlpatterns = [
                 path('customer/signup/', signup_customer, name='signup_customer'),
                 path('customer/login/', login_customer, name='login_customer'),
                 path('customer/update/', change_password_customer, name='update_customer'),
-                path('site_admin/update/', login_site_admin),
+                path('site_admin/update/', change_password_site_admin),
                 path('site_admin/login/', login_site_admin),
                 path('site_admin/create_hotel/', HotelAPIView.as_view(), name='site_admin_create_hotel'),
                 path('site_admin/create_hotel_admin/', HotelAdminAPIView.as_view()),

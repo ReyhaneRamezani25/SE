@@ -230,6 +230,33 @@ def change_password_hotel_admin(request):
 
 
 @csrf_exempt
+def change_password_site_admin(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        username = data['username']
+        current_password = data['current_password']
+        new_password = data['new_password']
+
+        try:
+            tmp = SiteAdmin.objects.filter(user__username=username)
+            if not tmp:
+                return HttpResponse('Wrong password or username', status=200)
+
+            user = authenticate(request, username=username, password=current_password)
+            if user:
+                user.set_password(new_password)
+                user.save()
+                # Update the session with the new password hash
+                update_session_auth_hash(request, user)
+                return HttpResponse('Password changed successfully!', status=200)
+            else:
+                return HttpResponse('Current password is incorrect', status=200)
+        except:
+            return HttpResponse('Wrong password or username', status=200)
+    return HttpResponse('Please login with post method', status=200)
+
+
+@csrf_exempt
 def login_hotel_admin(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))

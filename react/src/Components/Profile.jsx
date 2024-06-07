@@ -30,53 +30,52 @@ const Profile = () => {
     setPassword2(e.target.value);
   };
 
-  const change_pass = () => {
-    console.log(user.username)
+  const change_pass = async () => {
+    console.log(user.username);
     console.log('Change Password:', { password1, password2 });
-    let url = ''
-    if (user.userType === 'customer'){
-      url = 'http://localhost:8000/customer/update/'
+    let url = '';
+    if (user.userType === 'customer') {
+      url = 'http://localhost:8000/customer/update/';
     } else if (user.userType === 'hotelAdmin') {
-      url = 'http://localhost:8000/hotel_admin/update/'
+      url = 'http://localhost:8000/hotel_admin/update/';
     } else {
-      url = 'http://localhost:8000/hotel_admin/update/'
+      url = 'http://localhost:8000/site_admin/update/';
     }
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        current_password: prevPassword,
-        new_password: password1,
-        username: user.username
-      }),
-    })
-    .then(response => {
+  
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          current_password: prevPassword,
+          new_password: password1,
+          username: user.username,
+        }),
+      });
+  
       if (!response.ok) {
         throw new Error(response.statusText);
       }
-      return response.text(); 
-    })
-    
-    .then(data => {
+  
+      const data = await response.text();
       console.log(data);
       setMessage(data);
-      if (data === 'Password changed successfully!'){
+  
+      if (data === 'Password changed successfully!') {
         logoutUser();
         unwanted_date_end();
         unwanted_date();
         unwanted_term();
         window.location.href = '/login';
       }
-    })
-    .catch(error => {
-      // Handle error
+    } catch (error) {
       console.error('Fetch error:', error.message);
-      setMessage(error.message)
-    });
-  }
-
+      setMessage(error.message);
+    }
+  };
+  
   const handleValidation = () => {
     setMessage('');
     if (password1 === '') {
