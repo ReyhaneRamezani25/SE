@@ -20,19 +20,20 @@ urlpatterns = [
                 path('hotel_admin/create_room', RoomAPIView.as_view()),
 
                 path('get_hotels/', get_hotels),
-                path('get_hotel_img/', get_specific_image),
+                path('get_hotel_img/', SpecificImage.as_view()),
 
                 path('home/search/', search),
-                path('home/get_hotel_data', hotel_data, name='get_hotel_data'),
-                path('home/get_city_hotels', get_hotels_of_a_city),
-                path('home/check_hotels/', check_hotels),
+                path('home/get_hotel_data', HotelDataView.as_view()),
+                path('home/get_city_hotels', CityHotelsView.as_view()),
+                path('home/check_hotels/', CheckHotelsView.as_view()),
                 path('get_hotel_rooms/', get_hotel_rooms),
                 path('reserve/', get_reserved_rooms),
-                path('test/', Test.as_view()),
                 path('reserve/add_guest', GuestAPIView.as_view()),
                 path('reserve/add_reserve', RoomAPIView.as_view()),
-                # for testing error handlers
+
                 path('test/', Test.as_view()),
+                # for testing error handlers
                 path('trigger-500/', trigger_500_error, name='trigger-500'),
                 path('trigger-400/', trigger_400_error, name='trigger-400'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+            ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
