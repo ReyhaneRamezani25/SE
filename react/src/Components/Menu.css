@@ -8,7 +8,7 @@
 .menu-columns {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 50px; /* Adjust spacing between items */
+  gap: 10px; /* Adjust spacing between items */
 }
 
 .menu-item {
@@ -53,4 +53,27 @@
   .menu-columns {
       grid-template-columns: 1fr; /* Change to a single column */
   }
+  .menu-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .menu-item img {
+    width: 300px;
+    height: auto;
+    margin-left: 80px;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 990px) {
+  .menu-columns {
+      grid-template-columns: repeat(3, 1fr); /* Change to three columns */
+  }
+  .menu-item img {
+    width: 200px;
+    height: auto;
+    margin-right: 20px;
+    margin-left: 10px;
+  }
+  
 }
