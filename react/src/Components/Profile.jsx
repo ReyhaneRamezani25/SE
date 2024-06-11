@@ -1,7 +1,8 @@
 import './Profile.css'
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { GoPerson } from 'react-icons/go';
+import { NavLink, useNavigate } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+// import { GoPerson } from 'react-icons/go';
 import { CiLock } from 'react-icons/ci';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { UserContext } from '../UserContext';
@@ -18,7 +19,8 @@ const Profile = () => {
 
   const { logoutUser } = useContext(UserContext);
   const { user, loginUser, unwanted_date_end, unwanted_date, unwanted_term } = useContext(UserContext);
-  
+  const navigate = useNavigate();
+
 
   const handlePasswordChange1 = (e) => {
     setPassword1(e.target.value);
@@ -95,6 +97,13 @@ const Profile = () => {
     handleValidation();
   };
 
+  const logout = () => {
+    logoutUser();
+    navigate('/login');
+    window.location.reload();
+
+  }
+
   return (
     <div className="profile-container">
       <div className="header">
@@ -169,17 +178,14 @@ const Profile = () => {
 
           </button>
 
-          <Link to="/login">
-            {/* <button
-              className="submit"
-            > */}
+          {/* <Link to="/login"> */}
           <button
             className="submit"
-            onClick={logoutUser} // Call logoutUser function when clicked
+            onClick={logout} // Call logoutUser function when clicked
           >
             خروج
           </button>
-          </Link>
+          {/* </Link> */}
         </div>
       </form>
     </div>

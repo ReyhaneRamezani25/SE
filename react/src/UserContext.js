@@ -54,6 +54,9 @@ export const UserProvider = ({ children }) => {
 
   const logoutUser = () => {
     setUser(null);
+    setDate(null);
+    setTerm(null);
+    set_date_end(null);
   };
 
   const wanted_date = (data) => {

@@ -10,8 +10,6 @@ const Menu = () => {
   const [hotelNames, setHotelNames] = useState([]);
   
   const {term, date, date_end} = useContext(UserContext);
-  console.log(term, date, date_end);
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   const fetchImage = async (url) => {
     try {
