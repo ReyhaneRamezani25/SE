@@ -201,19 +201,9 @@ const Hotel = () => {
                 setHotelName(data.name);
                 setHotelAddress('آدرس: ' + data.address)
                 setStarCount(data.stars + ' تعداد ستاره')
-                // setHotelName(data.facilities)
-                // setHotelName(data.city_id)
                 fetchImage(data.image, true);
                 setHotelPhoneNumber(data.phone_number + ' :تلفن')
-                // setHotelName(location_x)
-                // setHotelName(location_y)
-                // setHotelName(rating)
-                // setHotelName(number_of_rates)
-                // setHotelName(number_of_rooms)
-                // setHotelName(facilities)
-                // setHotelName(brochure)
                 setHotelRegulations('قوانین: ' + data.policies)
-                // set_hotel_name(data.data['name'])
                 fetchRooms();
             } else {
                 console.error('Failed to fetch images:', response.status);
@@ -269,7 +259,7 @@ const Hotel = () => {
 
               {hotelImage && (
                 <div className="custom-image">
-                  <img src={hotelImage} className="custom-image"/>
+                  <img src={hotelImage} alt="hotel image" className="custom-image"/>
                 </div>
               )}
 
@@ -320,7 +310,7 @@ const Hotel = () => {
 
                     {roomImages && (
                       <div className="custom-image-room">
-                        <img src={roomImages[index]} alt="Hotel" className="custom-image-room" />
+                        <img src={roomImages[index]} alt="Room Image" className="custom-image-room" />
                       </div>
                     )}
                     <div className="room-details">
