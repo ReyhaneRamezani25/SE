@@ -102,11 +102,14 @@ const Login = () => {
               onChange={handlePasswordChange}
             />
             <div
-              className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />} {/* Eye icons */}
-            </div>
+            className="toggle-password"
+            role="button"
+            tabIndex="0"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+          </div>
+
           </div>
           <p>{message}</p>
         </div>
