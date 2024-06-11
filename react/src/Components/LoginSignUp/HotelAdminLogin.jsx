@@ -41,7 +41,6 @@ const HotelAdminLogin = () => {
       }
       return response.text(); 
     })
-    
     .then(data => {  
       console.log(data);
       setMessage(data);
@@ -75,13 +74,16 @@ const HotelAdminLogin = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     handleValidation();
-
-    // Add login logic here
-    console.log('Login:', { email, password });
   };
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleTogglePasswordKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setShowPassword(!showPassword);
+    }
   };
 
   return (
@@ -109,14 +111,15 @@ const HotelAdminLogin = () => {
               value={password}
               onChange={handlePasswordChange}
             />
-          <div
-            className="toggle-password"
-            role="button"
-            tabIndex="0"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
-          </div>
+            <div
+              className="toggle-password"
+              role="button"
+              tabIndex="0"
+              onClick={togglePassword}
+              onKeyDown={handleTogglePasswordKeyDown}
+            >
+              {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+            </div>
           </div>
           <p>{message}</p>
         </div>
@@ -129,7 +132,6 @@ const HotelAdminLogin = () => {
             onClick={handleLogin}
           >
             Login
-
           </button>
         </div>
       </form>
