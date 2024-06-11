@@ -7,7 +7,6 @@ import { MdOutlineEmail } from 'react-icons/md';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { UserContext } from '../../UserContext';
 
-
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -47,7 +46,6 @@ const SignUp = () => {
       }
       return response.text(); 
     })
-    
     .then(data => {
       console.log(data)
       setMessage(data)
@@ -56,7 +54,6 @@ const SignUp = () => {
         navigate('/');
       }
     })
-    
     .catch(error => {
       // Handle error
       console.error('Fetch error:', error.message);
@@ -86,6 +83,15 @@ const SignUp = () => {
     handleValidation();
   };
 
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleTogglePasswordKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setShowPassword(!showPassword);
+    }
+  };
 
   return (
     <div className="login-container">
@@ -122,13 +128,14 @@ const SignUp = () => {
               onChange={handlePasswordChange}
             />
             <div
-            className="toggle-password"
-            role="button"
-            tabIndex="0"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
-          </div>
+              className="toggle-password"
+              role="button"
+              tabIndex="0"
+              onClick={togglePassword}
+              onKeyDown={handleTogglePasswordKeyDown}
+            >
+              {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+            </div>
           </div>
           <p>{message}</p>
         </div>
@@ -141,7 +148,6 @@ const SignUp = () => {
             onClick={handleSignUp}
           >
             Sign Up
-
           </button>
           
           <Link to="/login">
