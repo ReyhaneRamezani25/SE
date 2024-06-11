@@ -198,11 +198,11 @@ const Hotel = () => {
             if (response.ok) {
                 const data = await response.json();
                 setHotelName(data.name);
-                setHotelAddress('آدرس: ' + data.address)
-                setStarCount(data.stars + ' تعداد ستاره')
+                setHotelAddress('آدرس: ' + data.address);
+                setStarCount(data.stars + ' تعداد ستاره');
                 fetchImage(data.image, true);
-                setHotelPhoneNumber(data.phone_number + ' :تلفن')
-                setHotelRegulations('قوانین: ' + data.policies)
+                setHotelPhoneNumber(data.phone_number + ' :تلفن');
+                setHotelRegulations('قوانین: ' + data.policies);
                 fetchRooms();
             } else {
                 console.error('Failed to fetch images:', response.status);
@@ -216,7 +216,7 @@ const Hotel = () => {
   }, [index]);
 
   const createNewRoom = () => {
-    console.log('Creating new room')
+    console.log('Creating new room');
   }
 
   const handleLogin = (e) => {
@@ -348,7 +348,9 @@ const Hotel = () => {
                             <input
                               type="text"
                               value={guest.id}
-                              onChange={(e) => nationalIdCheck(index, 'id', e.target.value)}/>
+                              onChange={(e) => nationalIdCheck(index, 'id', e.target.value)}
+                            />{/* Explicit space */}
+                            {' '}
                             کد ملی
                           </label>
                           <label>
@@ -356,14 +358,17 @@ const Hotel = () => {
                               type="text"
                               value={guest.name}
                               onChange={(e) => nationalIdCheck(index, 'name', e.target.value)}
-                            />
+                            />{/* Explicit space */}
+                            {' '}
                             نام خانوادگی
                           </label>
                           <label>
                             <input
                               type="text"
                               value={guest.lastName}
-                              onChange={(e) => nationalIdCheck(index, 'lastName', e.target.value)}/>
+                              onChange={(e) => nationalIdCheck(index, 'lastName', e.target.value)}
+                            />{/* Explicit space */}
+                            {' '}
                             نام
                           </label>
                           <h3>مهمان {index + 1}</h3>
