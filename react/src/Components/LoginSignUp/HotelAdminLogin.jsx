@@ -111,7 +111,8 @@ const HotelAdminLogin = () => {
             />
             <div
               className="toggle-password"
-              onClick={togglePassword}
+              role="button"
+              onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />} {/* Eye icons */}
             </div>
