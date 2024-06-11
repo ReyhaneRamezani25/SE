@@ -1,47 +1,56 @@
 .menu-container {
-    width: 100%;
-    margin-top: 100px;
-    margin-right: 30px;
-    margin-left: 30px;
-  }
-  
+  width: 100%;
+  margin-top: 100px;
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+.menu-columns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 50px; /* Adjust spacing between items */
+}
+
+.menu-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-item img {
+  width: 100%;
+  height: auto;
+}
+
+.hotel-id {
+  text-align: right; /* Align the hotel ID to the right */
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 100px;
+  width: 600px;
+  background: #fafafa;
+  padding-bottom: 30px;
+  border-radius: 30px;
+}
+
+.image-container p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-container a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 420px) and (max-width: 720px) {
   .menu-columns {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 50px; /* Adjust spacing between items */
+      grid-template-columns: 1fr; /* Change to a single column */
   }
-  
-  .menu-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .menu-item img {
-    width: 100%;
-    height: auto;
-  }
-  .hotel-id {
-    text-align: right; /* Align the hotel ID to the right */
-  }
-  
-  .image-container{
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    margin-top: 100px;
-    width: 600px;
-    background:#fafafa;
-    padding-bottom: 30px;
-    border-radius: 30px;
-}
-.image-container p{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.image-container a{
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
