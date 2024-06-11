@@ -80,6 +80,10 @@ const HotelAdminLogin = () => {
     console.log('Login:', { email, password });
   };
 
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="login-container">
       <div className="header">
@@ -107,7 +111,7 @@ const HotelAdminLogin = () => {
             />
             <div
               className="toggle-password"
-              onClick={setShowPassword(!showPassword)}
+              onClick={togglePassword}
             >
               {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />} {/* Eye icons */}
             </div>
