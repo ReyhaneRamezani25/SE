@@ -75,9 +75,16 @@ const SiteAdminLogin = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     handleValidation();
+  };
 
-    // Add login logic here
-    console.log('Login:', { email, password });
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleTogglePasswordKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setShowPassword(!showPassword);
+    }
   };
 
   return (
@@ -106,18 +113,17 @@ const SiteAdminLogin = () => {
               onChange={handlePasswordChange}
             />
             <div
-            className="toggle-password"
-            role="button"
-            tabIndex="0"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
-          </div>
+              className="toggle-password"
+              role="button"
+              tabIndex="0"
+              onClick={togglePassword}
+              onKeyDown={handleTogglePasswordKeyDown}
+            >
+              {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+            </div>
           </div>
           <p>{message}</p>
         </div>
-          {/* <p>Are you a Hotel admin?</p>
-          <Link to="/login-hotel">click here</Link> */}
         <div className="submit-container">
           <button
             type="submit"
@@ -125,7 +131,6 @@ const SiteAdminLogin = () => {
             onClick={handleLogin}
           >
             Login
-
           </button>
         </div>
       </form>
