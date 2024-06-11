@@ -130,7 +130,6 @@ const Hotel = () => {
     setShowPopup(false);
   };
 
-
   const fetchImage = async (url, hotel) => {
     try {
         const requestData = {
@@ -259,7 +258,7 @@ const Hotel = () => {
 
               {hotelImage && (
                 <div className="custom-image">
-                  <img src={hotelImage} alt="hotel image" className="custom-image"/>
+                  <img alt="hotel" src={hotelImage} className="custom-image"/>
                 </div>
               )}
 
@@ -310,7 +309,7 @@ const Hotel = () => {
 
                     {roomImages && (
                       <div className="custom-image-room">
-                        <img src={roomImages[index]} alt="Room Image" className="custom-image-room" />
+                        <img src={roomImages[index]} alt="Room" className="custom-image-room" />
                       </div>
                     )}
                     <div className="room-details">
