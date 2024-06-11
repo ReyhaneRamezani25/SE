@@ -86,7 +86,7 @@ return (
               tabIndex="0"
               onClick={() => handleClick(hotelIds[index])}
             >
-              <img src={imageUrl} alt={`Image ${index}`} />
+              <img src={imageUrl} alt={`hotel ${index}`} />
             </div>
             <div className="hotel-id">هتل: {hotelNames[index]}</div>
           </div>
