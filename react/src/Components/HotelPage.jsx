@@ -348,8 +348,7 @@ const Hotel = () => {
                             <input
                               type="text"
                               value={guest.id}
-                              onChange={(e) => nationalIdCheck(index, 'id', e.target.value)}
-                            />
+                              onChange={(e) => nationalIdCheck(index, 'id', e.target.value)}/>
                             کد ملی
                           </label>
                           <label>
@@ -364,8 +363,7 @@ const Hotel = () => {
                             <input
                               type="text"
                               value={guest.lastName}
-                              onChange={(e) => nationalIdCheck(index, 'lastName', e.target.value)}
-                            />
+                              onChange={(e) => nationalIdCheck(index, 'lastName', e.target.value)}/>
                             نام
                           </label>
                           <h3>مهمان {index + 1}</h3>
