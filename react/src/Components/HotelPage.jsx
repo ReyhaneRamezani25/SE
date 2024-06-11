@@ -1,14 +1,12 @@
 import { useParams } from 'react-router-dom';
 import './HotelPage.css';
-import React, { useState, useEffect, useContext } from 'react';
-import axios, { all } from 'axios';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
 
 const Hotel = () => {
   const { index } = useParams();
   const [hotelImage, setHotelImage] = useState('1');
-
   const [hotelName, setHotelName] = useState('نام');
   const [ownerDetails, setOwnerDetails] = useState('اطلاعات مالک');
   const [hotelAddress, setHotelAddress] = useState('آدرس');
@@ -16,12 +14,15 @@ const Hotel = () => {
   const [hotelRegulations, setHotelRegulations] = useState('مقررات');
   const [starCount, setStarCount] = useState('تعداد ستاره');
   const [roomImages, setRoomImages] = useState([]);
-  const [roomCount, setRoomCount] = useState([]);
+  const [room, setRoom] = useState([]);
   const [roomInputs, setRoomInputs] = useState({});
   const [showPopup, setShowPopup] = useState(false);
+  const [guests, setGuests] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
 
   let totalGuest = 0;
-  
+  let navigate = useNavigate(); 
+
   const persianToEnglishDigitMap = {
     '۰': '0',
     '۱': '1',
@@ -34,19 +35,10 @@ const Hotel = () => {
     '۸': '8',
     '۹': '9'
   };
-  
+
   const convertPersianToEnglishNumbers = (input) => {
     return input.replace(/[۰-۹]/g, (match) => persianToEnglishDigitMap[match]);
-  };  
-
-  const [room, setRoom] = useState([]);
-
-  // Reyhane code
-
-  const [guests, setGuests] = useState([]);
-  const [submitted, setSubmitted] = useState(false);
-
-  let navigate = useNavigate(); 
+  };
 
   const nationalIdCheck = (index, field, value) => {
     const newGuests = [...guests];
@@ -72,8 +64,7 @@ const Hotel = () => {
 
     if (isValid) {
       console.log('Guests:', guests);
-      // Submit the guests data to your backend or perform other actions
-      routeChange(); // Corrected the onClick event
+      routeChange();
     } else {
       alert('لطفا مشخصات تمامی میهمانان را وارد کنید');
     }
@@ -84,13 +75,14 @@ const Hotel = () => {
     navigate(path);
   }
 
-// Reyhane code
   const handleInputChange = (e, roomIndex) => {
     const value = e.target.value;
-    setRoomInputs(prevState => ({
-      ...prevState,
-      [roomIndex]: value,
-    }));  
+    if (value === '' || (Number(value) >= 0 && !isNaN(Number(value)))) {
+      setRoomInputs(prevState => ({
+        ...prevState,
+        [roomIndex]: value,
+      }));
+    }
   };
 
   const handleButtonClick = async () => {
@@ -122,7 +114,6 @@ const Hotel = () => {
   }
 
   const handleCellClick = (content) => {
-    // setSelectedCellContent(content);
     setShowPopup(true);
   };
 
@@ -146,7 +137,7 @@ const Hotel = () => {
           setHotelImage(imageUrl);
         }
         else{
-          return imageUrl
+          return imageUrl;
         }
       } catch (error) {
         console.error('Error fetching image:', error);
@@ -177,7 +168,6 @@ const Hotel = () => {
         for (const url of imageUrls) {
           const fetchedImages = await Promise.all(imageUrls.map(url => fetchImage(url, false)));
           setRoomImages(fetchedImages);
-          // console.log(r)
         }
       }
     })
@@ -185,7 +175,7 @@ const Hotel = () => {
       console.error('Fetch error:', error.message);
     });
   };
-  
+
   useEffect(() => {
     const fetchHotel = async () => {
         try {
@@ -244,149 +234,147 @@ const Hotel = () => {
     setHotelRegulations(e.target.value);
   };
 
-
   return (
     <div className='main-container'>
-        <div className="container">
-          <div className="left-section">
-
-              <div className="">
-                {[...Array(1)].map((_, index) => (
-                  <i key={index} className="fas fa-star"></i>
-                ))}
-              </div>
-
-              {hotelImage && (
-                <div className="custom-image">
-                  <img alt="hotel" src={hotelImage} className="custom-image"/>
-                </div>
-              )}
-
-              <div className="hotel_page_input2">
-                  <div className="right-aligned">{hotelName}</div>
-              </div>
-
-              <div className="hotel_page_input2">
-                  <div className="right-aligned">{ownerDetails}</div>
-              </div>
-
-              <div className="hotel_page_input2">
-                  <div className="right-aligned">{hotelAddress}</div>
-              </div>
-
-              <div className="hotel_page_input2">
-                  <div className="right-aligned">{hotelPhoneNumber}</div>
-              </div>
-
-              <div className="hotel_page_input2">
-                  <div className="right-aligned">{hotelRegulations}</div>
-              </div>
-
-              <div className="hotel_page_input2">
-                  <div className="right-aligned">{starCount}</div>
-              </div>
+      <div className="container">
+        <div className="left-section">
+          <div className="">
+            {[...Array(1)].map((_, index) => (
+              <i key={index} className="fas fa-star"></i>
+            ))}
           </div>
 
-          <div className="right-section">
-
-            {Object.entries(room).map(([key, value], index) => (
-              <div className="hotel_page_input3 room-container" key={key}>
-                {typeof value === 'object' ? (
-                  <div className="room-info">
-                    <div className="room-index"></div>
-                    <div className="star-rating">
-                      {[...Array(5)].map((_, index) => (
-                        <i key={index} className="fas fa-star"></i>
-                      ))}
-                    </div>
-
-                    <input
-                      className='reyhane'
-                      type='number'
-                      value={roomInputs[index] || ''}
-                      onChange={(e) => handleInputChange(e, index)}
-                    />
-
-                    {roomImages && (
-                      <div className="custom-image-room">
-                        <img src={roomImages[index]} alt="Room" className="custom-image-room" />
-                      </div>
-                    )}
-                    <div className="room-details">
-                      {Object.entries(value).map(([subKey, subValue], inner_index) => (
-                        
-                        <div className="room-detail" key={subKey}>
-                          {subValue.toString()}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  value.toString()
-                )}
-              </div>
-            ))}
-
-            <div className='button-container'>
-            <button className="order-button" onClick={() => handleButtonClick()}>رزرو</button>
+          {hotelImage && (
+            <div className="custom-image">
+              <img alt="hotel" src={hotelImage} className="custom-image"/>
             </div>
+          )}
+
+          <div className="hotel_page_input2">
+            <div className="right-aligned">{hotelName}</div>
+          </div>
+
+          <div className="hotel_page_input2">
+            <div className="right-aligned">{ownerDetails}</div>
+          </div>
+
+          <div className="hotel_page_input2">
+            <div className="right-aligned">{hotelAddress}</div>
+          </div>
+
+          <div className="hotel_page_input2">
+            <div className="right-aligned">{hotelPhoneNumber}</div>
+          </div>
+
+          <div className="hotel_page_input2">
+            <div className="right-aligned">{hotelRegulations}</div>
+          </div>
+
+          <div className="hotel_page_input2">
+            <div className="right-aligned">{starCount}</div>
           </div>
         </div>
-        {showPopup && (
-          <div className="reserve-popup">
-            <div className="reserve-popup-content">
-              <form onSubmit={handleSubmit}>
-                <div className='reserve-popup-content-scrollable'>
-                  <div className='reyhane-container'>
-                    <h1 className='reyhane-header'>رزرو آنلاین</h1>
-                    <div className='reyhane-room-container'>اتاق های انتخابی</div>
-                    <div className='reyhane-information-header'>لطفا مشخصات تمامی میهمانان را وارد کنید</div>
-                    <div className='reyhane-information-tail'>
-                      {guests.map((guest, index) => (
-                        <div className='reyhane-guest-row' key={index}>
-                          <label>
-                            <input
-                              type="text"
-                              value={guest.id}
-                              onChange={(e) => nationalIdCheck(index, 'id', e.target.value)}
-                            />{/* Explicit space */}
-                            {' '}
-                            کد ملی
-                          </label>
-                          <label>
-                            <input
-                              type="text"
-                              value={guest.name}
-                              onChange={(e) => nationalIdCheck(index, 'name', e.target.value)}
-                            />{/* Explicit space */}
-                            {' '}
-                            نام خانوادگی
-                          </label>
-                          <label>
-                            <input
-                              type="text"
-                              value={guest.lastName}
-                              onChange={(e) => nationalIdCheck(index, 'lastName', e.target.value)}
-                            />{/* Explicit space */}
-                            {' '}
-                            نام
-                          </label>
-                          <h3>مهمان {index + 1}</h3>
-                        </div>
-                      ))}
+
+        <div className="right-section">
+          {Object.entries(room).map(([key, value], index) => (
+            <div className="hotel_page_input3 room-container" key={key}>
+              {typeof value === 'object' ? (
+                <div className="room-info">
+                  <div className="room-index"></div>
+                  <div className="star-rating">
+                    {[...Array(5)].map((_, index) => (
+                      <i key={index} className="fas fa-star"></i>
+                    ))}
+                  </div>
+
+                  <input
+                    className='reyhane'
+                    type='number'
+                    min='0'
+                    value={roomInputs[index] || ''}
+                    onChange={(e) => handleInputChange(e, index)}
+                  />
+
+                  {roomImages && (
+                    <div className="custom-image-room">
+                      <img src={roomImages[index]} alt="Room" className="custom-image-room" />
                     </div>
-                  </div>
-                  <div className='button-container'>
-                    <button className="close-button">تایید</button>
-                  </div>
-                  <div className='button-container'>
-                    <button className="close-button" onClick={closePopup}>بازگشت</button>
+                  )}
+                  <div className="room-details">
+                    {Object.entries(value).map(([subKey, subValue]) => (
+                      <div className="room-detail" key={subKey}>
+                        {subValue.toString()}
+                      </div>
+                    ))}
                   </div>
                 </div>
-              </form>
+              ) : (
+                value.toString()
+              )}
             </div>
+          ))}
+
+          <div className='button-container'>
+            <button className="order-button" onClick={handleButtonClick}>رزرو</button>
           </div>
-        )}
+        </div>
+      </div>
+
+      {showPopup && (
+        <div className="reserve-popup">
+          <div className="reserve-popup-content">
+            <form onSubmit={handleSubmit}>
+              <div className='reserve-popup-content-scrollable'>
+                <div className='reyhane-container'>
+                  <h1 className='reyhane-header'>رزرو آنلاین</h1>
+                  <div className='reyhane-room-container'>اتاق های انتخابی</div>
+                  <div className='reyhane-information-header'>لطفا مشخصات تمامی میهمانان را وارد کنید</div>
+                  <div className='reyhane-information-tail'>
+                    {guests.map((guest, index) => (
+                      <div className='reyhane-guest-row' key={index}>
+                        <label>
+                          <input
+                            type="text"
+                            value={guest.id}
+                            onChange={(e) => nationalIdCheck(index, 'id', e.target.value)}
+                          />
+                          {' '}
+                          کد ملی
+                        </label>
+                        <label>
+                          <input
+                            type="text"
+                            value={guest.name}
+                            onChange={(e) => nationalIdCheck(index, 'name', e.target.value)}
+                          />
+                          {' '}
+                          نام خانوادگی
+                        </label>
+                        <label>
+                          <input
+                            type="text"
+                            value={guest.lastName}
+                            onChange={(e) => nationalIdCheck(index, 'lastName', e.target.value)}
+                          />
+                          {' '}
+                          نام
+                        </label>
+                        <h3>مهمان {index + 1}</h3>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className='button-container'>
+                  <button type="submit" className="close-button">تایید</button>
+                </div>
+                <div className='button-container'>
+                  <button type="button" className="close-button" onClick={closePopup}>بازگشت</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
