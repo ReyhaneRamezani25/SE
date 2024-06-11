@@ -121,11 +121,13 @@ const Profile = () => {
                 value={prevPassword}
                 onChange={handlePrevPasswordChange}
               />
-          <div
+            <div
             className="toggle-password"
+            role="button"
+            tabIndex="0"
             onClick={() => setShowPrevPassword(!showPrevPassword)}
           >
-            {showPrevPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />} {/* Eye icons */}
+            {showPrevPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
           </div>
         </div>
 
@@ -139,12 +141,14 @@ const Profile = () => {
             value={password1}
             onChange={handlePasswordChange1}
           />
-          <div
+            <div
             className="toggle-password"
+            role="button"
+            tabIndex="0"
             onClick={() => setShowPassword1(!showPassword1)}
           >
-            {showPassword1 ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />} {/* Eye icons */}
-            </div>
+            {showPassword1 ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+          </div>
           </div>
 
         {/* Repeat new password */}
@@ -157,8 +161,10 @@ const Profile = () => {
             value={password2}
             onChange={handlePasswordChange2}
           />
-          <div
+            <div
             className="toggle-password"
+            role="button"
+            tabIndex="0"
             onClick={() => setShowPassword2(!showPassword2)}
           >
             {showPassword2 ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}

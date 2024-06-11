@@ -80,10 +80,15 @@ return (
       <div className="menu-columns">
         {imageSrcs.map((imageUrl, index) => (
           <div key={index} className="image-columns">
-            <div className="menu-item" onClick={() => handleClick(hotelIds[index])}>
+            <div
+              className="menu-item"
+              role="button"
+              tabIndex="0"
+              onClick={() => handleClick(hotelIds[index])}
+            >
               <img src={imageUrl} alt={`Image ${index}`} />
             </div>
-            <div className="hotel-id">هتل: {hotelNames[index]}</div> {/* Display hotel ID on the right */}
+            <div className="hotel-id">هتل: {hotelNames[index]}</div>
           </div>
         ))}
       </div>
