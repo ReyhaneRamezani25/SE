@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types'; // Import prop-types for prop validation
 import { NavLink } from 'react-router-dom';
 import './NavigationBar.css';
 import DatePicker from "react-multi-date-picker";
@@ -8,13 +9,12 @@ import persian_fa from 'react-date-object/locales/persian_fa';
 import persian from 'react-date-object/calendars/persian';
 
 const SearchBar = ({ onSearch }) => {
-
   const { term, wanted_term } = useContext(UserContext);
   const [searchTerm, setSearchTerm] = useState(term ? term.term : null);
 
   console.log("search term is: ", searchTerm)
   console.log("term is: ", term)
-  
+
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -27,7 +27,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <form className="search-bar"   onSubmit={handleSubmit}>
+    <form className="search-bar" onSubmit={handleSubmit}>
       <input
         type="text"
         value={searchTerm}
@@ -39,15 +39,20 @@ const SearchBar = ({ onSearch }) => {
   );
 };
 
+SearchBar.propTypes = {
+  onSearch: PropTypes.func.isRequired, // Validate onSearch as a required function
+};
+
 const NavigationBar = () => {
   const { user, loginUser } = useContext(UserContext);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const { wanted_date, wanted_date_end } = useContext(UserContext);
   console.log("user is: ", user);
+  
   const handleSearch = (searchTerm) => {
-    wanted_date_end({end: endDate });
-    wanted_date({start: startDate});
+    wanted_date_end({ end: endDate });
+    wanted_date({ start: startDate });
     // loginUser({ start: startDate, end: endDate });
   };
 
