@@ -1,8 +1,6 @@
-import './Profile.css'
+import './Profile.css';
 import React, { useState, useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
-// import { GoPerson } from 'react-icons/go';
 import { CiLock } from 'react-icons/ci';
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { UserContext } from '../UserContext';
@@ -11,7 +9,6 @@ const Profile = () => {
   const [password1, setPassword1] = useState('');
   const [password2, setPassword2] = useState('');
   const [prevPassword, setPrevPassword] = useState('');
-  
   const [message, setMessage] = useState('');
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
@@ -20,7 +17,6 @@ const Profile = () => {
   const { logoutUser } = useContext(UserContext);
   const { user, loginUser, unwanted_date_end, unwanted_date, unwanted_term } = useContext(UserContext);
   const navigate = useNavigate();
-
 
   const handlePasswordChange1 = (e) => {
     setPassword1(e.target.value);
@@ -101,7 +97,6 @@ const Profile = () => {
     logoutUser();
     navigate('/login');
     window.location.reload();
-
   }
 
   return (
@@ -115,63 +110,78 @@ const Profile = () => {
         <div className="inputs">
           <div className="input">
             <CiLock className="icon" />
-              <input
-                type={showPrevPassword ? 'text' : 'password'}
-                placeholder="رمز فعلی"
-                value={prevPassword}
-                onChange={handlePrevPasswordChange}
-              />
+            <input
+              type={showPrevPassword ? 'text' : 'password'}
+              placeholder="رمز فعلی"
+              value={prevPassword}
+              onChange={handlePrevPasswordChange}
+            />
             <div
-            className="toggle-password"
-            role="button"
-            tabIndex="0"
-            onClick={() => setShowPrevPassword(!showPrevPassword)}
-          >
-            {showPrevPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+              className="toggle-password"
+              role="button"
+              tabIndex="0"
+              onClick={() => setShowPrevPassword(!showPrevPassword)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setShowPrevPassword(!showPrevPassword);
+                }
+              }}
+            >
+              {showPrevPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+            </div>
           </div>
-        </div>
 
-        {/* The new password */}
+          {/* The new password */}
 
-        <div className="input">
-          <CiLock className="icon" />
-          <input
-            type={showPassword1 ? 'text' : 'password'}
-            placeholder="رمز جدید"
-            value={password1}
-            onChange={handlePasswordChange1}
-          />
+          <div className="input">
+            <CiLock className="icon" />
+            <input
+              type={showPassword1 ? 'text' : 'password'}
+              placeholder="رمز جدید"
+              value={password1}
+              onChange={handlePasswordChange1}
+            />
             <div
-            className="toggle-password"
-            role="button"
-            tabIndex="0"
-            onClick={() => setShowPassword1(!showPassword1)}
-          >
-            {showPassword1 ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
-          </div>
+              className="toggle-password"
+              role="button"
+              tabIndex="0"
+              onClick={() => setShowPassword1(!showPassword1)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setShowPassword1(!showPassword1);
+                }
+              }}
+            >
+              {showPassword1 ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+            </div>
           </div>
 
-        {/* Repeat new password */}
+          {/* Repeat new password */}
 
-        <div className="input">
-          <CiLock className="icon" />
-          <input
-            type={showPassword2 ? 'text' : 'password'}
-            placeholder="تکرار رمز جدید"
-            value={password2}
-            onChange={handlePasswordChange2}
-          />
+          <div className="input">
+            <CiLock className="icon" />
+            <input
+              type={showPassword2 ? 'text' : 'password'}
+              placeholder="تکرار رمز جدید"
+              value={password2}
+              onChange={handlePasswordChange2}
+            />
             <div
-            className="toggle-password"
-            role="button"
-            tabIndex="0"
-            onClick={() => setShowPassword2(!showPassword2)}
-          >
-            {showPassword2 ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+              className="toggle-password"
+              role="button"
+              tabIndex="0"
+              onClick={() => setShowPassword2(!showPassword2)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setShowPassword2(!showPassword2);
+                }
+              }}
+            >
+              {showPassword2 ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+            </div>
           </div>
-        </div>
 
-        <p>{message}</p>
+          <p>{message}</p>
 
         </div>
         <div className="submit-container">
@@ -181,17 +191,13 @@ const Profile = () => {
             onClick={handleLogin}
           >
             ذخیره
-
           </button>
-
-          {/* <Link to="/login"> */}
           <button
             className="submit"
-            onClick={logout} // Call logoutUser function when clicked
+            onClick={logout}
           >
             خروج
           </button>
-          {/* </Link> */}
         </div>
       </form>
     </div>
