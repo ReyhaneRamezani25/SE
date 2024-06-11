@@ -41,7 +41,6 @@ const Login = () => {
       }
       return response.text(); 
     })
-    
     .then(data => {  
       console.log(data);
       setMessage(data);
@@ -102,14 +101,18 @@ const Login = () => {
               onChange={handlePasswordChange}
             />
             <div
-            className="toggle-password"
-            role="button"
-            tabIndex="0"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
-          </div>
-
+              className="toggle-password"
+              role="button"
+              tabIndex="0"
+              onClick={() => setShowPassword(!showPassword)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setShowPassword(!showPassword);
+                }
+              }}
+            >
+              {showPassword ? <FaRegEyeSlash className='toggle-password' /> : <FaRegEye />}
+            </div>
           </div>
           <p>{message}</p>
         </div>
@@ -122,13 +125,9 @@ const Login = () => {
             onClick={handleLogin}
           >
             Login
-
           </button>
-          
           <Link to="/sign-up">
-            <button
-              className="submit"
-            >
+            <button className="submit">
               Don't have any account?
             </button>
           </Link>
