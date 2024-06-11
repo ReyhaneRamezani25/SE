@@ -1,4 +1,3 @@
-// export default Menu;
 import React, { useState, useEffect, useContext } from 'react';
 import './Menu.css';
 import axios from 'axios';
@@ -74,28 +73,34 @@ const Menu = () => {
     window.location.href = `/hotel/${index}`;
   };
 
-return (
-  <div className='menu-container'>
-    <div className='header'>
-      <div className="menu-columns">
-        {imageSrcs.map((imageUrl, index) => (
-          <div key={index} className="image-columns">
-            <div
-              className="menu-item"
-              role="button"
-              tabIndex="0"
-              onClick={() => handleClick(hotelIds[index])}
-            >
-              <img src={imageUrl} alt={`hotel ${index}`} />
+  const handleKeyDown = (event, index) => {
+    if (event.key === 'Enter') {
+      handleClick(index);
+    }
+  };
+
+  return (
+    <div className='menu-container'>
+      <div className='header'>
+        <div className="menu-columns">
+          {imageSrcs.map((imageUrl, index) => (
+            <div key={index} className="image-columns">
+              <div
+                className="menu-item"
+                role="button"
+                tabIndex="0"
+                onClick={() => handleClick(hotelIds[index])}
+                onKeyDown={(event) => handleKeyDown(event, hotelIds[index])}
+              >
+                <img src={imageUrl} alt={`hotel ${index}`} />
+              </div>
+              <div className="hotel-id">هتل: {hotelNames[index]}</div>
             </div>
-            <div className="hotel-id">هتل: {hotelNames[index]}</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
-
+  );
 };
 
 export default Menu;
