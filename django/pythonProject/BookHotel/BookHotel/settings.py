@@ -25,9 +25,7 @@ SECRET_KEY = 'django-insecure-leau^^aoyq)bhtt=h@#g!lclr^)ma&+adpsw!(i65l$_k7ux5n
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-# SWAGGER_SETTINGS = {
-#     'USE_SESSION_AUTH': False
-# }
+
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'api_key': {
@@ -159,11 +157,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 MEDIA_URL = '/media/'
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': [
-#         'rest_framework.authentication.TokenAuthentication',
-#     ]
-# }
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
