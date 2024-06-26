@@ -19,6 +19,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
+import yaml
+import os
+# print()
+# Loading yaml file
+with open("secret.yaml") as stream:
+    try:
+
+        secret_data = yaml.safe_load(stream)
+    except yaml.YAMLError as exc:
+        print(exc)
+        exit(0)
+
+SECRET_KEY = secret_data[0].get('django')[0].get('SECRET_KEY')
+
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']

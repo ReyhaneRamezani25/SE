@@ -46,7 +46,7 @@ const SiteAdminLogin = () => {
       console.log(data);
       setMessage(data);
       if (data === 'Login Accepted!'){
-        loginUser({ username: email, userType: 'siteAdmin' });
+        loginUser({ username: email, userType: 'siteAdmin', password: password });
         navigate('/');
       }
     })

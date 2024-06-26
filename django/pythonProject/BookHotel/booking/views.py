@@ -315,6 +315,24 @@ def hotel_admin_analysis(request):
             }], safe=False)
 
 
+@csrf_exempt
+def get_hotel_admin(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+
+        user = authenticate(request, username=data['username'], password=data['password'])
+        if not user:
+            return HttpResponse('Only Admin can call this API', status=200)
+        admin = HotelAdmin.objects.filter(user__username=data['username'])[0]
+        hotel = Hotel.objects.filter(id=admin.hotel.id).values()[0]
+        hotel['image'] = Hotel.objects.filter(id=admin.hotel.id)[0].image.path
+        print(hotel)
+        print(type(hotel))
+        return JsonResponse(hotel)
+
+    return HttpResponse('Only post method allowed!', status=200)    
+
+
 # -------------------------- OTHERS -------------------------- #
 @csrf_exempt
 def hotel_list(request):

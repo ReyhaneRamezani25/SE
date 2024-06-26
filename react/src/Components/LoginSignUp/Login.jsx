@@ -45,7 +45,7 @@ const Login = () => {
       console.log(data);
       setMessage(data);
       if (data === 'Login Accepted!'){
-        loginUser({ username: email, userType: 'customer' });
+        loginUser({ username: email, userType: 'customer', password: password});
         navigate('/');
       }
     })
