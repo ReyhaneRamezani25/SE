@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types'; // Import prop-types for prop validation
+import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import './NavigationBar.css';
 import DatePicker from "react-multi-date-picker";
@@ -7,13 +7,11 @@ import RangeDatePicker from "react-multi-date-picker";
 import { UserContext } from '../UserContext';
 import persian_fa from 'react-date-object/locales/persian_fa';
 import persian from 'react-date-object/calendars/persian';
+import { format, addDays, isBefore } from 'date-fns'; 
 
 const SearchBar = ({ onSearch }) => {
   const { term, wanted_term } = useContext(UserContext);
   const [searchTerm, setSearchTerm] = useState(term ? term.term : null);
-
-  console.log("search term is: ", searchTerm)
-  console.log("term is: ", term)
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -40,33 +38,60 @@ const SearchBar = ({ onSearch }) => {
 };
 
 SearchBar.propTypes = {
-  onSearch: PropTypes.func.isRequired, // Validate onSearch as a required function
+  onSearch: PropTypes.func.isRequired,
 };
 
 const NavigationBar = () => {
-  const { user, loginUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const { wanted_date, wanted_date_end } = useContext(UserContext);
-  console.log("user is: ", user);
-  
-  const handleSearch = (searchTerm) => {
+
+  const handleSearch = () => {
     wanted_date_end({ end: endDate });
     wanted_date({ start: startDate });
-    // loginUser({ start: startDate, end: endDate });
   };
 
   const handleStartDateChange = (start_date) => {
-    setStartDate(start_date);
-    const startDateString = start_date.format('YYYY/MM/DD');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selectedStartDate = new Date(start_date);
+    selectedStartDate.setHours(0, 0, 0, 0);
+
+    if (selectedStartDate < today) {
+      console.log('Start date cannot be in the past.');
+      return;
+    }
+
+    setStartDate(selectedStartDate);
+    const startDateString = format(selectedStartDate, 'yyyy/MM/dd');
     wanted_date({ "start": startDateString });
+    
+    
+    if (isBefore(endDate, addDays(selectedStartDate, 1))) {
+      setEndDate(addDays(selectedStartDate, 1)); 
+      const endDateString = format(addDays(selectedStartDate, 1), 'yyyy/MM/dd');
+      wanted_date_end({ "end": endDateString });
+    }
   };
 
   const handleEndDateChange = (end_date) => {
-    setEndDate(end_date);
-    const endDateString = end_date.format('YYYY/MM/DD');
+    const selectedEndDate = new Date(end_date);
+    selectedEndDate.setHours(0, 0, 0, 0);
+
+    
+    if (isBefore(selectedEndDate, addDays(startDate, 1))) {
+      console.log('End date must be at least one day after start date.');
+      return;
+    }
+
+    setEndDate(selectedEndDate);
+    const endDateString = format(selectedEndDate, 'yyyy/MM/dd');
     wanted_date_end({ "end": endDateString });
   };
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   return (
     <div className="navigation-bar">
@@ -78,6 +103,7 @@ const NavigationBar = () => {
             locale={persian_fa}
             value={startDate}
             onChange={handleStartDateChange}
+            minDate={today}
           />
         </li>
         <li className="date-picker-container">
@@ -87,6 +113,7 @@ const NavigationBar = () => {
             locale={persian_fa}
             value={endDate}
             onChange={handleEndDateChange}
+            minDate={addDays(startDate, 1)} 
           />
         </li>
         <li className='header'>
