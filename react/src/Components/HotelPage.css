@@ -84,16 +84,6 @@
     width: 40px;
 }
 
-.hotel_page_input2 input{
-    height: 20px;
-    width: 250;
-    background:transparent;
-    border: none;
-    outline: none;
-    color: rgb(255, 255, 255);
-    font-size: 15px;
-}
-
 .right-aligned {
   text-align: right;
   margin-right: 15px;

@@ -21,6 +21,9 @@ urlpatterns = [
             path('hotel_admin/analysis/', hotel_admin_analysis),
             path('hotel_admin/create_room', RoomAPIView.as_view()),
             path('hotel_admin/get_hotel/', get_hotel_admin),
+            path('hotel_admin/update_hotel/', admin_update_hotel),
+
+            path('upload/', upload_file, name='upload_file'),
 
             path('get_hotels/', get_hotels),
             path('get_hotel_img/', SpecificImage.as_view()),

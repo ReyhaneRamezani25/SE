@@ -8,6 +8,7 @@ from .forms import CustomerSignUpForm
 from django.core.exceptions import SuspiciousOperation
 from rest_framework.views import APIView
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 from .models import Hotel, HotelAdmin, Room, Reservation, SiteAdmin, Customer
 from .serializers import HotelSerializer, HotelAdminSerializer, CitySerializer, GuestSerializer, RoomSerializer, \
@@ -326,12 +327,149 @@ def get_hotel_admin(request):
         admin = HotelAdmin.objects.filter(user__username=data['username'])[0]
         hotel = Hotel.objects.filter(id=admin.hotel.id).values()[0]
         hotel['image'] = Hotel.objects.filter(id=admin.hotel.id)[0].image.path
-        print(hotel)
-        print(type(hotel))
-        return JsonResponse(hotel)
+        
+        def room_data(room):
+            room_dict = room.__dict__.copy()
+            del room_dict['_state']
+            
+            return{
+                'type': room_dict['type'],
+                'number': persian.enToPersianNumb(str(room_dict['number'])),
+                'capacity': persian.enToPersianNumb(str(room_dict['capacity'])),
+                'breakfast': room_dict['breakfast'],
+                'price': persian.enToPersianNumb(str(room_dict['price'])),
+                'id': room.id,
+            }
+
+        rooms = Room.objects.filter(hotel__id=admin.hotel.id)
+        rooms_list = [room_data(room) for room in rooms]
+
+        room_images = []
+        for room in rooms:
+            try:
+                room_images.append(room.room_image.path)
+            except Exception:
+                continue
+
+        response_data = {'rooms': rooms_list, 'images': room_images}
+
+        return JsonResponse(
+            {
+                "hotel": hotel,
+                "rooms": response_data
+            }
+        )
 
     return HttpResponse('Only post method allowed!', status=200)    
 
+
+from django.core.files import File
+@csrf_exempt
+def admin_update_hotel(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+
+        user = authenticate(request, username=data['username'], password=data['password'])
+        if not user:
+            return HttpResponse('Only Admin can call this API', status=403)
+
+        admin = get_object_or_404(HotelAdmin, user__username=data['username'])
+        hotel = get_object_or_404(Hotel, id=admin.hotel.id)
+
+        # Update hotel fields
+        # hotel.location_x = data['location_x']
+        # hotel.location_y = data['location_y']
+        # hotel.rating = data['rating']
+        # hotel.number_of_rates = data['number_of_rates']
+        # hotel.number_of_rooms = data['number_of_rooms']
+        # hotel.brochure = data['brochure']
+        # hotel.city_id = data['city']
+        # hotel.status = data['status']
+
+        hotel.name = data['name']
+        hotel.address = data['address']
+        hotel.stars = data['stars']
+        hotel.facilities = data['facilities']
+        hotel.phone_number = data['phone_number']
+        hotel.policies = data['policies']
+
+        if data['hotel_image_name'] != '':
+            image_name = data['hotel_image_name']
+            file_path = settings.MEDIA_ROOT + '/' + image_name
+            with open(file_path, 'rb') as f:
+                file = File(f)
+                hotel.image.save(os.path.basename(file_path), file, save=True)
+
+        if data['hotel_room_images_name'] != []:
+            images = data['hotel_room_images_name']
+            rooms = Room.objects.filter(hotel__id=hotel.id)
+            for image, room in zip(images, rooms):
+                print(image, room)
+                if not image:
+                    continue
+                file_path = settings.MEDIA_ROOT + '/' + image
+                with open(file_path, 'rb') as f:
+                    file = File(f)
+                    room.room_image.save(os.path.basename(file_path), file, save=True)
+
+        room_fields = {key: value for key, value in data.items() if key.startswith('room_')}
+        
+        for field in room_fields:
+            values = data[field]
+            print(values)
+            if "status" in values.keys():
+                new_room = Room(
+                    type = values['type'],
+                    number = values['number'],
+                    capacity = values['capacity'],
+                    breakfast = True if values['breakfast'] == 'true' else False,
+                    hotel = hotel,
+                    price = values['price'],
+                    level = 0,
+                    extera_guest = False,
+                )
+                new_room.save()
+                    # room_image = values['room_image'],
+            else:
+                room = Room.objects.filter(id=values['id'])[0]
+                room.type = values['type']
+                room.number = values['number']
+                room.capacity = values['capacity']
+                room.breakfast = True if values['breakfast'] == 'true' else False
+                room.price = values['price']
+                room.save()
+
+        hotel.save()
+        return HttpResponse('Data saved!', status=200)
+    
+    return HttpResponse('Only POST method allowed!', status=405)    
+
+
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.decorators import api_view, parser_classes
+from django.conf import settings
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
+def upload_file(request):
+    if 'file' not in request.FILES:
+        return JsonResponse({'error': 'No file provided'}, status=400)
+
+    files = request.FILES.getlist('file')
+    file_urls = []
+
+    for file in files:
+        file_path = os.path.join(settings.MEDIA_ROOT, file.name)
+
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+        with open(file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+        file_urls.append(settings.MEDIA_URL + file.name)
+
+    return JsonResponse({'file_urls': file_urls}, status=200)
 
 # -------------------------- OTHERS -------------------------- #
 @csrf_exempt
@@ -465,7 +603,6 @@ def room_to_values(room):
     del room_dict['_state']
     return {
         'type': room_dict['type'],
-        # 'number': persian.enToPersianNumb(str(room_dict['number'])) + ' تعداد اتاق ',
         'capacity': ' ظرفیت ' + persian.enToPersianNumb(str(room_dict['capacity'])) + ' نفره ',
         'breakfast': 'همراه صبحانه' if room_dict['breakfast'] else 'فاقد صبحانه',
         'price': ' قیمت ' + persian.enToPersianNumb(str(room_dict['price'])) + ' تومان ',
