@@ -5,3 +5,4 @@ drf-yasg
 pytest
 requests
 django-rest-swagger
+persian
