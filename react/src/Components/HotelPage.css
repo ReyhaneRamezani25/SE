@@ -1,20 +1,32 @@
 .main-container {
-    display: flex;
-    flex-direction: column;
-    /* margin: auto; */
-    margin-top: 100px;
-    width: auto;
-    height: auto;
-    background:#fafafa;
-    padding-bottom: 30px;
-    border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 100px;
+  width: auto;
+  height: auto;
+  background: #fafafa;
+  padding-bottom: 30px;
+  border-radius: 30px;
 }
-  
+.hotel_page_input2 {
+  align-items: right;
+  margin-top: 20px;
+  margin-left: 25%;
+  width: 10px;
+  height: 30px;
+  background: #febbf7;
+  border-radius: 10px;
+}
+
+.hotel_page_input2 div {
+  font-size: 15px;
+}
+
 .custom-image {
-    width: 40px; 
-    height: 40px;
-    margin-top: 10px;
-    margin-left: 1px;
+  width: 40px;
+  height: 40px;
+  margin-top: 10px;
+  margin-left: 1px;
 }
 
 .custom-image-room {
@@ -22,73 +34,59 @@
   width: 90px;
   height: 90px;
   margin-top: 2px;
-  margin-left: 2px;  
+  margin-left: 2px;
   border-radius: 100px;
 }
 
 .stars-container {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
-  
+
 .stars-container .fas {
-    color: gold;
+  color: gold;
 }
-  
+
 .right-section {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
 }
-  
+
 .room-container {
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    width: 70%;
-    height: 100px;
-    background:#cecbcb;
-    margin-bottom: 1%;
-    border-radius: 20px;
-    margin-right:  5%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 70%;
+  height: 100px;
+  background: #cecbcb;
+  margin-bottom: 1%;
+  border-radius: 20px;
+  margin-right: 5%;
 }
 
 .margin-left-better {
-    margin-left: 1%;
+  margin-left: 1%;
 }
 
-.hotel_page_input2{
+.hotel_page_input2 {
   margin-top: 15px;
   display: flex;
   flex-direction: column;
-  /* grid:25px; */
-  }
-
-  .hotel_page_input2{
-    /* display: flex; */
-    align-items:right;
-    /* margin: right; */
-    margin-top: 20px;
-    /* margin-right: 110px; */
-    margin-left: 25%;
-    width: 55%;
-    height: auto;
-    background: #febbf7;
-    border-radius: 10px;
 }
 
-.hotel_page_input2 img{
-    margin: 0px 30px;
-    height: 40px;
-    width: 40px;
+.hotel_page_input2 img {
+  margin: 0px 30px;
+  height: 40px;
+  width: 40px;
 }
 
 .right-aligned {
   text-align: right;
   margin-right: 15px;
   margin-top: 5px;
-  font-size: medium;
+  font-size: 5%; /* Set the font size to 5% relative to its parent */
 }
 
 .hotel_page_input3 {
@@ -133,11 +131,11 @@
 .button-container {
   display: flex;
   justify-content: center;
-  width: 100%; /* Ensure the container takes full width */
-  margin-top: 10px; /* Add some spacing above the button */
+  width: 100%;
+  margin-top: 10px;
 }
 
-.reyhane{
+.reyhane {
   width: 30px;
   height: 30px;
 }
@@ -158,16 +156,14 @@
   background-color: #fefefe;
   padding: 20px;
   border-radius: 5px;
-  overflow: hidden; /* Hide any overflowing content */
-
+  overflow: hidden;
 }
 
 .reserve-popup-content-scrollable {
-  max-height: calc(80vh - 100px); /* Adjust the height as needed */
-  overflow-y: auto; /* Enable vertical scrolling */
-  padding-right: 10px; /* Add padding to avoid scrollbar overlap */
+  max-height: calc(80vh - 100px);
+  overflow-y: auto;
+  padding-right: 10px;
 }
-
 
 .close-button {
   background-color: #ccc;
@@ -184,25 +180,27 @@
 
 /* Reyhane */
 
-.reyhane-container{
+.reyhane-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   height: 100%;
-  background:#8bece7;
+  background: #8bece7;
   padding-bottom: 1px;
   padding-top: 1px;
   border-radius: 20px;
 }
-.reyhane-header{
+
+.reyhane-header {
   text-align: center;
   color: rgb(82, 23, 11);
 }
-.reyhane-room-container{
+
+.reyhane-room-container {
   display: center;
   width: 500px;
-  background:#00504b;
+  background: #00504b;
   padding-bottom: 30px;
   border-radius: 10px;
   height: 120px;
@@ -210,21 +208,22 @@
   align-items: center;
   font-size: 20px;
 }
-.reyhane-information-header{
+
+.reyhane-information-header {
   text-align: center;
   color: rgb(82, 23, 11);
   font-size: 20px;
 }
-.reyhane-information-tail{
-  /* position: relative; */
 
+.reyhane-information-tail {
   margin-left: 50px;
 }
-.reyhane-information{
+
+.reyhane-information {
   display: flex;
   flex-direction: column;
   width: 700px;
-  background:#febbf7;
+  background: #febbf7;
   padding-bottom: 30px;
   border-radius: 30px;
   height: 300px;
@@ -233,6 +232,7 @@
   font-size: 20px;
   margin-top: 20px;
 }
+
 .reyhane-guest-row {
   display: flex;
   align-items: center;
@@ -242,7 +242,6 @@
 
 .reyhane-guest-row label {
   margin-right: 10px;
-      
 }
 
 .reyhane-guest-row input {
@@ -250,13 +249,13 @@
   margin-left: 5px;
   width: 100px;
   text-align: right;
-  
 }
 
 .reyhane-error {
   color: red;
   font-size: 0.1em;
 }
+
 .button {
   display: block;
   margin: 90px auto 20px auto;
@@ -264,94 +263,123 @@
   font-size: 16px;
 }
 
-@media ((min-width: 720px) and (max-width: 1024px)) {
+@media (min-width: 720px) and (max-width: 1024px) {
   .room-details {
-    font-size: 13px;
-    text-align: right;
+      font-size: 13px;
+      text-align: right;
   }
 
   .custom-image-room {
-    display: flex;
-    width: 80px;
-    height: 80px;
-    height: auto;
-    margin-top: 5px;
-    margin-left: 2px;  
-    border-radius: 100px;
+      display: flex;
+      width: 80px;
+      height: 80px;
+      height: auto;
+      margin-top: 5px;
+      margin-left: 2px;
+      border-radius: 100px;
   }
-  
+
   .reyhane-information-header {
-    font-size: 12px;
+      font-size: 12px;
   }
+
   .reyhane-room-container {
-    display: center;
-    width: 500px;
-    background:#00504b;
-    padding-bottom: 30px;
-    border-radius: 10px;
-    height: 120px;
-    text-align: center;
-    align-items: center;
-    font-size: 20px;
+      display: center;
+      width: 500px;
+      background: #00504b;
+      padding-bottom: 30px;
+      border-radius: 10px;
+      height: 120px;
+      text-align: center;
+      align-items: center;
+      font-size: 20px;
   }
 
   .reyhane-guest-row {
-    font-size: 15px;
+      font-size: 15px;
   }
 
   .reyhane-guest-row input {
-    width: 70px;
-    font-size: 15px;
+      width: 70px;
+      font-size: 15px;
   }
 
   .button {
-    font-size: 15px;
-    padding: 4px 8px;
+      font-size: 15px;
+      padding: 4px 8px;
   }
+  .hotel_page_input2 {
+    align-items: right;
+    margin-top: 20px;
+    margin-left: 25%;
+    width: 10px;
+    height: 30px;
+    background: #febbf7;
+    border-radius: 10px;
 }
 
-@media ((min-width: 420px) and (max-width: 719px)) {
+.hotel_page_input2 div {
+    font-size: 15px;
+}
+}
+
+@media (min-width: 420px) and (max-width: 719px) {
   .room-details {
-    font-size: 12px;
-    text-align: right;
+      font-size: 12px;
+      text-align: right;
   }
 
   .custom-image-room {
-    display: flex;
-    width: 85px;
-    height: 85px;
-    height: auto;
-    margin-top: 2px;
-    margin-left: 2px;  
-    border-radius: 100px;
+      display: flex;
+      width: 85px;
+      height: 85px;
+      height: auto;
+      margin-top: 2px;
+      margin-left: 2px;
+      border-radius: 100px;
   }
 
   .reyhane-information-header {
-    font-size: 12px;
+      font-size: 12px;
   }
+
   .reyhane-room-container {
-    display: center;
-    width: 500px;
-    background:#00504b;
-    padding-bottom: 30px;
-    border-radius: 10px;
-    height: 120px;
-    text-align: center;
-    align-items: center;
-    font-size: 20px;
+      display: center;
+      width: 500px;
+      background: #00504b;
+      padding-bottom: 30px;
+      border-radius: 10px;
+      height: 120px;
+      text-align: center;
+      align-items: center;
+      font-size: 20px;
   }
 
   .reyhane-guest-row {
-    font-size: 10px;
+      font-size: 10px;
   }
 
   .reyhane-guest-row input {
-    width: 70px;
-    font-size: 10px;
+      width: 70px;
+      font-size: 10px;
   }
 
   .button {
-    font-size: 10px;
-    padding: 4px 8px;
+      font-size: 10px;
+      padding: 4px 8px;
+  }
+
+  .hotel_page_input2 {
+      align-items: right;
+      margin-top: 20px;
+      margin-left: 25%;
+      width: 10px;
+      height: 20px;
+      background: #febbf7;
+      border-radius: 10px;
+  }
+
+  .hotel_page_input2 div {
+      font-size: 10px;
   }
 }
