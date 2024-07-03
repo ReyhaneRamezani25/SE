@@ -195,15 +195,19 @@
     width: 100px;
   }
   .hotel_page_input2{
-    width: 110px;
+    width: 115px;
+    height: 30px;
     margin-left: 10px;
+    
   }
-  .right-aligned{
-   font-size: 30px;
+  .hotel_page_input2 input{
+   font-size: 10px;
+   margin-right: 10px;
   }
   .main-container{
     width: 400px;
   }
+  
 }
 
 
