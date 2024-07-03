@@ -283,37 +283,39 @@ def login_hotel_admin(request):
 def hotel_admin_analysis(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        username = data['username']
-        user = HotelAdmin.objects.filter(user__username=username)[0]
-        hotel = user.hotel
-        city = 'null'
-        province = 'null'
 
-        try:
-            if hotel.city:
-                city = str(hotel.city.name)
-                province = city = str(hotel.city.province)
-            result = {
-                'نام': hotel.name,
-                'طول جغرافیایی': hotel.location_x,
-                'عرض جغرافیایی': hotel.location_y,
-                'آدرس': hotel.address,
-                'تعداد ستاره': hotel.stars,
-                # 'ریت': hotel.rating,
-                # '': hotel.number_of_rates,
-                'تعداد اتاق': hotel.number_of_rooms,
-                # '': hotel.facilities,
-                'استان': province,
-                # '': hotel.brochure,
-                # '': hotel.image,
-                'شهر': city
-            }
-            return JsonResponse([result], safe=False)
-        except Exception as e:
-            print(e)
-            return JsonResponse([{
-                "": "",
-            }], safe=False)
+        user = authenticate(request, username=data['username'], password=data['password'])
+        if not user:
+            return HttpResponse('Only Admin can call this API', status=403)
+
+        admin = get_object_or_404(HotelAdmin, user__username=data['username'])
+        hotel = get_object_or_404(Hotel, id=admin.hotel.id)
+
+        data = json.loads(request.body.decode('utf-8'))
+        all_reserves = Reservation.objects.all()
+        rooms = []
+        for reserve in all_reserves:
+            rooms.extend(reserve.rooms.all())
+        filtered_rooms = [room for room in rooms if room.hotel_id == hotel.id]
+
+        hotel_room_names = [room.type for room in filtered_rooms]
+        image_urls = [room.room_image.path for room in filtered_rooms]
+        registrars = []
+
+        print(filtered_rooms)
+        hotels_data = []
+        for i in range(len(filtered_rooms)):
+            hotels_data.append({
+                'نام اتاق': hotel_room_names[i],
+                'hotel_room_images': image_urls[i],
+                # 'guests_name': guest_name[i],
+                # 'guests_id': guest_id[i],
+                # 'رزرو کننده': result.registrar.username,
+                # 'تاریخ شروع': result.start,
+                # 'تاریخ پایان': result.end,
+            })
+
+        return JsonResponse(hotels_data, safe=False)
 
 
 @csrf_exempt
@@ -376,16 +378,6 @@ def admin_update_hotel(request):
         admin = get_object_or_404(HotelAdmin, user__username=data['username'])
         hotel = get_object_or_404(Hotel, id=admin.hotel.id)
 
-        # Update hotel fields
-        # hotel.location_x = data['location_x']
-        # hotel.location_y = data['location_y']
-        # hotel.rating = data['rating']
-        # hotel.number_of_rates = data['number_of_rates']
-        # hotel.number_of_rooms = data['number_of_rooms']
-        # hotel.brochure = data['brochure']
-        # hotel.city_id = data['city']
-        # hotel.status = data['status']
-
         hotel.name = data['name']
         hotel.address = data['address']
         hotel.stars = data['stars']
@@ -443,6 +435,17 @@ def admin_update_hotel(request):
         return HttpResponse('Data saved!', status=200)
     
     return HttpResponse('Only POST method allowed!', status=405)    
+        # Update hotel fields
+        # hotel.location_x = data['location_x']
+        # hotel.location_y = data['location_y']
+        # hotel.rating = data['rating']
+        # hotel.number_of_rates = data['number_of_rates']
+        # hotel.number_of_rooms = data['number_of_rooms']
+        # hotel.brochure = data['brochure']
+        # hotel.city_id = data['city']
+        # hotel.status = data['status']
+
+
 
 
 from rest_framework.parsers import MultiPartParser, FormParser

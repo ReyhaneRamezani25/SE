@@ -33,7 +33,8 @@ const Analysis = () => {
     try {
       // Assuming you need to send some data in the request body
       const requestData = {
-        username: user.username
+        username: user.username,
+        password: user.password
       };
   
       const response = await axios.post('http://localhost:8000/hotel_admin/analysis/', requestData);
