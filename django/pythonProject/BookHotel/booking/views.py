@@ -293,30 +293,36 @@ def hotel_admin_analysis(request):
 
         data = json.loads(request.body.decode('utf-8'))
         all_reserves = Reservation.objects.all()
-        rooms = []
+        reserve_rooms = []
         for reserve in all_reserves:
-            rooms.extend(reserve.rooms.all())
-        filtered_rooms = [room for room in rooms if room.hotel_id == hotel.id]
+            rooms = reserve.rooms.all()
+            if rooms[0].hotel.id == hotel.id:
+                reserve_rooms.append({"reserve": reserve, "rooms": reserve.rooms.all()})
+        result = []
+        # filtered_rooms = [room for room in rooms if room.hotel_id == hotel.id]
 
-        hotel_room_names = [room.type for room in filtered_rooms]
-        image_urls = [room.room_image.path for room in filtered_rooms]
-        registrars = []
+        # hotel_room_names = [room.type for room in filtered_rooms]
+        # image_urls = [room.room_image.path for room in filtered_rooms]
+        # registrars = []
 
-        print(filtered_rooms)
+        # print(filtered_rooms)
         hotels_data = []
-        for i in range(len(filtered_rooms)):
-            hotels_data.append({
-                'نام اتاق': hotel_room_names[i],
-                'hotel_room_images': image_urls[i],
-                # 'guests_name': guest_name[i],
-                # 'guests_id': guest_id[i],
-                # 'رزرو کننده': result.registrar.username,
-                # 'تاریخ شروع': result.start,
-                # 'تاریخ پایان': result.end,
-            })
+        for reserve_room in reserve_rooms:
+            print(reserve_room)
+            reserve = reserve_room['reserve']
+            for room in reserve_room['rooms']:
+                hotels_data.append({
+                    'نام اتاق': room.type,
+                    'hotel_room_images': room.room_image.path,
+                    'guests_name': ' '.join(guest.name for guest in reserve.guests.all()),
+                    'guests_id': ' '.join(str(guest.id) for guest in reserve.guests.all()),
+                    'رزرو کننده': reserve.registrar.name,
+                    'تاریخ شروع': reserve.start,
+                    'تاریخ پایان': reserve.end,
+                })
 
         return JsonResponse(hotels_data, safe=False)
-
+        # return JsonResponse({"hotels_data": "b"}, safe=False)
 
 @csrf_exempt
 def get_hotel_admin(request):
@@ -444,8 +450,6 @@ def admin_update_hotel(request):
         # hotel.brochure = data['brochure']
         # hotel.city_id = data['city']
         # hotel.status = data['status']
-
-
 
 
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -609,6 +613,7 @@ def room_to_values(room):
         'capacity': ' ظرفیت ' + persian.enToPersianNumb(str(room_dict['capacity'])) + ' نفره ',
         'breakfast': 'همراه صبحانه' if room_dict['breakfast'] else 'فاقد صبحانه',
         'price': ' قیمت ' + persian.enToPersianNumb(str(room_dict['price'])) + ' تومان ',
+        'id': room.id,
     }
 
 

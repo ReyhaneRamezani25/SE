@@ -1,8 +1,10 @@
 import { useParams } from 'react-router-dom';
 import './HotelPage.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../UserContext';
+import Pardakht from './Pardakht';
 
 const Hotel = () => {
   const { index } = useParams();
@@ -19,6 +21,7 @@ const Hotel = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [guests, setGuests] = useState([]);
   const [submitted, setSubmitted] = useState(false);
+  const { user } = useContext(UserContext);
 
   let totalGuest = 0;
   let navigate = useNavigate(); 
@@ -71,6 +74,9 @@ const Hotel = () => {
   };
 
   const routeChange = () => { 
+    localStorage.setItem('guests', JSON.stringify(guests));
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('index', index);
     let path = '../pardakht'; 
     navigate(path);
   }
