@@ -4,3 +4,4 @@ django-cors-headers
 drf-yasg
 pytest
 requests
+django-rest-swagger
