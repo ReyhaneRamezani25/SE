@@ -342,7 +342,7 @@ const HotelRefactor = () => {
                   {Object.entries(roomDetail).map(([subKey, subValue], helpIndex) => (
                     help[helpIndex] !== 'id' ? (
                       <input
-                        className="room-detail"
+                        className="room-detail-input"
                         placeholder={help[helpIndex] + subValue.toString()}
                         key={subKey}
                         onChange={(e) => handleRoomInputChange(index, subKey, e.target.value)}
