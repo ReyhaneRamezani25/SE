@@ -367,7 +367,7 @@ const HotelRefactor = () => {
         <div className="reserve-popup">
           <div className="reserve-popup-content">
             <div className="custom-image-room" onClick={() => handleImageClick('newRoomFileInput')}>
-              <img alt="room Image" src={newRoomImage} className="custom-image-room" />
+              <img alt="rooms" src={newRoomImage} className="custom-image-room" />
               <input
                 id="newRoomFileInput"
                 type="file"
