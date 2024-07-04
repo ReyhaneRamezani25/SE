@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
-from .models import Hotel, HotelAdmin, Room, Reservation, SiteAdmin, Customer
+from .models import Hotel, HotelAdmin, Room, Reservation, SiteAdmin, Customer, City
 from .serializers import HotelSerializer, HotelAdminSerializer, CitySerializer, GuestSerializer, RoomSerializer, \
     ReservationSerializer
 from drf_yasg.utils import swagger_auto_schema
@@ -335,6 +335,10 @@ def get_hotel_admin(request):
         admin = HotelAdmin.objects.filter(user__username=data['username'])[0]
         hotel = Hotel.objects.filter(id=admin.hotel.id).values()[0]
         hotel['image'] = Hotel.objects.filter(id=admin.hotel.id)[0].image.path
+        city_id = hotel['city_id']
+        hotel['city'] = City.objects.filter(id=city_id)[0].name
+        print(City.objects.filter(id=city_id)[0].name)
+        hotel['province'] = City.objects.filter(id=city_id)[0].province
         
         def room_data(room):
             room_dict = room.__dict__.copy()
@@ -390,6 +394,12 @@ def admin_update_hotel(request):
         hotel.facilities = data['facilities']
         hotel.phone_number = data['phone_number']
         hotel.policies = data['policies']
+        city = City(
+            name=data['city'],
+            province=(data['province'] if 'province' in data else data['city'])
+        )
+        city.save()
+        hotel.city = city
 
         if data['hotel_image_name'] != '':
             image_name = data['hotel_image_name']
@@ -578,6 +588,11 @@ class HotelDataView(APIView):
         query_id = int(query_params.get('index'))
         hotel = Hotel.objects.filter(id=query_id).values()[0]
         hotel['image'] = Hotel.objects.filter(id=query_id)[0].image.path
+
+        city_id = hotel['city_id']
+        hotel['city'] = City.objects.filter(id=city_id)[0].name
+        print(City.objects.filter(id=city_id)[0].name)
+        hotel['province'] = City.objects.filter(id=city_id)[0].province
         return JsonResponse(hotel)
 
 

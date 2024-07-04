@@ -11,7 +11,7 @@ const HotelRefactor = () => {
   const [hotelImage, setHotelImage] = useState('');
   const [hotelImageName, setHotelImageName] = useState('');
   const [hotelName, setHotelName] = useState('نام');
-  const [ownerDetails, setOwnerDetails] = useState('اطلاعات مالک');
+  const [ownerDetails, setOwnerDetails] = useState('شهر ');
   const [hotelAddress, setHotelAddress] = useState('آدرس');
   const [hotelPhoneNumber, setHotelPhoneNumber] = useState('تلفن');
   const [hotelRegulations, setHotelRegulations] = useState('مقررات');
@@ -33,22 +33,22 @@ const HotelRefactor = () => {
     const { name, value } = e.target;
     switch (name) {
       case 'hotelName':
-        setHotelName(value.substring(4));
+        setHotelName(value);
         break;
       case 'ownerDetails':
-        setOwnerDetails(value.substring(13));
+        setOwnerDetails(value);
         break;
       case 'hotelAddress':
-        setHotelAddress(value.substring(5));
+        setHotelAddress(value);
         break;
       case 'hotelPhoneNumber':
-        setHotelPhoneNumber(value.substring(5));
+        setHotelPhoneNumber(value);
         break;
       case 'hotelRegulations':
-        setHotelRegulations(value.substring(7));
+        setHotelRegulations(value);
         break;
       case 'starCount':
-        setStarCount(value.substring(6));
+        setStarCount(value);
         break;
       default:
         break;
@@ -158,6 +158,7 @@ const HotelRefactor = () => {
         fetchImage(data.hotel.image, true);
         setHotelPhoneNumber(data.hotel.phone_number);
         setHotelRegulations(data.hotel.policies);
+        setOwnerDetails(data.hotel.city);
 
         setRoom(data.rooms.rooms);
         const imageUrls = data.rooms.images;
@@ -186,9 +187,9 @@ const HotelRefactor = () => {
       rating: 5,
       number_of_rates: 4,
       number_of_rooms: 2,
-      facilities: 'یزد',
+      facilities: '',
       brochure: '',
-      city: 'یزد',
+      city: ownerDetails,
       phone_number: hotelPhoneNumber,
       policies: hotelRegulations,
       status: true,
@@ -267,18 +268,18 @@ const HotelRefactor = () => {
           <div className="hotel_page_input2">
             <input
               className="right-aligned"
-              placeholder={` نام`}
+              // placeholder={` نام`}
               name="hotelName"
-              value={` نام${hotelName}`}
+              placeholder={` نام${hotelName}`}
               onChange={handleInputChange}
             />
           </div>
           <div className="hotel_page_input2">
             <input
               className="right-aligned"
-              placeholder={`اطلاعات مالک`}
+              // placeholder={` شهر ${ownerDetails}`}
               name="ownerDetails"
-              value={` اطلاعات مالک${ownerDetails}`}
+              placeholder={` شهر ${ownerDetails}`}
               onChange={handleInputChange}
             />
           </div>
@@ -286,9 +287,9 @@ const HotelRefactor = () => {
           <div className="hotel_page_input2">
             <input
               className="right-aligned"
-              placeholder=' آدرس'
+              // placeholder=' آدرس'
               name="hotelAddress"
-              value={` آدرس${hotelAddress}`}
+              placeholder={` آدرس ${hotelAddress}`}
               onChange={handleInputChange}
             />
           </div>
@@ -296,9 +297,9 @@ const HotelRefactor = () => {
           <div className="hotel_page_input2">
             <input
               className="right-aligned"
-              placeholder=' تلفن'
+              // placeholder=' تلفن'
               name="hotelPhoneNumber"
-              value={` تلفن${hotelPhoneNumber}`}
+              placeholder={` تلفن ${hotelPhoneNumber}`}
               onChange={handleInputChange}
             />
           </div>
@@ -306,9 +307,9 @@ const HotelRefactor = () => {
           <div className="hotel_page_input2">
             <input
               className="right-aligned"
-              placeholder=' مقررات'
+              // placeholder=' مقررات'
               name="hotelRegulations"
-              value={` مقررات${hotelRegulations}`}
+              placeholder={` مقررات ${hotelRegulations}`}
               onChange={handleInputChange}
             />
           </div>
@@ -316,9 +317,9 @@ const HotelRefactor = () => {
           <div className="hotel_page_input2">
             <input
               className="right-aligned"
-              placeholder=' ستاره'
+              // placeholder=' ستاره'
               name="starCount"
-              value={` ستاره${starCount}`}
+              placeholder={` ستاره ${starCount}`}
               onChange={handleInputChange}
             />
           </div>

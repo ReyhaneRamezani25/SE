@@ -10,7 +10,7 @@ const Hotel = () => {
   const { index } = useParams();
   const [hotelImage, setHotelImage] = useState('1');
   const [hotelName, setHotelName] = useState('نام');
-  const [ownerDetails, setOwnerDetails] = useState('اطلاعات مالک');
+  const [ownerDetails, setOwnerDetails] = useState('شهر');
   const [hotelAddress, setHotelAddress] = useState('آدرس');
   const [hotelPhoneNumber, setHotelPhoneNumber] = useState('تلفن');
   const [hotelRegulations, setHotelRegulations] = useState('مقررات');
@@ -199,6 +199,7 @@ const Hotel = () => {
                 fetchImage(data.image, true);
                 setHotelPhoneNumber(data.phone_number + ' :تلفن');
                 setHotelRegulations('قوانین: ' + data.policies);
+                setOwnerDetails(data.city);
                 fetchRooms();
             } else {
                 console.error('Failed to fetch images:', response.status);
