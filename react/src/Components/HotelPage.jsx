@@ -109,7 +109,7 @@ const Hotel = () => {
     Object.keys(room).forEach((key, index) => {
       if(roomInputs[key] >= 1) {
         setSelectedRooms(prevSelectedRooms => [...prevSelectedRooms, room[key].id]);
-        console.log(room[key].id);
+        console.log('selected room: ', room[key].id);
         }
     });
 

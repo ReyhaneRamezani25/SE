@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from drf_yasg import openapi
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login as dj_login
 from django.http.response import HttpResponse
@@ -103,7 +102,6 @@ class RoomAPIView(APIView):
 
 
 class ReservationAPIView(APIView):
-    permission_classes = (IsAuthenticated)
 
     @swagger_auto_schema(request_body=ReservationSerializer)
     def post(self, request):
@@ -115,33 +113,7 @@ class ReservationAPIView(APIView):
         return Response({'message': reservation_serializer.errors})
 
 
-"""
-{
-  "registrar": "jadid@gmail.com",
-  "start": "2024-05-01",
-  "end": "2024-05-22",
-  "guests": [
-    {
-      "name": "string",
-      "lastName": "string",
-      "id": 1
-    },
-{
-      "name": "string",
-      "lastName": "string",
-      "id": 3
-    }
-  ],
-  "rooms": [
-    5,7,9
-  ]
-}
-"""
-
-
 class AddReservation(APIView):
-    # permission_classes = (IsAuthenticated)
-
     @swagger_auto_schema(request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
@@ -182,61 +154,6 @@ class AddReservation(APIView):
         reservation.save()
 
         return Response({'message': 'Reservation created successfully'})
-# class AddReservation(APIView):
-#     permission_classes = (IsAuthenticated,)
-
-#     @swagger_auto_schema(request_body=openapi.Schema(
-#         type=openapi.TYPE_OBJECT,
-#         properties={
-#             'registrar': openapi.Schema(type=openapi.TYPE_STRING),
-#             'start': openapi.Schema(type=openapi.TYPE_STRING),
-#             'end': openapi.Schema(type=openapi.TYPE_STRING),
-#             'guests': openapi.Schema(type=openapi.TYPE_ARRAY,
-#                                      items=openapi.Schema(type=openapi.TYPE_OBJECT, properties={
-#                                          'name': openapi.Schema(type=openapi.TYPE_STRING),
-#                                          'lastName': openapi.Schema(type=openapi.TYPE_STRING),
-#                                          'id': openapi.Schema(type=openapi.TYPE_INTEGER)})),
-#             'rooms': openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_INTEGER)),
-#         }
-#     ))
-#     def post(self, request):
-#         try:
-#             registrar_email = request.data.get('registrar')
-#             start = parse_datetime(request.data.get('start'))
-#             end = parse_datetime(request.data.get('end'))
-#             guests_data = request.data.get('guests')
-#             rooms_data = request.data.get('rooms')
-
-#             if not (registrar_email and start and end and guests_data and rooms_data):
-#                 return Response({'error': 'Missing required fields'}, status=400)
-
-#             registrar = CustomUser.objects.get(username=registrar_email)
-
-#             guests = []
-#             for guest_data in guests_data:
-#                 guest_id = guest_data.get('id')
-#                 guest = Guest.objects.get(id=guest_id)
-#                 guests.append(guest)
-
-#             rooms = []
-#             for room_id in rooms_data:
-#                 room = Room.objects.get(id=room_id)
-#                 rooms.append(room)
-
-#             reservation = Reservation.objects.create(registrar=registrar, start=start, end=end)
-#             reservation.guests.set(guests)
-#             reservation.rooms.set(rooms)
-#             reservation.save()
-
-#             return Response({'message': 'Reservation created successfully'})
-#         except CustomUser.DoesNotExist:
-#             return Response({'error': 'Registrar not found'}, status=404)
-#         except Guest.DoesNotExist:
-#             return Response({'error': 'Guest not found'}, status=404)
-#         except Room.DoesNotExist:
-#             return Response({'error': 'Room not found'}, status=404)
-#         except Exception as e:
-#             return Response({'error': str(e)}, status=500)
 
 
 class Test(APIView):

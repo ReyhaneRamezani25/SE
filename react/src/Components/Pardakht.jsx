@@ -143,6 +143,7 @@ const [cardNumber, setCardNumber] = useState({ part1: '', part2: '', part3: '', 
           if (!response.ok) {
             throw new Error(response.statusText);
           }
+          alert('اتاقت رزرو شدش. مبارک باشه');
           return response.json();
         })
         .catch(error => {
