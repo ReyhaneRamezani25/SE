@@ -11,6 +11,7 @@ const [cardNumber, setCardNumber] = useState({ part1: '', part2: '', part3: '', 
   let guests = JSON.parse(localStorage.getItem('guests'));
   let user = JSON.parse(localStorage.getItem('user'));
   let index = JSON.parse(localStorage.getItem('index'));
+  let room_ids = JSON.parse(localStorage.getItem('room_ids'));
 
   useEffect(() => {
     console.log("guests", guests);
@@ -81,6 +82,13 @@ const [cardNumber, setCardNumber] = useState({ part1: '', part2: '', part3: '', 
 
     const handleSubmit = (e) => {
       e.preventDefault();
+      console.log(({
+        registrar: user.username,
+        start: "2024-05-01",
+        end: "2024-05-010",
+        guests: guests,
+        rooms: room_ids
+      }))
       // Validate the input fields
       if (
         cardNumber.part1.length === 4 &&
@@ -124,11 +132,11 @@ const [cardNumber, setCardNumber] = useState({ part1: '', part2: '', part3: '', 
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            registrar: "a@gmail.com",
-            start: '2024-05-01',
-            end: '2024-05-12',
-            // guests: [{name: 'aliali', lastName: 'jafarjafar', id: '5445654654'}, {...}],
-            // rooms: [3, 4],
+            registrar: user.username,
+            start: "2024-05-01",
+            end: "2024-05-10",
+            guests: guests,
+            rooms: [1, 2]
           }),
         })
         .then(response => {

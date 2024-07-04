@@ -4,7 +4,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from '../UserContext';
-import Pardakht from './Pardakht';
 
 const Hotel = () => {
   const { index } = useParams();
@@ -22,6 +21,7 @@ const Hotel = () => {
   const [guests, setGuests] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const { user } = useContext(UserContext);
+  const [selectedRooms, setSelectedRooms] = useState([]);
 
   let totalGuest = 0;
   let navigate = useNavigate(); 
@@ -77,6 +77,8 @@ const Hotel = () => {
     localStorage.setItem('guests', JSON.stringify(guests));
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('index', index);
+    localStorage.setItem('room_ids', JSON.stringify(selectedRooms));
+    console.log('selectedRooms', selectedRooms);
     let path = '../pardakht'; 
     navigate(path);
   }
@@ -102,6 +104,13 @@ const Hotel = () => {
       capacity = convertPersianToEnglishNumbers(capacity);
       capacity = parseInt(capacity.match(/\d+/)[0]);
       totalGuest += input * capacity;
+    });
+
+    Object.keys(room).forEach((key, index) => {
+      if(roomInputs[key] >= 1) {
+        setSelectedRooms(prevSelectedRooms => [...prevSelectedRooms, room[key].id]);
+        console.log(room[key].id);
+        }
     });
 
     const newGuests = Array.from({ length: totalGuest }, () => ({

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from drf_yasg import openapi
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login as dj_login
 from django.http.response import HttpResponse
@@ -10,7 +11,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
-from .models import Hotel, HotelAdmin, Room, Reservation, SiteAdmin, Customer, City
+from .models import Hotel, HotelAdmin, Room, Reservation, SiteAdmin, Customer, CustomUser, Guest, City
 from .serializers import HotelSerializer, HotelAdminSerializer, CitySerializer, GuestSerializer, RoomSerializer, \
     ReservationSerializer
 from drf_yasg.utils import swagger_auto_schema
@@ -102,6 +103,8 @@ class RoomAPIView(APIView):
 
 
 class ReservationAPIView(APIView):
+    permission_classes = (IsAuthenticated)
+
     @swagger_auto_schema(request_body=ReservationSerializer)
     def post(self, request):
         reservation_serializer = ReservationSerializer(data=request.data)
@@ -110,6 +113,130 @@ class ReservationAPIView(APIView):
             return Response({'message': 'Reservation added successfully!'})
 
         return Response({'message': reservation_serializer.errors})
+
+
+"""
+{
+  "registrar": "jadid@gmail.com",
+  "start": "2024-05-01",
+  "end": "2024-05-22",
+  "guests": [
+    {
+      "name": "string",
+      "lastName": "string",
+      "id": 1
+    },
+{
+      "name": "string",
+      "lastName": "string",
+      "id": 3
+    }
+  ],
+  "rooms": [
+    5,7,9
+  ]
+}
+"""
+
+
+class AddReservation(APIView):
+    # permission_classes = (IsAuthenticated)
+
+    @swagger_auto_schema(request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'registrar': openapi.Schema(type=openapi.TYPE_STRING),
+            'start': openapi.Schema(type=openapi.TYPE_STRING),
+            'end': openapi.Schema(type=openapi.TYPE_STRING),
+            'guests': openapi.Schema(type=openapi.TYPE_ARRAY,
+                                     items=openapi.Schema(type=openapi.TYPE_OBJECT, properties={
+                                         'name': openapi.Schema(type=openapi.TYPE_STRING),
+                                         'lastName': openapi.Schema(type=openapi.TYPE_STRING),
+                                         'id': openapi.Schema(type=openapi.TYPE_INTEGER)})),
+            'rooms': openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_INTEGER)),
+        }
+    ))
+    def post(self, request):
+        registrar_email = request.data.get('registrar')
+        start = request.data.get('start')
+        end = request.data.get('end')
+        guests_data = request.data.get('guests')
+        rooms_data = request.data.get('rooms')
+
+        registrar = CustomUser.objects.get(username=registrar_email)
+
+        guests = []
+        for guest_data in guests_data:
+            guest_id = guest_data.get('id')
+            guest = Guest.objects.filter(identity_code=guest_id)[0]
+            guests.append(guest)
+
+        rooms = []
+        for room_id in rooms_data:
+            room = Room.objects.get(id=room_id)
+            rooms.append(room)
+
+        reservation = Reservation.objects.create(registrar=registrar, start=start, end=end)
+        reservation.guests.set(guests)
+        reservation.rooms.set(rooms)
+        reservation.save()
+
+        return Response({'message': 'Reservation created successfully'})
+# class AddReservation(APIView):
+#     permission_classes = (IsAuthenticated,)
+
+#     @swagger_auto_schema(request_body=openapi.Schema(
+#         type=openapi.TYPE_OBJECT,
+#         properties={
+#             'registrar': openapi.Schema(type=openapi.TYPE_STRING),
+#             'start': openapi.Schema(type=openapi.TYPE_STRING),
+#             'end': openapi.Schema(type=openapi.TYPE_STRING),
+#             'guests': openapi.Schema(type=openapi.TYPE_ARRAY,
+#                                      items=openapi.Schema(type=openapi.TYPE_OBJECT, properties={
+#                                          'name': openapi.Schema(type=openapi.TYPE_STRING),
+#                                          'lastName': openapi.Schema(type=openapi.TYPE_STRING),
+#                                          'id': openapi.Schema(type=openapi.TYPE_INTEGER)})),
+#             'rooms': openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Schema(type=openapi.TYPE_INTEGER)),
+#         }
+#     ))
+#     def post(self, request):
+#         try:
+#             registrar_email = request.data.get('registrar')
+#             start = parse_datetime(request.data.get('start'))
+#             end = parse_datetime(request.data.get('end'))
+#             guests_data = request.data.get('guests')
+#             rooms_data = request.data.get('rooms')
+
+#             if not (registrar_email and start and end and guests_data and rooms_data):
+#                 return Response({'error': 'Missing required fields'}, status=400)
+
+#             registrar = CustomUser.objects.get(username=registrar_email)
+
+#             guests = []
+#             for guest_data in guests_data:
+#                 guest_id = guest_data.get('id')
+#                 guest = Guest.objects.get(id=guest_id)
+#                 guests.append(guest)
+
+#             rooms = []
+#             for room_id in rooms_data:
+#                 room = Room.objects.get(id=room_id)
+#                 rooms.append(room)
+
+#             reservation = Reservation.objects.create(registrar=registrar, start=start, end=end)
+#             reservation.guests.set(guests)
+#             reservation.rooms.set(rooms)
+#             reservation.save()
+
+#             return Response({'message': 'Reservation created successfully'})
+#         except CustomUser.DoesNotExist:
+#             return Response({'error': 'Registrar not found'}, status=404)
+#         except Guest.DoesNotExist:
+#             return Response({'error': 'Guest not found'}, status=404)
+#         except Room.DoesNotExist:
+#             return Response({'error': 'Room not found'}, status=404)
+#         except Exception as e:
+#             return Response({'error': str(e)}, status=500)
 
 
 class Test(APIView):
@@ -343,8 +470,8 @@ def get_hotel_admin(request):
         def room_data(room):
             room_dict = room.__dict__.copy()
             del room_dict['_state']
-            
-            return{
+
+            return {
                 'type': room_dict['type'],
                 'number': persian.enToPersianNumb(str(room_dict['number'])),
                 'capacity': persian.enToPersianNumb(str(room_dict['capacity'])),
@@ -372,10 +499,12 @@ def get_hotel_admin(request):
             }
         )
 
-    return HttpResponse('Only post method allowed!', status=200)    
+    return HttpResponse('Only post method allowed!', status=200)
 
 
 from django.core.files import File
+
+
 @csrf_exempt
 def admin_update_hotel(request):
     if request.method == 'POST':
@@ -421,23 +550,23 @@ def admin_update_hotel(request):
                     room.room_image.save(os.path.basename(file_path), file, save=True)
 
         room_fields = {key: value for key, value in data.items() if key.startswith('room_')}
-        
+
         for field in room_fields:
             values = data[field]
             print(values)
             if "status" in values.keys():
                 new_room = Room(
-                    type = values['type'],
-                    number = values['number'],
-                    capacity = values['capacity'],
-                    breakfast = True if values['breakfast'] == 'true' else False,
-                    hotel = hotel,
-                    price = values['price'],
-                    level = 0,
-                    extera_guest = False,
+                    type=values['type'],
+                    number=values['number'],
+                    capacity=values['capacity'],
+                    breakfast=True if values['breakfast'] == 'true' else False,
+                    hotel=hotel,
+                    price=values['price'],
+                    level=0,
+                    extera_guest=False,
                 )
                 new_room.save()
-                    # room_image = values['room_image'],
+                # room_image = values['room_image'],
             else:
                 room = Room.objects.filter(id=values['id'])[0]
                 room.type = values['type']
@@ -449,22 +578,12 @@ def admin_update_hotel(request):
 
         hotel.save()
         return HttpResponse('Data saved!', status=200)
-    
-    return HttpResponse('Only POST method allowed!', status=405)    
-        # Update hotel fields
-        # hotel.location_x = data['location_x']
-        # hotel.location_y = data['location_y']
-        # hotel.rating = data['rating']
-        # hotel.number_of_rates = data['number_of_rates']
-        # hotel.number_of_rooms = data['number_of_rooms']
-        # hotel.brochure = data['brochure']
-        # hotel.city_id = data['city']
-        # hotel.status = data['status']
-
+    return HttpResponse('Only POST method allowed!', status=405)
 
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import api_view, parser_classes
 from django.conf import settings
+
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
@@ -487,6 +606,7 @@ def upload_file(request):
         file_urls.append(settings.MEDIA_URL + file.name)
 
     return JsonResponse({'file_urls': file_urls}, status=200)
+
 
 # -------------------------- OTHERS -------------------------- #
 @csrf_exempt
