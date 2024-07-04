@@ -33,8 +33,6 @@ with open("secret.yaml") as stream:
 
 SECRET_KEY = secret_data[0].get('django')[0].get('SECRET_KEY')
 
-# SECRET_KEY = 'django-insecure-leau^^aoyq)bhtt=h@#g!lclr^)ma&+adpsw!(i65l$_k7ux5n'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
