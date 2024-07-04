@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from drf_yasg import openapi
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.contrib.auth import authenticate, login as dj_login
 from django.http.response import HttpResponse
@@ -102,6 +103,8 @@ class RoomAPIView(APIView):
 
 
 class ReservationAPIView(APIView):
+    permission_classes = (IsAuthenticated)
+
     @swagger_auto_schema(request_body=ReservationSerializer)
     def post(self, request):
         reservation_serializer = ReservationSerializer(data=request.data)
@@ -137,6 +140,8 @@ class ReservationAPIView(APIView):
 
 
 class AddReservation(APIView):
+    permission_classes = (IsAuthenticated)
+
     @swagger_auto_schema(request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
