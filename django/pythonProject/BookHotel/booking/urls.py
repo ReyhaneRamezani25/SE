@@ -35,7 +35,8 @@ urlpatterns = [
             path('get_hotel_rooms/', get_hotel_rooms),
             path('reserve/', get_reserved_rooms),
             path('reserve/add_guest', GuestAPIView.as_view()),
-            path('reserve/add_reserve', RoomAPIView.as_view()),
+            path('reserve/create_reserve', ReservationAPIView.as_view()),
+            path('reserve/add_reserve', AddReservation.as_view()),
 
             path('test/', Test.as_view()),
             # for testing error handlers
