@@ -136,7 +136,7 @@ const [cardNumber, setCardNumber] = useState({ part1: '', part2: '', part3: '', 
             start: "2024-05-01",
             end: "2024-05-10",
             guests: guests,
-            rooms: [1, 2]
+            rooms: room_ids
           }),
         })
         .then(response => {

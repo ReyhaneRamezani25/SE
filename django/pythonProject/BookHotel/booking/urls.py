@@ -14,6 +14,7 @@ urlpatterns = [
             path('site_admin/create_hotel_admin/', HotelAdminAPIView.as_view()),
             path('site_admin/hotel_list/', hotel_list),
             path('site_admin/create_city/', CityAPIView.as_view()),
+            path('site_admin/analysis/', site_admin_analysis),
 
             path('hotel_admin/update/', change_password_hotel_admin),
             path('hotel_admin/signup/', signup_hotel_admin),

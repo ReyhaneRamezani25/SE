@@ -20,6 +20,7 @@ import HotelRefactor from './Components/HotelStrict/HotelRefactor.jsx';
 import SearchPage from './Components/SearchPage.jsx';
 import Reserve from './Components/Reserves.jsx';
 import Pardakht from './Components/Pardakht.jsx';
+import AdminAnalysis from './Components/AdminStrict/AdminAnalysis.jsx';
 import './App.css';
 
 function App() {
@@ -48,7 +49,7 @@ function App() {
               <Route path="/search" element={<SearchPage />} />
 
               <Route path='/pardakht' element={<Pardakht />}/>
-
+              <Route path='/admin/analysis' element={<AdminAnalysis />}/>
             </Routes>
           </div>
         </div>

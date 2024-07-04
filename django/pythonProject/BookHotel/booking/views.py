@@ -443,13 +443,50 @@ def hotel_admin_analysis(request):
                     'hotel_room_images': room.room_image.path,
                     'guests_name': ' '.join(guest.name for guest in reserve.guests.all()),
                     'guests_id': ' '.join(str(guest.id) for guest in reserve.guests.all()),
-                    'رزرو کننده': reserve.registrar.name,
+                    'رزرو کننده': reserve.registrar.username,
                     'تاریخ شروع': reserve.start,
                     'تاریخ پایان': reserve.end,
                 })
 
         return JsonResponse(hotels_data, safe=False)
-        # return JsonResponse({"hotels_data": "b"}, safe=False)
+
+
+@csrf_exempt
+def site_admin_analysis(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        print(data['username'], data['password'])
+        admin = SiteAdmin.objects.filter(user__username=data['username'], user__password=data['password'])
+        if len(admin) == 0:
+            return HttpResponse('Only Admin can call this API', status=403)
+
+        admin = get_object_or_404(SiteAdmin, user__username=data['username'])
+        if not admin:
+            return HttpResponse('Only Site Admin can call this API', status=403)
+
+        all_reserves = Reservation.objects.all()
+        reserve_rooms = []
+        for reserve in all_reserves:
+            rooms = reserve.rooms.all()
+            reserve_rooms.append({"reserve": reserve, "rooms": reserve.rooms.all()})
+        result = []
+        hotels_data = []
+        for reserve_room in reserve_rooms:
+            print(reserve_room)
+            reserve = reserve_room['reserve']
+            for room in reserve_room['rooms']:
+                hotels_data.append({
+                    'نام اتاق': room.type,
+                    'hotel_room_images': room.room_image.path,
+                    'guests_name': ' '.join(guest.name for guest in reserve.guests.all()),
+                    'guests_id': ' '.join(str(guest.id) for guest in reserve.guests.all()),
+                    'رزرو کننده': reserve.registrar.username,
+                    'تاریخ شروع': reserve.start,
+                    'تاریخ پایان': reserve.end,
+                })
+
+        return JsonResponse(hotels_data, safe=False)
+
 
 @csrf_exempt
 def get_hotel_admin(request):

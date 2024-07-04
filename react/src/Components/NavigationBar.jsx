@@ -131,7 +131,7 @@ const NavigationBar = () => {
               <>
                 <li><NavLink to="/site_admin/hotel_create">هتل</NavLink></li>
                 <li><NavLink to="/profile">پروفایل</NavLink></li>
-                <li><NavLink to="/">تحلیل</NavLink></li>
+                <li><NavLink to="/admin/analysis">تحلیل</NavLink></li>
                 <li><NavLink to="/site_admin/admin_assign">ادمین</NavLink></li>
                 <li><NavLink to='/site_admin/hotel_list'>لیست</NavLink></li>
               </>
